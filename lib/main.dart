@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/module/cupertino_page.dart';
 import 'package:flutter_learn/module/new_page.dart';
 
 void main() => runApp(MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.grey,
       ),
       home: MyHomePage(title: 'Flutter Learn Home Page'),
     );
@@ -97,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _pushPage() {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NewPage();
+      return CupertinoPage();
     }));
   }
 

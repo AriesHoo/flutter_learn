@@ -9,20 +9,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      color: Colors.orange,
       title: 'Flutter Learn',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.grey,
+        primaryColor: Colors.white,
+        primaryColorDark: Colors.blue
       ),
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(title: 'Flutter Learn Home Page'),
     );
   }
@@ -112,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
@@ -143,11 +137,14 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
-            FlatButton(
-              child: Text('open new page'),
+            RaisedButton(
+              elevation: 10,
+              child: Text('open new page',style: TextStyle(color: Colors.white),),
               color: Colors.blue,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
               onPressed: _pushPage,
-            )
+            ),
+            RaisedButton.icon(onPressed: _pushPage, icon: Icon(Icons.send), label: Text('发送'))
           ],
         ),
       ),

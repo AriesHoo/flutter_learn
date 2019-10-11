@@ -6,7 +6,7 @@ class CupertinoPage extends StatelessWidget {
     // TODO: implement build
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text('中间文字'),
+        middle: Text('中间文字',style: TextStyle(color: CupertinoColors.black),),
         backgroundColor: CupertinoColors.lightBackgroundGray,
       ),
       child: Center(

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learn/module/cupertino_page.dart';
 import 'package:flutter_learn/module/new_page.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -11,10 +13,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       color: Colors.orange,
       title: 'Flutter Learn',
-      theme: ThemeData(
-        primaryColor: Colors.white,
-        primaryColorDark: Colors.blue
-      ),
+      theme:
+          ThemeData(primaryColor: Colors.white, primaryColorDark: Colors.white),
       debugShowCheckedModeBanner: false,
       home: MyHomePage(title: 'Flutter Learn Home Page'),
     );
@@ -89,10 +89,25 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  void _pushPage() {
+  void _pushPage(Widget widget) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return CupertinoPage();
+      return widget;
     }));
+  }
+
+  RaisedButton _getButtonWidget(String text, Widget widget) {
+    return RaisedButton(
+      elevation: 10,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
+      color: Colors.blue,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      onPressed: () {
+        _pushPage(widget);
+      },
+    );
   }
 
   @override
@@ -105,10 +120,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+//        backgroundColor: Colors.blue,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        centerTitle: true,
+        elevation: 0,
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
@@ -137,14 +154,8 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.display1,
             ),
-            RaisedButton(
-              elevation: 10,
-              child: Text('open new page',style: TextStyle(color: Colors.white),),
-              color: Colors.blue,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-              onPressed: _pushPage,
-            ),
-            RaisedButton.icon(onPressed: _pushPage, icon: Icon(Icons.send), label: Text('发送'))
+            _getButtonWidget("NewPage", NewPage()),
+            _getButtonWidget("IOS风格", CupertinoPage())
           ],
         ),
       ),

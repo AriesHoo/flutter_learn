@@ -40,6 +40,18 @@ github地址： https://github.com/flutter-dev/asset_generator
 
 ## 常用开源包：
 
+https://github.com/OpenFlutter/amap_base_flutter/
+
+> 常用三方
+
+| 库名              | 版本号    | 链接                                                | 描述                                                         |
+| ----------------- | --------- | --------------------------------------------------- | ------------------------------------------------------------ |
+| amap_base_flutter | 0.4.0+1   | https://pub.dev/packages/amap_base_location         | 包括定位、搜索、导航。 |
+| wechat            | 0.0.5     | https://pub.dev/packages/wechat                     | 登录、分享-暂无支付 |
+| fluwx             | 1.1.1     | https://pub.dev/packages/fluwx                      | 登录、分享、支付       |
+| sy_flutter_wechat | 0.2.2     | https://pub.dev/packages/sy_flutter_wechat          | 登录、分享、支付       |
+
+----
 
 > 网络请求
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/module/cupertino_page.dart';
 import 'package:flutter_learn/module/new_page.dart';
+import 'package:flutter_learn/module/start/login_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -155,13 +156,13 @@ class _MyHomePageState extends State<MyHomePage> {
               style: Theme.of(context).textTheme.display1,
             ),
             _getButtonWidget("NewPage", NewPage()),
-            _getButtonWidget("IOS风格", CupertinoPage())
+            _getButtonWidget("IOS风格", CupertinoPage()),
+            _getButtonWidget('登录页', LoginPage())
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

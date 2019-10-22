@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/hepler/image_helper.dart';
+import 'package:flutter_learn/hepler/toast_util.dart';
 import 'package:flutter_learn/module/start/third_login.dart';
 import 'package:flutter_learn/widget/button.dart';
 import 'package:oktoast/oktoast.dart';
@@ -80,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
             Button(
               "登录",
               onPressed: () {
-                showToast("登录");
+                ToastUtil.show("登录");
               },
             ),
             Expanded(

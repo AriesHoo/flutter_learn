@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learn/hepler/image_helper.dart';
 import 'package:flutter_learn/module/start/third_login.dart';
 import 'package:flutter_learn/widget/button.dart';
+import 'package:oktoast/oktoast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -73,17 +74,20 @@ class _LoginPageState extends State<LoginPage> {
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+              },
             ),
             Button(
               "登录",
-              onPressed: () {},
+              onPressed: () {
+                showToast("登录");
+              },
             ),
             Expanded(
               flex: 1,
               child: new Container(),
             ),
-            ThirdLogin()
+            ThirdLogin(),
           ],
         ),
       ),

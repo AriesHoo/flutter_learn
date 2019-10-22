@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_learn/module/cupertino_page.dart';
 import 'package:flutter_learn/module/new_page.dart';
 import 'package:flutter_learn/module/start/login_page.dart';
+import 'package:oktoast/oktoast.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,14 +12,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      color: Colors.orange,
-      title: 'Flutter Learn',
-      theme:
+    return OKToast(
+        child: MaterialApp(
+          color: Colors.orange,
+          title: 'Flutter Learn',
+          theme:
           ThemeData(primaryColor: Colors.white, primaryColorDark: Colors.white),
-      debugShowCheckedModeBanner: false,
-      home: MyHomePage(title: 'Flutter Learn Home Page'),
-    );
+          debugShowCheckedModeBanner: false,
+          home: MyHomePage(title: 'Flutter Learn Home Page'),
+        ),);
   }
 }
 

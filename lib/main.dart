@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/module/cupertino_page.dart';
 import 'package:flutter_learn/module/new_page.dart';
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _pushPage(Widget widget) {
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+    Navigator.push(context, CupertinoPageRoute(builder: (context) {
       return widget;
     }));
   }

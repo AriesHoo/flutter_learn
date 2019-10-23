@@ -41,7 +41,7 @@ class EditText extends StatelessWidget {
         border: border ??
             Border.all(
                 color: Theme.of(context).accentColor, width: 1), // 边色与边宽度
-        borderRadius: new BorderRadius.circular(40), // 也可控件一边圆角大小
+        borderRadius: borderRadius ?? BorderRadius.circular(100), // 也可控件一边圆角大小
       ),
       margin: margin ?? EdgeInsets.symmetric(vertical: 30),
       padding: padding ?? EdgeInsets.symmetric(horizontal: 20),

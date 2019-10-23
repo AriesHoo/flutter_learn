@@ -30,7 +30,6 @@ class _LoginPageState extends State<LoginPage> {
         elevation: 0,
       ),
       body: Container(
-//        color: Colors.blue,
         margin: EdgeInsets.only(left: 40, right: 40, bottom: 30),
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Column(
@@ -53,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             EditText(
               hintText: "请输入账号",
+              keyboardType: TextInputType.phone,
               icon: Icon(
                 Icons.person_outline,
                 color: Theme.of(context).accentColor,
@@ -61,12 +61,14 @@ class _LoginPageState extends State<LoginPage> {
             EditText(
               margin: EdgeInsets.only(bottom: 20),
               hintText: "请输入密码",
+              obscureText: true,
+              keyboardType: TextInputType.text,
               icon: Icon(Icons.lock_outline,
                   color: Theme.of(context).accentColor),
             ),
             Button(
               "登录",
-              borderRadius: 40,
+              borderRadius: 10,
               onPressed: () {
                 ToastUtil.show("登录");
               },
@@ -84,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             Expanded(
-              flex: 1,
+              flex: 2,
               child: new Container(),
             ),
             ThirdLogin(),

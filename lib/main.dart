@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_learn/module/cupertino_page.dart';
 import 'package:flutter_learn/module/new_page.dart';
 import 'package:flutter_learn/module/start/login_page.dart';
@@ -13,11 +16,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness:
+      Platform.isAndroid ? Brightness.dark : Brightness.light,
+      systemNavigationBarColor: Colors.white,
+      systemNavigationBarDividerColor: Colors.red,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ));
     return OKToast(
       child: MaterialApp(
         color: Colors.orange,
         title: 'Flutter Learn',
         theme: ThemeData(
+            //类苹果跟随滑动返回
+            platform: TargetPlatform.iOS,
             primaryColor: Colors.white,
             primaryColorDark: Colors.white,
             accentColor: Colors.blue),
@@ -97,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _pushPage(Widget widget) {
-    Navigator.push(context, CupertinoPageRoute(builder: (context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
       return widget;
     }));
   }

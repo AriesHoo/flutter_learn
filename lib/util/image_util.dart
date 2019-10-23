@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ImageHelper {
+class ImageUtil {
   static const String baseUrl = 'http://www.meetingplus.cn';
   static const String imagePrefix = '$baseUrl/uimg/';
   static const int IMAGE_TYPE_START = 0;

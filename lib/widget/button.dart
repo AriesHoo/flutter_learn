@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
-  Button(
-      this.text,
+  Button(this.text,
       {Key key,
       @required this.onPressed,
-      this.borderRadius: 5.0,
+      this.borderRadius: 6.0,
       this.color,
       this.height: 48.0,
       this.textColor,
@@ -61,13 +60,15 @@ class Button extends StatelessWidget {
     return hasBorder
         ? OutlineButton(
             onPressed: onPressed,
-            textColor: textColor ?? Colors.white,
-            disabledTextColor: disabledTextColor ?? Color(0xFFD4E2FA),
-            disabledBorderColor: disabledBorderColor ?? color ?? Colors.grey,
+            textColor: textColor ?? Theme.of(context).accentColor,
+            disabledTextColor:
+                disabledTextColor ?? Theme.of(context).accentColor,
+            disabledBorderColor:
+                disabledBorderColor ?? color ?? Theme.of(context).accentColor,
             highlightedBorderColor:
                 highlightedBorderColor ?? Theme.of(context).accentColor,
             borderSide: BorderSide(
-                width: borderWidth, color: borderColor ?? Colors.white),
+                width: borderWidth, color: borderColor ?? Theme.of(context).accentColor),
             highlightColor: highlightColor,
             shape: borderRadius >= height / 2
                 ? StadiumBorder()
@@ -77,10 +78,10 @@ class Button extends StatelessWidget {
           )
         : FlatButton(
             onPressed: onPressed,
-            textColor: textColor ?? Colors.yellow,
-            disabledTextColor: disabledTextColor ?? Color(0xFFD4E2FA),
+            textColor: textColor ?? Colors.white,
+            disabledTextColor: disabledTextColor ?? Colors.white,
             color: color ?? Theme.of(context).accentColor,
-            disabledColor: disabledColor ?? Color(0xFF96BBFA),
+            disabledColor: disabledColor ?? Colors.grey,
             highlightColor: highlightColor,
             shape: borderRadius >= height / 2
                 ? StadiumBorder()

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/hepler/image_helper.dart';
+import 'package:flutter_learn/util/image_util.dart';
+import 'package:flutter_learn/util/toast_util.dart';
 
 class ThirdLogin extends StatelessWidget {
   @override
@@ -34,9 +35,10 @@ class ThirdLogin extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
+                  ToastUtil.show("微信登录");
                 },
                 child: Image.asset(
-                  ImageHelper.wrapAssets(ImageHelper.IMAGE_TYPE_START,'ic_we_chat_login.png'),
+                  ImageUtil.wrapAssets(ImageUtil.IMAGE_TYPE_START,'ic_we_chat_login.png'),
                   width: 40,
                   height: 40,
                 ),

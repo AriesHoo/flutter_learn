@@ -13,14 +13,17 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OKToast(
-        child: MaterialApp(
-          color: Colors.orange,
-          title: 'Flutter Learn',
-          theme:
-          ThemeData(primaryColor: Colors.white, primaryColorDark: Colors.white),
-          debugShowCheckedModeBanner: false,
-          home: MyHomePage(title: 'Flutter Learn Home Page'),
-        ),);
+      child: MaterialApp(
+        color: Colors.orange,
+        title: 'Flutter Learn',
+        theme: ThemeData(
+            primaryColor: Colors.white,
+            primaryColorDark: Colors.white,
+            accentColor: Colors.blue),
+        debugShowCheckedModeBanner: false,
+        home: MyHomePage(title: 'Flutter Learn Home Page'),
+      ),
+    );
   }
 }
 

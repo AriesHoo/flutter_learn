@@ -6,7 +6,8 @@ class ToastUtil {
     showToast(text,
         backgroundColor: Colors.black.withOpacity(0.7),
         dismissOtherToast: true,
+        radius: 6,
         textPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
-        textStyle: TextStyle(fontSize: 18, color: Colors.white));
+        textStyle: TextStyle(fontSize: 16, color: Colors.white));
   }
 }

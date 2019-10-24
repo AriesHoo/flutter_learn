@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 
+///注册声明
 class LoginCopyright extends StatelessWidget {
   final bool checked;
   final ValueChanged<bool> onChanged;
@@ -26,7 +27,9 @@ class LoginCopyright extends StatelessWidget {
           "《注册协议》",
           style: TextStyle(color: Theme.of(context).accentColor),
         ),
-        onTap: () {},
+        onTap: () {
+          ToastUtil.show("注册协议");
+        },
       ),
       Text("和"),
       GestureDetector(
@@ -34,12 +37,15 @@ class LoginCopyright extends StatelessWidget {
           "《隐私协议》",
           style: TextStyle(color: Theme.of(context).accentColor),
         ),
-        onTap: () {},
+        onTap: () {
+          ToastUtil.show("隐私协议");
+        },
       ),
     ]);
   } //维护复选框状态
 }
 
+///注册页提示返回登录功能
 class RegisterLogin extends StatelessWidget {
   final GestureTapCallback onPressed;
 
@@ -48,8 +54,8 @@ class RegisterLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TapGestureRecognizer recognizer = TapGestureRecognizer();
-    recognizer.onTap = () {
-      ToastUtil.show("sss");
+    recognizer.onTap = (){
+      Navigator.of(context).pop();
     };
     return Center(
       child: Text.rich(TextSpan(text: "已有账号？", children: [

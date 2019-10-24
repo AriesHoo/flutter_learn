@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.aries.flutter.learn">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
@@ -9,7 +10,21 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="flutter_learn"
+        android:supportsRtl="true"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4"
+            tools:replace="android:value" />
+        <!--华为使用刘海区域申明-->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true" />
+        <!--小米使用刘海区域申明-->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

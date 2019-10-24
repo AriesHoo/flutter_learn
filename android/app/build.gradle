@@ -44,9 +44,9 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        ndk {
-            abiFilters "armeabi", "x86"
-        }
+//        ndk {
+//            abiFilters "armeabi", "x86"
+//        }
     }
     //配置签名
     signingConfigs {
@@ -62,9 +62,6 @@ android {
             signingConfig signingConfigs.release
         }
         release {
-//            ndk {
-//                abiFilters "armeabi"
-//            }
             signingConfig signingConfigs.release
         }
     }

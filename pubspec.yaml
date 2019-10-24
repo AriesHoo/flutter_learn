@@ -29,6 +29,10 @@ dev_dependencies:
     sdk: flutter
   #  吐司toast
   oktoast: ^2.2.0
+  #  设备信息
+  device_info: ^0.4.0+1
+  #  应用包信息
+  package_info: ^0.4.0+6
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -68,7 +68,8 @@ class Button extends StatelessWidget {
             highlightedBorderColor:
                 highlightedBorderColor ?? Theme.of(context).accentColor,
             borderSide: BorderSide(
-                width: borderWidth, color: borderColor ?? Theme.of(context).accentColor),
+                width: borderWidth,
+                color: borderColor ?? Theme.of(context).accentColor),
             highlightColor: highlightColor,
             shape: borderRadius >= height / 2
                 ? StadiumBorder()
@@ -81,14 +82,13 @@ class Button extends StatelessWidget {
             textColor: textColor ?? Colors.white,
             disabledTextColor: disabledTextColor ?? Colors.white,
             color: color ?? Theme.of(context).accentColor,
-            disabledColor: disabledColor ?? Colors.grey,
+            disabledColor: disabledColor ?? Theme.of(context).disabledColor,
             highlightColor: highlightColor,
             shape: borderRadius >= height / 2
                 ? StadiumBorder()
                 : RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(borderRadius)),
             child: _child,
-
           );
   }
 }

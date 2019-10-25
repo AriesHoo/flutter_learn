@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/module/start/login_page.dart';
+import 'package:flutter_learn/module/start/web_view_page.dart';
 import 'package:flutter_learn/util/platform_util.dart';
 
 //主页面
@@ -78,7 +79,15 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[_getButtonWidget('登录页', LoginPage())],
+          children: <Widget>[
+            _getButtonWidget('登录页', LoginPage()),
+            _getButtonWidget(
+                "webView",
+                WebViewPage(
+                  title: "Aries Hoo's Github",
+                  url: "https://github.com/AriesHoo",
+                )),
+          ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

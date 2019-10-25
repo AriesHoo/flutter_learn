@@ -8,7 +8,7 @@ import 'package:flutter_learn/resource/resource_data.dart';
 import 'package:oktoast/oktoast.dart';
 
 void main() {
-//  runApp(MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

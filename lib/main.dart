@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_learn/module/home_page.dart';
 import 'package:flutter_learn/resource/resource_data.dart';
+import 'package:flutter_learn/router_manger.dart';
 import 'package:oktoast/oktoast.dart';
 
 void main() {
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: AppTheme.themeData(),
         debugShowCheckedModeBanner: false,
+        onGenerateRoute: Router.generateRoute,
         home: HomePage(title: 'Flutter Learn'),
       ),
     );

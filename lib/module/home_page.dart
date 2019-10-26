@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/start/login_page.dart';
-import 'package:flutter_learn/module/start/web_view_page.dart';
+import 'package:flutter_learn/module/web_view_page.dart';
+import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/platform_util.dart';
 
 //主页面
@@ -55,7 +57,7 @@ class _HomePageState extends State<HomePage> {
     }));
   }
 
-  RaisedButton _getButtonWidget(String text, Widget widget) {
+  RaisedButton _getButtonWidget(String text, String router, Object arguments) {
     return RaisedButton(
       elevation: 10,
       child: Text(
@@ -65,7 +67,7 @@ class _HomePageState extends State<HomePage> {
       color: Colors.blue,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
       onPressed: () {
-        _pushPage(widget);
+        Navigator.of(context).pushNamed(router, arguments: arguments);
       },
     );
   }
@@ -80,13 +82,12 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _getButtonWidget('登录页', LoginPage()),
+            _getButtonWidget('登录页', RouteName.login,null),
             _getButtonWidget(
                 "webView",
-                WebViewPage(
-                  title: "Aries Hoo's Github",
-                  url: "https://github.com/AriesHoo",
-                )),
+                RouteName.webView,
+                WebViewModel.getModel(
+                    "Aries Hoo's Github", "https://github.com/AriesHoo")),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

@@ -1,23 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/share_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 ///加载网页
 class WebViewPage extends StatefulWidget {
-  const WebViewPage({
+  const WebViewPage(
+    this.model, {
     Key key,
-    this.url,
-    this.title,
   }) : super(key: key);
 
-  ///目标url
-  final String url;
-
-  ///标题
-  final String title;
+  final WebViewModel model;
 
   @override
   _WebViewPageState createState() => _WebViewPageState();
@@ -35,24 +31,26 @@ class _WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title ?? "网页测试"),
+        title: Text(widget.model.title),
       ),
       body: Column(
         children: <Widget>[
           // 模糊进度条(会执行一个动画)
           _loading
               ? LinearProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(Colors.red),
-                  value: 0,
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  valueColor:
+                      AlwaysStoppedAnimation(Theme.of(context).accentColor),
                 )
               : Container(),
           Expanded(
             flex: 1,
             child: SafeArea(
               child: WebView(
-                initialUrl: widget.url,
+                initialUrl: widget.model.url,
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController web) {
+                  print("onWebViewCreated");
                   _webViewController = web;
 
                   ///webView 创建调用，
@@ -71,7 +69,6 @@ class _WebViewPageState extends State<WebViewPage> {
                 },
                 onPageFinished: (String value) async {
                   print("onPageFinished:" + value);
-
                   ///webView页面加载调用
                   setState(() {
                     _loading = false;
@@ -84,7 +81,9 @@ class _WebViewPageState extends State<WebViewPage> {
         ],
       ),
       bottomNavigationBar: IconTheme(
-        data: Theme.of(context).iconTheme.copyWith(opacity: 1),
+        data: Theme.of(context).iconTheme.copyWith(
+              color: Theme.of(context).accentColor,
+            ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
@@ -119,7 +118,8 @@ class _WebViewPageState extends State<WebViewPage> {
             IconButton(
               icon: Icon(Icons.share),
               onPressed: () {
-                ShareUtil.share(widget.title + currentUrl ?? widget.url);
+                ShareUtil.share(
+                    widget.model.title + currentUrl ?? widget.model.url);
               },
             ),
           ],

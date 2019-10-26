@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
 
 ///颜色配置
 class ColorData {
@@ -51,6 +50,7 @@ class AppTheme {
         ///禁止操作颜色
         disabledColor: ColorData.disabledColor,
         hintColor: ColorData.hintColor,
+        dividerColor: ColorData.lineColor,
 
         ///Tooltip(长按提示)样式
         tooltipTheme: TooltipThemeData(

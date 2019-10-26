@@ -1,9 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/module/start/login_widget.dart';
+import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/image_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
-import 'package:flutter_learn/module/start/third_login.dart';
 import 'package:flutter_learn/widget/button.dart';
 import 'package:flutter_learn/widget/edit_text.dart';
 
@@ -18,12 +16,9 @@ class _LoginPageState extends State<LoginPage> {
   final _controllerAccount = new TextEditingController();
   final _controllerPassword = new TextEditingController();
   final _focusNodePassword = new FocusNode();
-  bool _checkboxSelected = false; //维护复选框状态
-  final TapGestureRecognizer recognizer = TapGestureRecognizer();
 
   void initState() {
     super.initState();
-    recognizer.onTap = () {};
   }
 
   @override
@@ -33,9 +28,7 @@ class _LoginPageState extends State<LoginPage> {
         title: Text('登录'),
       ),
       body: Container(
-//        color: Colors.red,
         margin: EdgeInsets.only(left: 40, right: 40, bottom: 30),
-//        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -88,15 +81,6 @@ class _LoginPageState extends State<LoginPage> {
               controller: _controllerPassword,
               keyboardType: TextInputType.text,
             ),
-//            RadiusContainer(
-//              radius: 40,
-//              borderColor: Theme.of(context).accentColor,
-//              borderWidth: 1,
-//              marginBottom: 30,
-//              padding: 20,
-//              paddingRight: 20,
-//              child: Text("哈哈哈"),
-//            ),
             Button(
               "登录",
               borderRadius: 40,
@@ -112,27 +96,17 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 GestureDetector(
                   child: Text("立即注册"),
-                  onTap: () => ToastUtil.show("立即注册"),
+                  onTap: () => Navigator.of(context).pushNamed(
+                      RouteName.register_first_step,
+                      arguments: true),
                 ),
                 GestureDetector(
                   child: Text("忘记密码"),
-                  onTap: () => ToastUtil.show("忘记密码"),
+                  onTap: () => Navigator.of(context).pushNamed(
+                      RouteName.register_first_step,
+                      arguments: false),
                 ),
               ],
-            ),
-            LoginCopyright(
-              checked: _checkboxSelected,
-              onChanged: (checked) {
-                setState(() {
-                  _checkboxSelected = checked;
-                });
-              },
-            ),
-            RegisterLogin(
-              onPressed: () {
-                ToastUtil.show("onPressed");
-                Navigator.of(context).pop();
-              },
             ),
             Expanded(
               flex: 2,
@@ -142,6 +116,58 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+    );
+  }
+}
+
+///三方登录
+class ThirdLogin extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              color: theme.hintColor,
+              height: 0.6,
+              width: 60,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Text(
+                "微信登录",
+              ),
+            ),
+            Container(
+              color: theme.hintColor,
+              height: 0.6,
+              width: 60,
+            ),
+          ],
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  ToastUtil.show("微信登录");
+                },
+                child: Image.asset(
+                  ImageUtil.wrapAssets(
+                      ImageUtil.IMAGE_TYPE_START, 'ic_we_chat_login.png'),
+                  width: 40,
+                  height: 40,
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
     );
   }
 }

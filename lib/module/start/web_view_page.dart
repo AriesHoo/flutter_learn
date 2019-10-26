@@ -29,6 +29,7 @@ class _WebViewPageState extends State<WebViewPage> {
   ValueNotifier canGoBack = ValueNotifier(false);
   ValueNotifier canGoForward = ValueNotifier(false);
   bool _loading = true;
+  String currentUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +54,15 @@ class _WebViewPageState extends State<WebViewPage> {
                 javascriptMode: JavascriptMode.unrestricted,
                 onWebViewCreated: (WebViewController web) {
                   _webViewController = web;
+
                   ///webView 创建调用，
-//                  web.loadUrl(widget.url);
                   web.canGoBack().then((value) {
                     ///是否能返回上一级
                     canGoBack.value(value);
                   });
                   web.currentUrl().then((url) {
                     ///返回当前url
-                    print(url);
+                    currentUrl = url;
                   });
                   web.canGoForward().then((value) {
                     ///是否能前进
@@ -70,6 +71,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 },
                 onPageFinished: (String value) async {
                   print("onPageFinished:" + value);
+
                   ///webView页面加载调用
                   setState(() {
                     _loading = false;
@@ -117,7 +119,7 @@ class _WebViewPageState extends State<WebViewPage> {
             IconButton(
               icon: Icon(Icons.share),
               onPressed: () {
-                ShareUtil.share();
+                ShareUtil.share(widget.title + currentUrl ?? widget.url);
               },
             ),
           ],

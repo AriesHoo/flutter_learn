@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/share_util.dart';
-import 'package:flutter_learn/util/toast_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 ///加载网页
@@ -36,13 +36,13 @@ class _WebViewPageState extends State<WebViewPage> {
       body: Column(
         children: <Widget>[
           // 模糊进度条(会执行一个动画)
-          _loading
-              ? LinearProgressIndicator(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  valueColor:
-                      AlwaysStoppedAnimation(Theme.of(context).accentColor),
-                )
-              : Container(),
+          Container(
+            height: _loading ? 3 : 0,
+            child: LinearProgressIndicator(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
+            ),
+          ),
           Expanded(
             flex: 1,
             child: SafeArea(
@@ -69,6 +69,7 @@ class _WebViewPageState extends State<WebViewPage> {
                 },
                 onPageFinished: (String value) async {
                   print("onPageFinished:" + value);
+
                   ///webView页面加载调用
                   setState(() {
                     _loading = false;

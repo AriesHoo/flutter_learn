@@ -6,7 +6,7 @@ class Button extends StatelessWidget {
       @required this.onPressed,
       this.borderRadius: 6.0,
       this.color,
-      this.height: 48.0,
+      this.height: 44.0,
       this.textColor,
       this.disabledColor,
       this.highlightColor,

@@ -40,8 +40,6 @@ github地址： https://github.com/flutter-dev/asset_generator
 
 ## 常用开源包：
 
-https://github.com/OpenFlutter/amap_base_flutter/
-
 > 常用三方
 
 | 库名              | 版本号    | 链接                                                | 描述                                                         |

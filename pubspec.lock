@@ -70,7 +70,7 @@ packages:
       name: device_info
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.1"
+    version: "0.4.1+1"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -115,7 +115,7 @@ packages:
       name: package_info
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.4.0+9"
+    version: "0.4.0+10"
   path:
     dependency: transitive
     description:
@@ -144,6 +144,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.5"
+  share:
+    dependency: "direct dev"
+    description:
+      name: share
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.3+1"
   sky_engine:
     dependency: transitive
     description: flutter

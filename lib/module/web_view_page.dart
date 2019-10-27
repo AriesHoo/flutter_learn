@@ -1,10 +1,13 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/share_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+
+import '../util/toast_util.dart';
 
 ///加载网页
 class WebViewPage extends StatefulWidget {
@@ -21,25 +24,40 @@ class WebViewPage extends StatefulWidget {
 
 class _WebViewPageState extends State<WebViewPage> {
   WebViewController _webViewController;
-  Completer<bool> _finishedCompleter = Completer();
-  ValueNotifier canGoBack = ValueNotifier(false);
-  ValueNotifier canGoForward = ValueNotifier(false);
+  ValueNotifier _canGoBack = ValueNotifier(false);
+  ValueNotifier _canGoForward = ValueNotifier(false);
   bool _loading = true;
-  String currentUrl;
+  bool _nextLoading = false;
+  String _currentUrl;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.model.title),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 12),
+            child: Theme(
+              data: ThemeData(
+                cupertinoOverrideTheme: CupertinoThemeData(
+                  primaryColor: Colors.red,
+                ),
+              ),
+              child: CupertinoActivityIndicator(
+                radius: _nextLoading ? 8 : 0.5,
+              ),
+            ),
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
           // 模糊进度条(会执行一个动画)
           Container(
-            height: _loading ? 3 : 0,
+            height: _loading ? 2 : 0,
             child: LinearProgressIndicator(
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              backgroundColor: Theme.of(context).appBarTheme.color,
               valueColor: AlwaysStoppedAnimation(Theme.of(context).accentColor),
             ),
           ),
@@ -48,31 +66,38 @@ class _WebViewPageState extends State<WebViewPage> {
             child: SafeArea(
               child: WebView(
                 initialUrl: widget.model.url,
+                debuggingEnabled: false,
                 javascriptMode: JavascriptMode.unrestricted,
+                navigationDelegate: (NavigationRequest request) {
+                  ///TODO isForMainFrame为false,页面不跳转.导致网页内很多链接点击没效果
+                  debugPrint('导航$request');
+                  if (!request.url.startsWith('http')) {
+                    return NavigationDecision.prevent;
+                  } else {
+                    setState(() {
+                      _nextLoading = true;
+                    });
+                    return NavigationDecision.navigate;
+                  }
+                },
                 onWebViewCreated: (WebViewController web) {
-                  print("onWebViewCreated");
+                  debugPrint("onWebViewCreated");
                   _webViewController = web;
 
                   ///webView 创建调用，
-                  web.canGoBack().then((value) {
-                    ///是否能返回上一级
-                    canGoBack.value(value);
-                  });
                   web.currentUrl().then((url) {
                     ///返回当前url
-                    currentUrl = url;
-                  });
-                  web.canGoForward().then((value) {
-                    ///是否能前进
-                    canGoForward.value(value);
+                    _currentUrl = url;
+                    debugPrint("_currentUrl:" + _currentUrl);
                   });
                 },
                 onPageFinished: (String value) async {
-                  print("onPageFinished:" + value);
+                  debugPrint("onPageFinished:" + value);
 
                   ///webView页面加载调用
                   setState(() {
                     _loading = false;
+                    _nextLoading = false;
                   });
                   refreshNavigator();
                 },
@@ -89,7 +114,7 @@ class _WebViewPageState extends State<WebViewPage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ValueListenableBuilder(
-              valueListenable: canGoBack,
+              valueListenable: _canGoBack,
               builder: (context, value, child) => IconButton(
                   icon: Icon(Icons.arrow_back_ios),
                   onPressed: !value
@@ -100,7 +125,7 @@ class _WebViewPageState extends State<WebViewPage> {
                         }),
             ),
             ValueListenableBuilder(
-              valueListenable: canGoForward,
+              valueListenable: _canGoForward,
               builder: (context, value, child) => IconButton(
                   icon: Icon(Icons.arrow_forward_ios),
                   onPressed: !value
@@ -120,7 +145,7 @@ class _WebViewPageState extends State<WebViewPage> {
               icon: Icon(Icons.share),
               onPressed: () {
                 ShareUtil.share(
-                    widget.model.title + currentUrl ?? widget.model.url);
+                    widget.model.title + _currentUrl ?? widget.model.url);
               },
             ),
           ],
@@ -138,14 +163,14 @@ class _WebViewPageState extends State<WebViewPage> {
   void refreshNavigator() {
     /// 是否可以后退
     _webViewController.canGoBack().then((value) {
-      debugPrint('canGoBack--->$value');
-      return canGoBack.value = value;
+      debugPrint('_canGoBack--->$value');
+      return _canGoBack.value = value;
     });
 
     /// 是否可以前进
     _webViewController.canGoForward().then((value) {
-      debugPrint('canGoForward--->$value');
-      return canGoForward.value = value;
+      debugPrint('_canGoForward--->$value');
+      return _canGoForward.value = value;
     });
   }
 }

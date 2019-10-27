@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/image_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
@@ -25,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('登录'),
+        title: Text(S.of(context).login),
       ),
       body: Container(
         margin: EdgeInsets.only(left: 40, right: 40, bottom: 30),
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
               child: new Container(),
             ),
             EditText(
-              hintText: "请输入账号",
+              hintText: S.of(context).hintEnterAccount,
               radius: 40,
               borderWidth: 1,
               marginBottom: 30,
@@ -59,14 +60,14 @@ class _LoginPageState extends State<LoginPage> {
               keyboardType: TextInputType.phone,
               onSubmitted: (s) {
                 if (_controllerAccount.text.isEmpty) {
-                  ToastUtil.show("请输入账号");
+                  ToastUtil.show(S.of(context).hintEnterAccount);
                   return;
                 }
                 FocusScope.of(context).requestFocus(_focusNodePassword);
               },
             ),
             EditText(
-              hintText: "请输入密码",
+              hintText: S.of(context).hintEnterPassword,
               radius: 40,
               borderWidth: 1,
               marginBottom: 30,
@@ -75,17 +76,17 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: true,
               textInputAction: TextInputAction.done,
               onSubmitted: (s) {
-                ToastUtil.show("开始登录");
+                ToastUtil.show(S.of(context).login);
               },
               focusNode: _focusNodePassword,
               controller: _controllerPassword,
               keyboardType: TextInputType.text,
             ),
             Button(
-              "登录",
+              S.of(context).login,
               borderRadius: 40,
               onPressed: () {
-                ToastUtil.show("登录");
+                ToastUtil.show(S.of(context).login);
               },
             ),
             Padding(
@@ -95,13 +96,13 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 GestureDetector(
-                  child: Text("立即注册"),
+                  child: Text(S.of(context).registerRightNow),
                   onTap: () => Navigator.of(context).pushNamed(
                       RouteName.register_first_step,
                       arguments: true),
                 ),
                 GestureDetector(
-                  child: Text("忘记密码"),
+                  child: Text(S.of(context).forgetPassword),
                   onTap: () => Navigator.of(context).pushNamed(
                       RouteName.register_first_step,
                       arguments: false),
@@ -138,7 +139,7 @@ class ThirdLogin extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Text(
-                "微信登录",
+                S.of(context).weChatLogin,
               ),
             ),
             Container(
@@ -155,7 +156,7 @@ class ThirdLogin extends StatelessWidget {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  ToastUtil.show("微信登录");
+                  ToastUtil.show(S.of(context).weChatLogin);
                 },
                 child: Image.asset(
                   ImageUtil.wrapAssets(

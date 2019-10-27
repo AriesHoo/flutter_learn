@@ -19,14 +19,14 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  #  国际化支持
+  flutter_localizations:
+    sdk: flutter
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
+  # 状态管理State
+  provider: ^3.1.0+1
   #  吐司toast
   oktoast: ^2.2.0
   #  设备信息
@@ -37,6 +37,10 @@ dev_dependencies:
   webview_flutter: ^0.3.15+1
   #  分享
   share: ^0.6.3+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

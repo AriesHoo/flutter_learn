@@ -34,7 +34,6 @@ class AppTheme {
   ///应用主题
   static ThemeData themeData() {
     return ThemeData(
-
         ///类苹果跟随滑动返回-修改后返回箭头及主标题iOS风格
         platform: TargetPlatform.iOS,
         primaryColor: ColorData.accentColor,
@@ -49,8 +48,11 @@ class AppTheme {
 
         ///禁止操作颜色
         disabledColor: ColorData.disabledColor,
+
+        ///EditFiled输入框提示文字颜色
         hintColor: ColorData.hintColor,
         dividerColor: ColorData.lineColor,
+        cursorColor: ColorData.accentColor,
 
         ///Tooltip(长按提示)样式
         tooltipTheme: TooltipThemeData(

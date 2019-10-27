@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/config/app_config.dart';
+import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/image_util.dart';
@@ -30,7 +31,9 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isRegister ? "注册" : "忘记密码"),
+        title: Text(widget.isRegister
+            ? S.of(context).register
+            : S.of(context).forgetPassword),
       ),
       body: Container(
         margin: EdgeInsets.only(left: 40, right: 40, bottom: 30),
@@ -53,7 +56,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               child: new Container(),
             ),
             EditText(
-              hintText: "请输入账号",
+              hintText: S.of(context).hintEnterPhone,
               radius: 40,
               borderWidth: 1,
               marginBottom: 30,
@@ -64,14 +67,14 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               keyboardType: TextInputType.phone,
               onSubmitted: (s) {
                 if (_controllerAccount.text.isEmpty) {
-                  ToastUtil.show("请输入账号");
+                  ToastUtil.show(S.of(context).hintEnterPhone);
                   return;
                 }
                 FocusScope.of(context).requestFocus(_focusNodePassword);
               },
             ),
             EditText(
-              hintText: "请输入密码",
+              hintText: S.of(context).hintEnterCode,
               radius: 40,
               borderWidth: 1,
               marginBottom: 30,
@@ -79,18 +82,16 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
               paddingRight: 20,
               obscureText: true,
               textInputAction: TextInputAction.done,
-              onSubmitted: (s) {
-                ToastUtil.show("开始登录");
-              },
+              onSubmitted: (s) {},
               focusNode: _focusNodePassword,
               controller: _controllerPassword,
               keyboardType: TextInputType.text,
             ),
             Button(
-              "下一步",
+              S.of(context).nextStep,
               borderRadius: 40,
               onPressed: () {
-                ToastUtil.show("下一步");
+                ToastUtil.show(S.of(context).nextStep);
               },
             ),
             Padding(
@@ -142,25 +143,26 @@ class RegisterCopyright extends StatelessWidget {
         value: checked,
         onChanged: onChanged,
       ),
-      Text("我已阅读"),
+      Text(S.of(context).registerIRead),
       GestureDetector(
         child: Text(
-          "《注册协议》",
+          S.of(context).registerAgreement,
           style: TextStyle(color: Theme.of(context).accentColor),
         ),
         onTap: () => Navigator.of(context).pushNamed(RouteName.webView,
-            arguments:
-                WebViewModel.getModel("注册协议", AppConfig.registerAgreementUrl)),
+            arguments: WebViewModel.getModel(S.of(context).registerAgreement,
+                AppConfig.registerAgreementUrl)),
       ),
-      Text("和"),
+      Text(S.of(context).registerAnd),
       GestureDetector(
         child: Text(
-          "《隐私协议》",
+          S.of(context).registerPrivacyProtocol,
           style: TextStyle(color: Theme.of(context).accentColor),
         ),
         onTap: () => Navigator.of(context).pushNamed(RouteName.webView,
-            arguments:
-                WebViewModel.getModel("隐私协议", AppConfig.registerPrivacyUrl)),
+            arguments: WebViewModel.getModel(
+                S.of(context).registerPrivacyProtocol,
+                AppConfig.registerPrivacyUrl)),
       ),
     ]);
   } //维护复选框状态
@@ -179,9 +181,10 @@ class RegisterLogin extends StatelessWidget {
       Navigator.of(context).pop();
     };
     return Center(
-      child: Text.rich(TextSpan(text: "已有账号？", children: [
+      child:
+          Text.rich(TextSpan(text: S.of(context).registerHadAccount, children: [
         TextSpan(
-          text: "登录",
+          text: S.of(context).login,
           style: TextStyle(color: Theme.of(context).accentColor),
           recognizer: recognizer,
         )

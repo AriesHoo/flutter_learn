@@ -65,13 +65,18 @@ packages:
     source: hosted
     version: "0.1.2"
   device_info:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: device_info
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.4.1+1"
   flutter:
+    dependency: "direct main"
+    description: flutter
+    source: sdk
+    version: "0.0.0"
+  flutter_localizations:
     dependency: "direct main"
     description: flutter
     source: sdk
@@ -88,6 +93,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.4"
+  intl:
+    dependency: transitive
+    description:
+      name: intl
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.16.0"
   matcher:
     dependency: transitive
     description:
@@ -103,14 +115,14 @@ packages:
     source: hosted
     version: "1.1.7"
   oktoast:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: oktoast
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.2.0"
   package_info:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: package_info
       url: "https://pub.flutter-io.cn"
@@ -137,6 +149,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.4.0"
+  provider:
+    dependency: "direct main"
+    description:
+      name: provider
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.1.0+1"
   quiver:
     dependency: transitive
     description:
@@ -145,7 +164,7 @@ packages:
     source: hosted
     version: "2.0.5"
   share:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: share
       url: "https://pub.flutter-io.cn"
@@ -213,7 +232,7 @@ packages:
     source: hosted
     version: "2.0.8"
   webview_flutter:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: webview_flutter
       url: "https://pub.flutter-io.cn"

@@ -20,8 +20,9 @@ class MainActivity : FlutterActivity() {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 window.statusBarColor = Color.TRANSPARENT
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                val now = window.decorView.systemUiVisibility
-                var systemUi = now or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                var now = window.decorView.systemUiVisibility
+                var systemUi = now
+//                var systemUi = now or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     systemUi = systemUi or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 }

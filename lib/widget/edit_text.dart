@@ -141,7 +141,8 @@ class EditText extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
         border: Border.all(
-            color: borderColor ?? Theme.of(context).hintColor, width: borderWidth ?? 0),
+            color: borderColor ?? Theme.of(context).hintColor,
+            width: borderWidth ?? 0),
         // 边色与边宽度-可控件一边圆角大小
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(
@@ -168,7 +169,7 @@ class EditText extends StatelessWidget {
       ),
       child: TextField(
         textAlign: textAlign ?? TextAlign.left,
-        cursorColor: textColor,
+        cursorColor: textColor ?? Theme.of(context).cursorColor,
         obscureText: obscureText,
         controller: controller,
         keyboardType: keyboardType,

@@ -155,10 +155,12 @@ class _HomePageState extends State<HomePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.language),
+            tooltip: S.of(context).choiceLanguage,
             onPressed: _changeLanguage,
           ),
           IconButton(
             icon: Icon(Icons.color_lens),
+            tooltip: S.of(context).choiceTheme,
             onPressed: _changeColor,
           ),
         ],

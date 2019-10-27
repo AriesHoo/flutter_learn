@@ -58,7 +58,7 @@ class ThemeModel with ChangeNotifier {
     );
 
     themeData = themeData.copyWith(
-      brightness: brightness,
+//      brightness: brightness,
       accentColor: accentColor,
       cupertinoOverrideTheme: CupertinoThemeData(
         primaryColor: themeColor,
@@ -67,6 +67,9 @@ class ThemeModel with ChangeNotifier {
       appBarTheme: themeData.appBarTheme.copyWith(elevation: 0),
       splashColor: themeColor.withAlpha(50),
       hintColor: themeData.hintColor.withAlpha(90),
+      iconTheme: IconThemeData(
+        color: Colors.white,
+      ),
       errorColor: Colors.red,
       cursorColor: accentColor,
       textTheme: themeData.textTheme.copyWith(

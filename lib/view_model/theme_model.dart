@@ -16,7 +16,7 @@ class ThemeModel with ChangeNotifier {
   ];
 
   ///字体列表
-  static const fontValueList = ['system', 'StarCandy', 'RunningHand'];
+  static const fontValueList = ['system', 'StarCandy'];
 
   /// 当前主题颜色
   static MaterialColor _themeColor = Colors.blue;
@@ -25,7 +25,7 @@ class ThemeModel with ChangeNotifier {
   bool _userDarkMode = false;
 
   /// 当前字体索引
-  static int _fontIndex = 1;
+  static int _fontIndex = 0;
 
   int get fontIndex => _fontIndex;
 
@@ -141,8 +141,6 @@ class ThemeModel with ChangeNotifier {
         return S.of(context).autoBySystem;
       case 1:
         return S.of(context).starCandy;
-      case 2:
-        return S.of(context).runningHand;
       default:
         return '';
     }

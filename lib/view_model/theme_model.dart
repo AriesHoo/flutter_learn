@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/manager/resource_manager.dart';
+import 'package:flutter_learn/generated/i18n.dart';
 
 ///主题管理
 class ThemeModel with ChangeNotifier {
+  ///字体列表
+  static const fontValueList = ['system', 'StarCandy', 'RunningHand'];
   static const kThemeColorIndex = 'kThemeColorIndex';
 
   /// 当前主题颜色
@@ -15,9 +17,23 @@ class ThemeModel with ChangeNotifier {
   bool _userDarkMode = false;
 
   /// 当前字体索引
-  int _fontIndex;
+  static int _fontIndex = 1;
 
   int get fontIndex => _fontIndex;
+
+  /// 切换字体
+  switchFont(int index) {
+    _fontIndex = index;
+    switchTheme();
+  }
+
+  static String fontFamily() {
+    return fontValueList[_fontIndex];
+  }
+
+   String fontFamilyIndex({int index}) {
+    return fontValueList[index ?? _fontIndex];
+  }
 
   /// 切换指定色彩
   ///
@@ -56,6 +72,9 @@ class ThemeModel with ChangeNotifier {
 
       ///输入框光标
       cursorColor: accentColor,
+
+      ///字体
+      fontFamily: fontValueList[_fontIndex],
     );
 
     themeData = themeData.copyWith(
@@ -71,9 +90,15 @@ class ThemeModel with ChangeNotifier {
             color: _themeColor,
             fontSize: 18,
             fontWeight: FontWeight.w500,
+
+            ///字体
+            fontFamily: fontValueList[_fontIndex],
           ),
         ),
         iconTheme: IconThemeData(color: _themeColor),
+      ),
+      iconTheme: themeData.iconTheme.copyWith(
+        color: _themeColor,
       ),
       splashColor: themeColor.withAlpha(50),
       hintColor: themeData.hintColor.withAlpha(90),
@@ -95,5 +120,22 @@ class ThemeModel with ChangeNotifier {
   /// 数据持久化到shared preferences
   saveTheme2Storage(bool userDarkMode, MaterialColor themeColor) async {
     var index = Colors.primaries.indexOf(themeColor);
+  }
+
+
+
+
+  /// 根据索引获取字体名称,这里牵涉到国际化
+  static String fontName(index, context) {
+    switch (index) {
+      case 0:
+        return S.of(context).autoBySystem;
+      case 1:
+        return S.of(context).starCandy;
+      case 2:
+        return S.of(context).runningHand;
+      default:
+        return '';
+    }
   }
 }

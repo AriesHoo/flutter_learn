@@ -51,6 +51,14 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  #  字体
+  fonts:
+    - family: RunningHand #http://font.chinaz.com/180412325770.htm#down
+      fonts:
+        - asset: assets/fonts/RunningHand.ttf
+    - family: StarCandy #http://font.chinaz.com/180608028380.htm#down
+      fonts:
+        - asset: assets/fonts/StarCandy.ttf
   assets:
     - assets/image/start/
   # To add assets to your application, add an assets section, like this:

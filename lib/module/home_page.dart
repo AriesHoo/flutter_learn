@@ -65,87 +65,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  ///切换语言
-  Future<void> _changeLanguage() async {
-    int i = await showDialog<int>(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            title: Text(S.of(context).choiceLanguage),
-            children: <Widget>[
-              SimpleDialogOption(
-                onPressed: () {
-                  // 返回1
-                  Navigator.pop(context, 0);
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6),
-                  child: Text(S.of(context).autoBySystem),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  // 返回1
-                  Navigator.pop(context, 1);
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6),
-                  child: Text(S.of(context).chinese),
-                ),
-              ),
-              SimpleDialogOption(
-                onPressed: () {
-                  // 返回2
-                  Navigator.pop(context, 2);
-                },
-                child: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 6),
-                  child: Text(S.of(context).english),
-                ),
-              ),
-            ],
-          );
-        });
-
-    if (i != null) {
-      var model = Provider.of<LocaleModel>(context);
-      model.switchLocale(i);
-    }
-  }
-
-  ///切换主题色
-  _changeColor() {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text(S.of(context).choiceTheme),
-            content: Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: <Widget>[
-                ...Colors.primaries.map((color) {
-                  return Material(
-                    color: color,
-                    child: InkWell(
-                      onTap: () {
-                        var model = Provider.of<ThemeModel>(context);
-                        model.switchTheme(color: color);
-                        Navigator.of(context).pop();
-                      },
-                      child: Container(
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ],
-            ),
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,21 +73,31 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.language),
-            tooltip: S.of(context).choiceLanguage,
-            onPressed: _changeLanguage,
-          ),
-          IconButton(
-            icon: Icon(Icons.color_lens),
-            tooltip: S.of(context).choiceTheme,
-            onPressed: _changeColor,
+            icon: ClipRRect(
+              borderRadius: BorderRadius.circular(32),
+              child: FadeInImage.assetNetwork(
+                width: 32,
+                placeholder: "images/ic_device_image_default.png",
+                image:
+                    "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
+                fit: BoxFit.cover,
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pushNamed(RouteName.webView,
+                  arguments: WebViewModel.getModel("Aries Hoo's jian shu",
+                      "https://www.jianshu.com/u/a229eee96115"));
+            },
           ),
         ],
       ),
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            ChoiceFontWidget(),
+            ChoiceLanguageWidget(),
+            ChoiceThemeWidget(),
             _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
             _getButtonWidget(
                 S.of(context).webViewPage,
@@ -178,6 +107,207 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+///字体选择
+class ChoiceFontWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).cardColor,
+      child: ExpansionTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(S.of(context).choiceFont),
+            Text(
+              ThemeModel.fontName(
+                  Provider.of<ThemeModel>(context).fontIndex, context),
+              style: Theme.of(context).textTheme.caption,
+            )
+          ],
+        ),
+        leading: Icon(
+          Icons.font_download,
+          color: Theme.of(context).iconTheme.color,
+        ),
+        children: <Widget>[
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: ThemeModel.fontValueList.length,
+              itemBuilder: (context, index) {
+                var model = Provider.of<ThemeModel>(context);
+                return RadioListTile(
+                  value: index,
+                  onChanged: (index) {
+                    model.switchFont(index);
+                  },
+                  groupValue: model.fontIndex,
+                  title: Text(
+                    ThemeModel.fontName(index, context),
+                    style: TextStyle(
+                        fontFamily: model.fontFamilyIndex(index: index)),
+                  ),
+                );
+              })
+        ],
+      ),
+    );
+  }
+}
+
+///系统语言选择
+class ChoiceLanguageWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).cardColor,
+      child: ExpansionTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              S.of(context).choiceLanguage,
+              style: TextStyle(),
+            ),
+            Text(
+              LocaleModel.localeName(
+                  Provider.of<LocaleModel>(context).localeIndex, context),
+              style: Theme.of(context).textTheme.caption,
+            )
+          ],
+        ),
+        leading: Icon(
+          Icons.public,
+          color: Theme.of(context).iconTheme.color,
+        ),
+        children: <Widget>[
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: LocaleModel.localeValueList.length,
+              itemBuilder: (context, index) {
+                var model = Provider.of<LocaleModel>(context);
+                return RadioListTile(
+                  value: index,
+                  onChanged: (index) {
+                    model.switchLocale(index);
+                  },
+                  groupValue: model.localeIndex,
+                  title: Text(LocaleModel.localeName(index, context)),
+                );
+              })
+        ],
+      ),
+    );
+  }
+}
+
+///颜色主题选择
+class ChoiceTheme extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).cardColor,
+      child: ExpansionTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              S.of(context).choiceLanguage,
+              style: TextStyle(),
+            ),
+            Text(
+              LocaleModel.localeName(
+                  Provider.of<LocaleModel>(context).localeIndex, context),
+              style: Theme.of(context).textTheme.caption,
+            )
+          ],
+        ),
+        leading: Icon(
+          Icons.public,
+          color: Theme.of(context).iconTheme.color,
+        ),
+        children: <Widget>[
+          ListView.builder(
+              shrinkWrap: true,
+              itemCount: LocaleModel.localeValueList.length,
+              itemBuilder: (context, index) {
+                var model = Provider.of<LocaleModel>(context);
+                return RadioListTile(
+                  value: index,
+                  onChanged: (index) {
+                    model.switchLocale(index);
+                  },
+                  groupValue: model.localeIndex,
+                  title: Text(LocaleModel.localeName(index, context)),
+                );
+              })
+        ],
+      ),
+    );
+  }
+}
+
+///选择主题
+class ChoiceThemeWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        color: Theme.of(context).cardColor,
+        child: ExpansionTile(
+          title: Text(S.of(context).choiceTheme),
+          leading: Icon(
+            Icons.color_lens,
+            color: Theme.of(context).accentColor,
+          ),
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                children: <Widget>[
+                  ...Colors.primaries.map((color) {
+                    return Material(
+                      color: color,
+                      child: InkWell(
+                        onTap: () {
+                          var model = Provider.of<ThemeModel>(context);
+                          model.switchTheme(color: color);
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ],
+              ),
+            ),
+          ],
+        ));
+  }
+}
+
+///抽屉栏
+class HomeDrawer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Image.network(
+            "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
+            width: 100.0,
+          ),
+        ],
+      ),
     );
   }
 }

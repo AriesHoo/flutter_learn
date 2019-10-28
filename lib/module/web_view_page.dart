@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/share_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -115,6 +116,7 @@ class _WebViewPageState extends State<WebViewPage> {
               valueListenable: _canGoBack,
               builder: (context, value, child) => IconButton(
                   icon: Icon(Icons.arrow_back_ios),
+                  tooltip: S.of(context).back,
                   onPressed: !value
                       ? null
                       : () {
@@ -126,6 +128,7 @@ class _WebViewPageState extends State<WebViewPage> {
               valueListenable: _canGoForward,
               builder: (context, value, child) => IconButton(
                   icon: Icon(Icons.arrow_forward_ios),
+                  tooltip: S.of(context).forward,
                   onPressed: !value
                       ? null
                       : () {
@@ -135,12 +138,14 @@ class _WebViewPageState extends State<WebViewPage> {
             ),
             IconButton(
               icon: Icon(Icons.refresh),
+              tooltip: S.of(context).refresh,
               onPressed: () {
                 _webViewController.reload();
               },
             ),
             IconButton(
               icon: Icon(Icons.share),
+              tooltip: S.of(context).share,
               onPressed: () {
                 ShareUtil.share(
                     widget.model.title + _currentUrl ?? widget.model.url);

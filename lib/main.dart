@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_learn/manager/provider_manager.dart';
 import 'package:flutter_learn/module/home_page.dart';
 import 'package:flutter_learn/router_manger.dart';
@@ -49,6 +48,7 @@ class MyApp extends StatelessWidget {
               locale: localeModel.locale,
               localizationsDelegates: const [
                 S.delegate,
+                DefaultCupertinoLocalizations.delegate, // 目前只包含英文
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate
               ],

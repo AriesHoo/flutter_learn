@@ -23,11 +23,14 @@ class S implements WidgetsLocalizations {
 
   String get appName => "Flutter Learn";
   String get autoBySystem => "Auto";
+  String get back => "back";
   String get chinese => "简体中文";
+  String get choiceFont => "Choice font";
   String get choiceLanguage => "Choice language";
   String get choiceTheme => "Choice theme";
   String get english => "English";
   String get forgetPassword => "forget password";
+  String get forward => "forward";
   String get hintEnterAccount => "your account number";
   String get hintEnterCode => "verification code";
   String get hintEnterPassword => "your password";
@@ -35,6 +38,7 @@ class S implements WidgetsLocalizations {
   String get login => "Login";
   String get loginPage => "Login Page";
   String get nextStep => "next step";
+  String get refresh => "refresh";
   String get register => "register";
   String get registerAgreement => "registration agreement";
   String get registerAnd => "and";
@@ -42,6 +46,9 @@ class S implements WidgetsLocalizations {
   String get registerIRead => "I have read";
   String get registerPrivacyProtocol => "privacy protocol";
   String get registerRightNow => "register now";
+  String get runningHand => "Tensentype running hand";
+  String get share => "share";
+  String get starCandy => "Star candy";
   String get weChatLogin => "login by we chat";
   String get webViewPage => "Web Page";
 }
@@ -57,25 +64,43 @@ class $zh_CN extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
-  String get hintEnterPhone => "请输入手机号";
-  @override
   String get forgetPassword => "忘记密码";
   @override
-  String get appName => "学Flutter";
+  String get back => "后退";
   @override
-  String get choiceTheme => "选择主题";
+  String get runningHand => "腾祥伯当行书";
   @override
   String get login => "登录";
-  @override
-  String get registerAnd => "和";
-  @override
-  String get chinese => "简体中文";
-  @override
-  String get registerAgreement => "注册协议";
   @override
   String get webViewPage => "网页";
   @override
   String get registerHadAccount => "已有账号？";
+  @override
+  String get starCandy => "繁星糖果";
+  @override
+  String get share => "分享";
+  @override
+  String get loginPage => "登录页";
+  @override
+  String get autoBySystem => "跟随系统";
+  @override
+  String get registerIRead => "我已阅读";
+  @override
+  String get hintEnterPhone => "请输入手机号";
+  @override
+  String get appName => "学Flutter";
+  @override
+  String get forward => "前进";
+  @override
+  String get choiceTheme => "选择主题";
+  @override
+  String get refresh => "刷新";
+  @override
+  String get registerAnd => "和";
+  @override
+  String get registerAgreement => "注册协议";
+  @override
+  String get choiceFont => "选择字体";
   @override
   String get hintEnterAccount => "请输入账号";
   @override
@@ -83,19 +108,11 @@ class $zh_CN extends S {
   @override
   String get hintEnterCode => "请输入验证码";
   @override
-  String get english => "English";
-  @override
   String get nextStep => "下一步";
-  @override
-  String get loginPage => "登录页";
-  @override
-  String get autoBySystem => "跟随系统";
   @override
   String get choiceLanguage => "选择语言";
   @override
   String get weChatLogin => "微信登录";
-  @override
-  String get registerIRead => "我已阅读";
   @override
   String get registerPrivacyProtocol => "隐私协议";
   @override

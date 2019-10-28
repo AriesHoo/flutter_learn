@@ -7,8 +7,6 @@ import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/share_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../util/toast_util.dart';
-
 ///加载网页
 class WebViewPage extends StatefulWidget {
   const WebViewPage(

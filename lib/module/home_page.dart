@@ -134,8 +134,8 @@ class _HomePageState extends State<HomePage> {
                         Navigator.of(context).pop();
                       },
                       child: Container(
-                        width: 40,
-                        height: 40,
+                        width: 50,
+                        height: 50,
                       ),
                     ),
                   );

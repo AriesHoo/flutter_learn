@@ -45,22 +45,36 @@ class ThemeModel with ChangeNotifier {
     var isDark = platformDarkMode || _userDarkMode;
     var accentColor = isDark ? themeColor[700] : _themeColor;
     var themeData = ThemeData(
-      primarySwatch: themeColor,
+      primarySwatch: accentColor,
       accentColor: accentColor,
+      primaryColor: accentColor,
+
+      ///类苹果跟随滑动返回-修改后返回箭头及主标题iOS风格
       platform: TargetPlatform.iOS,
       errorColor: Colors.red,
       toggleableActiveColor: accentColor,
+
+      ///输入框光标
       cursorColor: accentColor,
-      iconTheme: IconThemeData(
-        color: Colors.white,
-      ),
     );
 
     themeData = themeData.copyWith(
       cupertinoOverrideTheme: CupertinoThemeData(
         primaryColor: themeColor,
       ),
-      appBarTheme: themeData.appBarTheme.copyWith(elevation: 0),
+      appBarTheme: themeData.appBarTheme.copyWith(
+        brightness: Brightness.light,
+        color: Colors.white,
+        elevation: 0,
+        textTheme: TextTheme(
+          title: TextStyle(
+            color: _themeColor,
+            fontSize: 18,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        iconTheme: IconThemeData(color: _themeColor),
+      ),
       splashColor: themeColor.withAlpha(50),
       hintColor: themeData.hintColor.withAlpha(90),
       textTheme: themeData.textTheme.copyWith(
@@ -68,7 +82,6 @@ class ThemeModel with ChangeNotifier {
               .copyWith(textBaseline: TextBaseline.alphabetic)),
       textSelectionColor: accentColor.withAlpha(60),
       textSelectionHandleColor: accentColor.withAlpha(60),
-
       chipTheme: themeData.chipTheme.copyWith(
         pressElevation: 0,
         padding: EdgeInsets.symmetric(horizontal: 10),

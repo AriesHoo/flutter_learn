@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
 
   RaisedButton _getButtonWidget(String text, String router, Object arguments) {
     return RaisedButton(
-      elevation: 10,
+      elevation: 1,
       color: Theme.of(context).accentColor,
       child: Text(
         text,
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(32),
               child: FadeInImage.assetNetwork(
                 width: 32,
-                placeholder: "images/ic_device_image_default.png",
+                placeholder: "assets/image/start/ic_launcher_round.png",
                 image:
                     "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
                 fit: BoxFit.cover,

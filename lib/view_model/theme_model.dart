@@ -44,42 +44,31 @@ class ThemeModel with ChangeNotifier {
     var themeColor = _themeColor;
     var isDark = platformDarkMode || _userDarkMode;
     var accentColor = isDark ? themeColor[700] : _themeColor;
-    Brightness brightness = isDark ? Brightness.dark : Brightness.light;
     var themeData = ThemeData(
-      brightness: brightness,
-      // 主题颜色属于亮色系还是属于暗色系(eg:dark时,AppBarTitle文字及状态栏文字的颜色为白色,反之为黑色)
-      // 这里设置为dark目的是,不管App是明or暗,都将appBar的字体颜色的默认值设为白色.
-      // 再AnnotatedRegion<SystemUiOverlayStyle>的方式,调整响应的状态栏颜色
-      primaryColorBrightness: Brightness.dark,
-      accentColorBrightness: Brightness.dark,
       primarySwatch: themeColor,
       accentColor: accentColor,
       platform: TargetPlatform.iOS,
+      errorColor: Colors.red,
+      toggleableActiveColor: accentColor,
+      cursorColor: accentColor,
+      iconTheme: IconThemeData(
+        color: Colors.white,
+      ),
     );
 
     themeData = themeData.copyWith(
-//      brightness: brightness,
-      accentColor: accentColor,
       cupertinoOverrideTheme: CupertinoThemeData(
         primaryColor: themeColor,
-        brightness: brightness,
       ),
       appBarTheme: themeData.appBarTheme.copyWith(elevation: 0),
       splashColor: themeColor.withAlpha(50),
       hintColor: themeData.hintColor.withAlpha(90),
-      iconTheme: IconThemeData(
-        color: Colors.white,
-      ),
-      errorColor: Colors.red,
-      cursorColor: accentColor,
       textTheme: themeData.textTheme.copyWith(
-
-          /// 解决中文hint不居中的问题 https://github.com/flutter/flutter/issues/40248
           subhead: themeData.textTheme.subhead
               .copyWith(textBaseline: TextBaseline.alphabetic)),
       textSelectionColor: accentColor.withAlpha(60),
       textSelectionHandleColor: accentColor.withAlpha(60),
-      toggleableActiveColor: accentColor,
+
       chipTheme: themeData.chipTheme.copyWith(
         pressElevation: 0,
         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -87,7 +76,6 @@ class ThemeModel with ChangeNotifier {
         backgroundColor: themeData.chipTheme.backgroundColor.withOpacity(0.1),
       ),
     );
-//    return AppTheme.themeData();
     return themeData;
   }
 

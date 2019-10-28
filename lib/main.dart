@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_learn/manager/provider_manager.dart';
 import 'package:flutter_learn/module/home_page.dart';
-import 'package:flutter_learn/manager/resource_manager.dart';
 import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
@@ -22,15 +21,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-      statusBarBrightness:
-          Platform.isAndroid ? Brightness.dark : Brightness.light,
-      systemNavigationBarColor: Colors.white,
-      systemNavigationBarDividerColor: Colors.grey,
-      systemNavigationBarIconBrightness: Brightness.dark,
-    ));
+//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//      statusBarColor: Colors.transparent,
+//      statusBarIconBrightness: Brightness.dark,
+//      statusBarBrightness:
+//          Platform.isAndroid ? Brightness.dark : Brightness.light,
+//      systemNavigationBarColor: Colors.white,
+//      systemNavigationBarDividerColor: Colors.grey,
+//      systemNavigationBarIconBrightness: Brightness.dark,
+//    ));
 
     ///Toast配置
     return OKToast(

@@ -1,6 +1,11 @@
 {
   "appName": "学Flutter",
   "choiceTheme": "选择主题",
+  "blue": "推特蓝",
+  "green": "微信绿",
+  "orange": "滴滴橙",
+  "red": "网易红",
+  "purple": "夸克紫",
   "choiceFont": "选择字体",
   "starCandy": "繁星糖果",
   "runningHand": "腾祥伯当行书",

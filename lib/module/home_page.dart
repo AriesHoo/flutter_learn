@@ -92,19 +92,22 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            ChoiceFontWidget(),
-            ChoiceLanguageWidget(),
-            ChoiceThemeWidget(),
-            _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
-            _getButtonWidget(
-                S.of(context).webViewPage,
-                RouteName.webView,
-                WebViewModel.getModel(
-                    "Aries Hoo's Github", "https://github.com/AriesHoo")),
-          ],
+        primary: true,
+        child: ListTileTheme(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              ChoiceFontWidget(),
+              ChoiceLanguageWidget(),
+              ChoiceThemeWidget(),
+              _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
+              _getButtonWidget(
+                  S.of(context).webViewPage,
+                  RouteName.webView,
+                  WebViewModel.getModel(
+                      "Aries Hoo's Github", "https://github.com/AriesHoo")),
+            ],
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
@@ -123,8 +126,7 @@ class ChoiceFontWidget extends StatelessWidget {
           children: <Widget>[
             Text(S.of(context).choiceFont),
             Text(
-              ThemeModel.fontName(
-                  Provider.of<ThemeModel>(context).fontIndex, context),
+              ThemeModel.fontName(context),
               style: Theme.of(context).textTheme.caption,
             )
           ],
@@ -146,9 +148,10 @@ class ChoiceFontWidget extends StatelessWidget {
                   },
                   groupValue: model.fontIndex,
                   title: Text(
-                    ThemeModel.fontName(index, context),
+                    ThemeModel.fontName(context, i: index),
                     style: TextStyle(
-                        fontFamily: model.fontFamilyIndex(index: index)),
+                      fontFamily: model.fontFamilyIndex(index: index),
+                    ),
                   ),
                 );
               })
@@ -205,7 +208,7 @@ class ChoiceLanguageWidget extends StatelessWidget {
 }
 
 ///颜色主题选择
-class ChoiceTheme extends StatelessWidget {
+class ChoiceThemeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -215,80 +218,41 @@ class ChoiceTheme extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             Text(
-              S.of(context).choiceLanguage,
-              style: TextStyle(),
+              S.of(context).choiceTheme,
             ),
             Text(
-              LocaleModel.localeName(
-                  Provider.of<LocaleModel>(context).localeIndex, context),
+              ThemeModel.themeName(context),
               style: Theme.of(context).textTheme.caption,
             )
           ],
         ),
         leading: Icon(
-          Icons.public,
+          Icons.color_lens,
           color: Theme.of(context).iconTheme.color,
         ),
         children: <Widget>[
           ListView.builder(
               shrinkWrap: true,
-              itemCount: LocaleModel.localeValueList.length,
+              itemCount: ThemeModel.themeValueList.length,
               itemBuilder: (context, index) {
-                var model = Provider.of<LocaleModel>(context);
+                var model = Provider.of<ThemeModel>(context);
                 return RadioListTile(
                   value: index,
                   onChanged: (index) {
-                    model.switchLocale(index);
+                    model.switchTheme(themeIndex: index);
                   },
-                  groupValue: model.localeIndex,
-                  title: Text(LocaleModel.localeName(index, context)),
+                  groupValue: model.themeIndex,
+                  title: Text(
+                    ThemeModel.themeName(context, i: index),
+                    style: TextStyle(
+                      color: ThemeModel.themeValueList[index],
+                    ),
+                  ),
                 );
               })
         ],
       ),
     );
-  }
-}
-
-///选择主题
-class ChoiceThemeWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-        color: Theme.of(context).cardColor,
-        child: ExpansionTile(
-          title: Text(S.of(context).choiceTheme),
-          leading: Icon(
-            Icons.color_lens,
-            color: Theme.of(context).accentColor,
-          ),
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children: <Widget>[
-                  ...Colors.primaries.map((color) {
-                    return Material(
-                      color: color,
-                      child: InkWell(
-                        onTap: () {
-                          var model = Provider.of<ThemeModel>(context);
-                          model.switchTheme(color: color);
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
-            ),
-          ],
-        ));
   }
 }
 

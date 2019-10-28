@@ -9,10 +9,10 @@ class ToastUtil {
     showToast(
       text,
       textStyle: TextStyle(
-        fontSize: 15,
+        fontSize: 16,
         fontFamily: ThemeModel.fontFamily(),
       ),
-      backgroundColor: Colors.black.withOpacity(0.7),
+      backgroundColor: ThemeModel.themeColor.withOpacity(0.8),
       dismissOtherToast: true,
       radius: 6,
       textPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),

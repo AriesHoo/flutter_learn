@@ -1,6 +1,11 @@
 {
   "appName": "Flutter Learn",
   "choiceTheme": "Choice theme",
+  "blue": "Twitter blue",
+  "green": "WeChat green",
+  "orange": "Didi orange",
+  "red": "Wangyi red",
+  "purple": "Kuake purple",
   "choiceFont": "Choice font",
   "starCandy": "Star candy",
   "runningHand": "Tensentype running hand",

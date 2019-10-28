@@ -24,6 +24,7 @@ class S implements WidgetsLocalizations {
   String get appName => "Flutter Learn";
   String get autoBySystem => "Auto";
   String get back => "back";
+  String get blue => "Twitter blue";
   String get chinese => "简体中文";
   String get choiceFont => "Choice font";
   String get choiceLanguage => "Choice language";
@@ -31,6 +32,7 @@ class S implements WidgetsLocalizations {
   String get english => "English";
   String get forgetPassword => "forget password";
   String get forward => "forward";
+  String get green => "WeChat green";
   String get hintEnterAccount => "your account number";
   String get hintEnterCode => "verification code";
   String get hintEnterPassword => "your password";
@@ -38,6 +40,9 @@ class S implements WidgetsLocalizations {
   String get login => "Login";
   String get loginPage => "Login Page";
   String get nextStep => "next step";
+  String get orange => "Didi orange";
+  String get purple => "Kuake purple";
+  String get red => "Wangyi red";
   String get refresh => "refresh";
   String get register => "register";
   String get registerAgreement => "registration agreement";
@@ -72,6 +77,8 @@ class $zh_CN extends S {
   @override
   String get login => "登录";
   @override
+  String get red => "网易红";
+  @override
   String get webViewPage => "网页";
   @override
   String get registerHadAccount => "已有账号？";
@@ -88,6 +95,8 @@ class $zh_CN extends S {
   @override
   String get hintEnterPhone => "请输入手机号";
   @override
+  String get green => "微信绿";
+  @override
   String get appName => "学Flutter";
   @override
   String get forward => "前进";
@@ -98,7 +107,11 @@ class $zh_CN extends S {
   @override
   String get registerAnd => "和";
   @override
+  String get orange => "滴滴橙";
+  @override
   String get registerAgreement => "注册协议";
+  @override
+  String get blue => "推特蓝";
   @override
   String get choiceFont => "选择字体";
   @override
@@ -107,6 +120,8 @@ class $zh_CN extends S {
   String get hintEnterPassword => "请输入密码";
   @override
   String get hintEnterCode => "请输入验证码";
+  @override
+  String get purple => "夸克紫";
   @override
   String get nextStep => "下一步";
   @override

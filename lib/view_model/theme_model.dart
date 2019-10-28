@@ -6,12 +6,20 @@ import 'package:flutter_learn/generated/i18n.dart';
 
 ///主题管理
 class ThemeModel with ChangeNotifier {
+  ///颜色主题列表
+  static const List<MaterialColor> themeValueList = <MaterialColor>[
+    Colors.blue,
+    Colors.green,
+    Colors.orange,
+    Colors.red,
+    Colors.purple
+  ];
+
   ///字体列表
   static const fontValueList = ['system', 'StarCandy', 'RunningHand'];
-  static const kThemeColorIndex = 'kThemeColorIndex';
 
   /// 当前主题颜色
-  MaterialColor _themeColor = Colors.blue;
+  static MaterialColor _themeColor = Colors.blue;
 
   /// 用户选择的明暗模式
   bool _userDarkMode = false;
@@ -20,6 +28,13 @@ class ThemeModel with ChangeNotifier {
   static int _fontIndex = 1;
 
   int get fontIndex => _fontIndex;
+
+  /// 当前主题索引
+  static int _themeIndex = 0;
+
+  int get themeIndex => _themeIndex;
+
+  static MaterialColor get themeColor => _themeColor;
 
   /// 切换字体
   switchFont(int index) {
@@ -31,15 +46,16 @@ class ThemeModel with ChangeNotifier {
     return fontValueList[_fontIndex];
   }
 
-   String fontFamilyIndex({int index}) {
+  String fontFamilyIndex({int index}) {
     return fontValueList[index ?? _fontIndex];
   }
 
   /// 切换指定色彩
   ///
   /// 没有传[brightness]就不改变brightness,color同理
-  void switchTheme({bool userDarkMode, MaterialColor color}) {
-    _themeColor = color ?? _themeColor;
+  void switchTheme({bool userDarkMode, int themeIndex, MaterialColor color}) {
+    _themeIndex = themeIndex ?? _themeIndex;
+    _themeColor = color ?? themeValueList[_themeIndex];
     notifyListeners();
   }
 
@@ -50,7 +66,7 @@ class ThemeModel with ChangeNotifier {
     int colorIndex = Random().nextInt(Colors.primaries.length - 1);
     switchTheme(
       userDarkMode: Random().nextBool(),
-      color: Colors.primaries[colorIndex],
+      themeIndex: colorIndex,
     );
   }
 
@@ -117,16 +133,9 @@ class ThemeModel with ChangeNotifier {
     return themeData;
   }
 
-  /// 数据持久化到shared preferences
-  saveTheme2Storage(bool userDarkMode, MaterialColor themeColor) async {
-    var index = Colors.primaries.indexOf(themeColor);
-  }
-
-
-
-
   /// 根据索引获取字体名称,这里牵涉到国际化
-  static String fontName(index, context) {
+  static String fontName(context, {int i}) {
+    int index = i ?? _fontIndex;
     switch (index) {
       case 0:
         return S.of(context).autoBySystem;
@@ -134,6 +143,25 @@ class ThemeModel with ChangeNotifier {
         return S.of(context).starCandy;
       case 2:
         return S.of(context).runningHand;
+      default:
+        return '';
+    }
+  }
+
+  /// 根据索引获取颜色名称,这里牵涉到国际化
+  static String themeName(context, {int i}) {
+    int index = i ?? _themeIndex;
+    switch (index) {
+      case 0:
+        return S.of(context).blue;
+      case 1:
+        return S.of(context).green;
+      case 2:
+        return S.of(context).orange;
+      case 3:
+        return S.of(context).red;
+      case 4:
+        return S.of(context).purple;
       default:
         return '';
     }

@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/router_manger.dart';
@@ -130,6 +131,12 @@ class _HomePageState extends State<HomePage> {
 
               ///选择颜色主题
               ChoiceThemeWidget(),
+              FlatButton(
+                child: Text("top250"),
+                onPressed: (){
+                  MovieAPi.getMovie("v2/movie/top250");
+                },
+              ),
               _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
               _getButtonWidget(
                   S.of(context).webViewPage,

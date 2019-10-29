@@ -141,7 +141,7 @@ class ThemeModel with ChangeNotifier {
       textSelectionHandleColor: accentColor.withAlpha(60),
       chipTheme: themeData.chipTheme.copyWith(
         pressElevation: 0,
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        padding: EdgeInsets.symmetric(horizontal: 6),
         labelStyle: themeData.textTheme.caption,
         backgroundColor: themeData.chipTheme.backgroundColor.withOpacity(0.1),
       ),

@@ -37,6 +37,10 @@ dependencies:
   webview_flutter: ^0.3.15+1
   #  分享
   share: ^0.6.3+1
+  #  网络请求相关dio
+  dio: ^3.0.1
+  dio_cookie_manager: ^1.0.0
+  cookie_jar: ^1.0.0
 
 dev_dependencies:
   flutter_test:

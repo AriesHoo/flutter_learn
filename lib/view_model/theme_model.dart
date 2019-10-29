@@ -84,7 +84,7 @@ class ThemeModel with ChangeNotifier {
   themeData({bool platformDarkMode: false}) {
     var isDark = platformDarkMode || _userDarkMode;
     var themeColor = _themeColor;
-    var accentColor = isDark ? themeColor[700] : _themeColor;
+    var accentColor = isDark ? themeColor[600] : _themeColor;
     Brightness brightness = isDark ? Brightness.dark : Brightness.light;
     var themeData = ThemeData(
       brightness: brightness,
@@ -112,7 +112,7 @@ class ThemeModel with ChangeNotifier {
       ),
       appBarTheme: themeData.appBarTheme.copyWith(
         brightness: _userDarkMode ? Brightness.dark : Brightness.light,
-        color: _userDarkMode ? Colors.black12 : Colors.white,
+        color: _userDarkMode ? Colors.grey[900] : Colors.white,
         elevation: 0,
         textTheme: TextTheme(
           title: TextStyle(
@@ -134,8 +134,9 @@ class ThemeModel with ChangeNotifier {
       splashColor: themeColor.withAlpha(50),
       hintColor: themeData.hintColor.withAlpha(90),
       textTheme: themeData.textTheme.copyWith(
-          subhead: themeData.textTheme.subhead
-              .copyWith(textBaseline: TextBaseline.alphabetic)),
+          subhead: themeData.textTheme.subhead.copyWith(
+        textBaseline: TextBaseline.alphabetic,
+      )),
       textSelectionColor: accentColor.withAlpha(60),
       textSelectionHandleColor: accentColor.withAlpha(60),
       chipTheme: themeData.chipTheme.copyWith(

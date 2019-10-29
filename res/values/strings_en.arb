@@ -13,6 +13,7 @@
   "autoBySystem": "Auto",
   "chinese": "简体中文",
   "english": "English",
+  "darkMode": "Dark Mode",
   "back": "back",
   "forward": "forward",
   "refresh": "refresh",

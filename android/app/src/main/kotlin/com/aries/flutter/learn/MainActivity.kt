@@ -9,6 +9,7 @@ import io.flutter.app.FlutterActivity
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity : FlutterActivity() {
+    var themeSet = false;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GeneratedPluginRegistrant.registerWith(this)
@@ -16,7 +17,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (!themeSet && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 window.statusBarColor = Color.TRANSPARENT
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -28,6 +29,7 @@ class MainActivity : FlutterActivity() {
                 }
                 window.decorView.systemUiVisibility = systemUi
             }
+//            themeSet = true;
         }
     }
 }

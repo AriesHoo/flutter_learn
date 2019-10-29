@@ -1,7 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Color _iconCorlor;
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +71,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    _iconCorlor = Theme.of(context).iconTheme.color;
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).appName),
@@ -97,8 +102,33 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+              ///选择字体
               ChoiceFontWidget(),
+
+              ///选择语言
               ChoiceLanguageWidget(),
+
+              ///黑夜模式
+              Material(
+                color: Theme.of(context).cardColor,
+                child: ListTile(
+                  title: Text(S.of(context).darkMode),
+                  leading: Icon(
+                    Theme.of(context).brightness == Brightness.light
+                        ? Icons.brightness_5
+                        : Icons.brightness_2,
+                    color: _iconCorlor,
+                  ),
+                  trailing: CupertinoSwitch(
+                    activeColor: Theme.of(context).accentColor,
+                    value: Theme.of(context).brightness == Brightness.dark,
+                    onChanged: (bool checked) => switchDarkMode(context),
+                  ),
+                  onTap: () => switchDarkMode(context),
+                ),
+              ),
+
+              ///选择颜色主题
               ChoiceThemeWidget(),
               _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
               _getButtonWidget(
@@ -111,6 +141,15 @@ class _HomePageState extends State<HomePage> {
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void switchDarkMode(BuildContext context) {
+    if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
+      ToastUtil.show("检测到系统为暗黑模式,已为你自动切换");
+    } else {
+      Provider.of<ThemeModel>(context).switchTheme(
+          userDarkMode: Theme.of(context).brightness == Brightness.light);
+    }
   }
 }
 
@@ -214,6 +253,7 @@ class ChoiceThemeWidget extends StatelessWidget {
     return Material(
       color: Theme.of(context).cardColor,
       child: ExpansionTile(
+        initiallyExpanded: false,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[

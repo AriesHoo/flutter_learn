@@ -29,6 +29,7 @@ class S implements WidgetsLocalizations {
   String get choiceFont => "Choice font";
   String get choiceLanguage => "Choice language";
   String get choiceTheme => "Choice theme";
+  String get darkMode => "Dark Mode";
   String get english => "English";
   String get forgetPassword => "forget password";
   String get forward => "forward";
@@ -124,6 +125,8 @@ class $zh_CN extends S {
   String get purple => "夸克紫";
   @override
   String get nextStep => "下一步";
+  @override
+  String get darkMode => "黑夜模式";
   @override
   String get choiceLanguage => "选择语言";
   @override

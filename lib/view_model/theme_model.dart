@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 
 ///主题管理
@@ -54,8 +56,15 @@ class ThemeModel with ChangeNotifier {
   ///
   /// 没有传[brightness]就不改变brightness,color同理
   void switchTheme({bool userDarkMode, int themeIndex, MaterialColor color}) {
+    _userDarkMode = userDarkMode ?? _userDarkMode;
     _themeIndex = themeIndex ?? _themeIndex;
     _themeColor = color ?? themeValueList[_themeIndex];
+    debugPrint("_userDarkMode" +
+        _userDarkMode.toString() +
+        "_themeIndex:" +
+        _themeIndex.toString() +
+        "_themeColor:" +
+        _themeColor.toString());
     notifyListeners();
   }
 
@@ -73,11 +82,15 @@ class ThemeModel with ChangeNotifier {
   /// 根据主题 明暗 和 颜色 生成对应的主题
   /// [dark]系统的Dark Mode
   themeData({bool platformDarkMode: false}) {
-    var themeColor = _themeColor;
     var isDark = platformDarkMode || _userDarkMode;
+    var themeColor = _themeColor;
     var accentColor = isDark ? themeColor[700] : _themeColor;
+    Brightness brightness = isDark ? Brightness.dark : Brightness.light;
     var themeData = ThemeData(
-      primarySwatch: accentColor,
+      brightness: brightness,
+      primaryColorBrightness: Brightness.dark,
+      accentColorBrightness: Brightness.dark,
+      primarySwatch: themeColor,
       accentColor: accentColor,
       primaryColor: accentColor,
 
@@ -98,12 +111,12 @@ class ThemeModel with ChangeNotifier {
         primaryColor: themeColor,
       ),
       appBarTheme: themeData.appBarTheme.copyWith(
-        brightness: Brightness.light,
-        color: Colors.white,
+        brightness: _userDarkMode ? Brightness.dark : Brightness.light,
+        color: _userDarkMode ? Colors.black12 : Colors.white,
         elevation: 0,
         textTheme: TextTheme(
           title: TextStyle(
-            color: _themeColor,
+            color: isDark ? Colors.white : accentColor,
             fontSize: 18,
             fontWeight: FontWeight.w500,
 
@@ -111,10 +124,12 @@ class ThemeModel with ChangeNotifier {
             fontFamily: fontValueList[_fontIndex],
           ),
         ),
-        iconTheme: IconThemeData(color: _themeColor),
+        iconTheme: IconThemeData(
+          color: isDark ? Colors.white : accentColor,
+        ),
       ),
       iconTheme: themeData.iconTheme.copyWith(
-        color: _themeColor,
+        color: accentColor,
       ),
       splashColor: themeColor.withAlpha(50),
       hintColor: themeData.hintColor.withAlpha(90),

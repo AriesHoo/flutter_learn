@@ -43,14 +43,14 @@ dependencies:
   cookie_jar: ^1.0.0
 
   #json解析
-  json_annotation: ^2.4.0
+#  json_annotation: ^2.4.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   #  json解析
-  build_runner: ^1.6.2
-  json_serializable: ^3.1.0
+#  build_runner: ^1.6.2
+#  json_serializable: ^3.1.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

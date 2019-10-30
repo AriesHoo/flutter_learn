@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_learn/model/movie_model.dart';
 
 class MovieAPi {
+
+
   static Future getMovie(String url) async {
     Dio dio = Dio();
     dio.options.baseUrl = "https://api.douban.com/";
@@ -17,7 +19,7 @@ class MovieAPi {
     });
     debugPrint(response.data.toString());
     var model = MovieModel.fromJson(response.data);
-    debugPrint(model.toString());
+    debugPrint("MovieModel"+model.toJson().toString());
     return model;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/toast_util.dart';
 import 'package:oktoast/oktoast.dart';
 
 ///豆瓣电影页面-tab页
@@ -28,6 +29,7 @@ class _MoviePageState extends State<MoviePage>
     super.initState();
     controller =
         TabController(initialIndex: 0, length: labels.length, vsync: this);
+    debugPrint("_MoviePageState_initState");
   }
 
   @override
@@ -114,7 +116,7 @@ class MovieItemPage extends StatefulWidget {
   _MovieItemPageState createState() => _MovieItemPageState();
 }
 
-class _MovieItemPageState extends State<MovieItemPage> {
+class _MovieItemPageState extends State<MovieItemPage> with AutomaticKeepAliveClientMixin{
   int _start = 0;
   int _pageSize = 10;
   List<Subjects> _listData;
@@ -124,6 +126,7 @@ class _MovieItemPageState extends State<MovieItemPage> {
     super.initState();
     getMovie();
   }
+
 
   getMovie() async {
     List<Subjects> list =
@@ -158,6 +161,10 @@ class _MovieItemPageState extends State<MovieItemPage> {
             },
           );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 ///电影适配器

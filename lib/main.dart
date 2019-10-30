@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_learn/manager/provider_manager.dart';
 import 'package:flutter_learn/module/home_page.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:oktoast/oktoast.dart';
@@ -20,16 +22,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-//    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//      statusBarColor: Colors.transparent,
-//      statusBarIconBrightness: Brightness.dark,
-//      statusBarBrightness:
-//          Platform.isAndroid ? Brightness.dark : Brightness.light,
-//      systemNavigationBarColor: Colors.white,
-//      systemNavigationBarDividerColor: Colors.grey,
-//      systemNavigationBarIconBrightness: Brightness.dark,
-//    ));
-
+    debugPrint("mainPage");
     ///Toast配置
     return OKToast(
       ///Provider
@@ -48,7 +41,9 @@ class MyApp extends StatelessWidget {
               locale: localeModel.locale,
               localizationsDelegates: const [
                 S.delegate,
-                DefaultCupertinoLocalizations.delegate, // 目前只包含英文
+
+                ///不配置该项会在EditField点击弹出复制粘贴工具时抛异常 The getter 'cutButtonLabel' was called on null.
+                GlobalCupertinoLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,
                 GlobalWidgetsLocalizations.delegate
               ],

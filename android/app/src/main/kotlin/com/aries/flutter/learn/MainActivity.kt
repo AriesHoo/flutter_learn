@@ -19,7 +19,7 @@ class MainActivity : FlutterActivity() {
         super.onWindowFocusChanged(hasFocus)
         if (!themeSet && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                window.statusBarColor = Color.TRANSPARENT
+//                window.statusBarColor = Color.TRANSPARENT
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
                 var now = window.decorView.systemUiVisibility
 //                var systemUi = now
@@ -29,7 +29,7 @@ class MainActivity : FlutterActivity() {
                 }
                 window.decorView.systemUiVisibility = systemUi
             }
-//            themeSet = true;
+            themeSet = true;
         }
     }
 }

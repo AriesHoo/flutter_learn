@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_learn/model/movie_model.dart';
+import 'package:flutter_learn/module/movie/model/movie_model.dart';
 
 class MovieAPi {
 
@@ -18,8 +18,8 @@ class MovieAPi {
       "count": 10,
     });
     debugPrint(response.data.toString());
-    var model = MovieModel.fromJson(response.data);
+    MovieModel model = MovieModel.fromJson(response.data);
     debugPrint("MovieModel"+model.toJson().toString());
-    return model;
+    return model.subjects;
   }
 }

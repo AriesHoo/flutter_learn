@@ -34,5 +34,6 @@
   "registerAgreement": "registration agreement",
   "registerAnd": "and",
   "registerPrivacyProtocol": "privacy protocol",
-  "registerHadAccount": "had account?"
+  "registerHadAccount": "had account?",
+  "moviePage": "Movie Page"
 }

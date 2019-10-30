@@ -32,5 +32,6 @@
   "registerAgreement": "注册协议",
   "registerAnd": "和",
   "registerPrivacyProtocol": "隐私协议",
-  "registerHadAccount": "已有账号？"
+  "registerHadAccount": "已有账号？",
+  "moviePage": "豆瓣电影"
 }

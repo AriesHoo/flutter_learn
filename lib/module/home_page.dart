@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                         : Icons.brightness_2,
                     color: _iconCorlor,
                   ),
-                  trailing: CupertinoSwitch(
+                  trailing: Switch(
                     activeColor: Theme.of(context).accentColor,
                     value: Theme.of(context).brightness == Brightness.dark,
                     onChanged: (bool checked) => switchDarkMode(context),
@@ -131,12 +131,7 @@ class _HomePageState extends State<HomePage> {
 
               ///选择颜色主题
               ChoiceThemeWidget(),
-              FlatButton(
-                child: Text("top250"),
-                onPressed: (){
-                  MovieAPi.getMovie("v2/movie/top250");
-                },
-              ),
+              _getButtonWidget(S.of(context).moviePage, RouteName.movie, null),
               _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
               _getButtonWidget(
                   S.of(context).webViewPage,

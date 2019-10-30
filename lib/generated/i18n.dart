@@ -40,6 +40,7 @@ class S implements WidgetsLocalizations {
   String get hintEnterPhone => "your phone number";
   String get login => "Login";
   String get loginPage => "Login Page";
+  String get moviePage => "Movie Page";
   String get nextStep => "next step";
   String get orange => "Didi orange";
   String get purple => "Kuake purple";
@@ -83,6 +84,8 @@ class $zh_CN extends S {
   String get webViewPage => "网页";
   @override
   String get registerHadAccount => "已有账号？";
+  @override
+  String get moviePage => "豆瓣电影";
   @override
   String get starCandy => "繁星糖果";
   @override

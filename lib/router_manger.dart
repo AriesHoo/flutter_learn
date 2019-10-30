@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
+import 'package:flutter_learn/module/movie/movie_page.dart';
 import 'package:flutter_learn/module/start/login_page.dart';
 import 'package:flutter_learn/module/start/register_first_step_page.dart';
 import 'package:flutter_learn/module/web_view_page.dart';
@@ -10,6 +11,7 @@ class RouteName {
   static const String login = 'login';
   static const String register_first_step = 'register_first_step';
   static const String register = 'register';
+  static const String movie = 'movie';
 }
 
 ///用于main MaterialApp配置 onGenerateRoute
@@ -20,8 +22,7 @@ class Router {
         var model = settings.arguments as WebViewModel;
         return MaterialPageRoute(builder: (_) => WebViewPage(model));
       case RouteName.login:
-        return MaterialPageRoute(
-            fullscreenDialog: false, builder: (_) => LoginPage());
+        return MaterialPageRoute(builder: (_) => LoginPage());
       case RouteName.register_first_step:
         var isRegister = settings.arguments as bool;
         return MaterialPageRoute(
@@ -29,6 +30,8 @@ class Router {
             builder: (_) => RegisterFirstStepPage(
                   isRegister: isRegister,
                 ));
+      case RouteName.movie:
+        return MaterialPageRoute(builder: (_) => MoviePage());
       default:
         return MaterialPageRoute(
             builder: (_) => Scaffold(

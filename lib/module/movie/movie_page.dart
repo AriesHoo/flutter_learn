@@ -116,7 +116,8 @@ class MovieItemPage extends StatefulWidget {
   _MovieItemPageState createState() => _MovieItemPageState();
 }
 
-class _MovieItemPageState extends State<MovieItemPage> with AutomaticKeepAliveClientMixin{
+class _MovieItemPageState extends State<MovieItemPage>
+    with AutomaticKeepAliveClientMixin {
   int _start = 0;
   int _pageSize = 10;
   List<Subjects> _listData;
@@ -126,7 +127,6 @@ class _MovieItemPageState extends State<MovieItemPage> with AutomaticKeepAliveCl
     super.initState();
     getMovie();
   }
-
 
   getMovie() async {
     List<Subjects> list =
@@ -157,7 +157,15 @@ class _MovieItemPageState extends State<MovieItemPage> with AutomaticKeepAliveCl
             shrinkWrap: true,
             itemCount: _listData.length,
             itemBuilder: (context, index) {
-              return MovieAdapter(_listData[index]);
+              return Container(
+                child: MovieAdapter(_listData[index]),
+                decoration: BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(
+                  width: 0.3,
+                  color: Theme.of(context).hintColor.withOpacity(0.2),
+                ))),
+              );
             },
           );
   }
@@ -180,6 +188,7 @@ class MovieAdapter extends StatelessWidget {
         onTap: () => Navigator.of(context).pushNamed(RouteName.webView,
             arguments: WebViewModel.getModel(item.title,
                 item.alt + "?apikey=0b2bdeda43b5688921839c8ecb20399b")),
+        contentPadding: EdgeInsets.all(12),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,

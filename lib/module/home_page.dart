@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
                         : Icons.brightness_2,
                     color: _iconCorlor,
                   ),
-                  trailing: Switch(
+                  trailing: CupertinoSwitch(
                     activeColor: Theme.of(context).accentColor,
                     value: Theme.of(context).brightness == Brightness.dark,
                     onChanged: (bool checked) => switchDarkMode(context),

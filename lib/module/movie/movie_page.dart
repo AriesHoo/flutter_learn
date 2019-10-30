@@ -1,4 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/data/movie_api.dart';
+import 'package:flutter_learn/model/web_view_model.dart';
+import 'package:flutter_learn/module/movie/model/movie_model.dart';
+import 'package:flutter_learn/router_manger.dart';
+import 'package:oktoast/oktoast.dart';
 
 ///豆瓣电影页面-tab页
 class MoviePage extends StatefulWidget {
@@ -109,8 +115,106 @@ class MovieItemPage extends StatefulWidget {
 }
 
 class _MovieItemPageState extends State<MovieItemPage> {
+  int _start = 0;
+  int _pageSize = 10;
+  List<Subjects> _listData;
+
+  @override
+  void initState() {
+    super.initState();
+    getMovie();
+  }
+
+  getMovie() async {
+    List<Subjects> list =
+        await MovieAPi.getMovie(widget.url, _start * _pageSize, _pageSize);
+    if (list.length > 0) {
+      if (_listData == null) {
+        _listData = list;
+      } else {
+        _listData.addAll(list);
+      }
+      setState(() {
+        _start++;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Text(widget.url);
+    debugPrint("_start:" + (_start == 0).toString());
+    return _start == 0
+        ? Center(
+            child: CupertinoActivityIndicator(
+              animating: true,
+              radius: 16,
+            ),
+          )
+        : ListView.builder(
+            shrinkWrap: true,
+            itemCount: _listData.length,
+            itemBuilder: (context, index) {
+              return MovieAdapter(_listData[index]);
+            },
+          );
+  }
+}
+
+///电影适配器
+class MovieAdapter extends StatelessWidget {
+  const MovieAdapter(this.item, {Key key}) : super(key: key);
+  final Subjects item;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Theme.of(context).cardColor,
+      child: ListTile(
+        onTap: () => Navigator.of(context).pushNamed(RouteName.webView,
+            arguments: WebViewModel.getModel(item.title,
+                item.alt + "?apikey=0b2bdeda43b5688921839c8ecb20399b")),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            ///图片
+            ClipRRect(
+              borderRadius: BorderRadius.circular(2),
+              child: FadeInImage.assetNetwork(
+                width: 72,
+                height: 100,
+                placeholder: "assets/image/start/ic_launcher.png",
+                image: item.images.large,
+                fit: BoxFit.fill,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 12),
+            ),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                ///右边文字描述
+                Text(
+                  item.title,
+                  style: Theme.of(context).textTheme.subtitle.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                Text(
+                  "题材:" + item.getGenres(),
+                  style: Theme.of(context).textTheme.caption,
+                ),
+                Text(
+                  "年份:" + item.year,
+                  style: Theme.of(context).textTheme.caption,
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

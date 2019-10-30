@@ -127,6 +127,21 @@ class Subjects {
   String get id => _id;
   set id(String id) => _id = id;
 
+  String getGenres() {
+    String genre = "";
+    if (genres != null && genres.length > 0) {
+      for (String item in genres) {
+        if (genre.isEmpty) {
+          genre = item;
+        } else {
+          genre += "&" + item;
+        }
+      }
+    }
+    return genre;
+  }
+
+
   Subjects.fromJson(Map<String, dynamic> json) {
     _rating =
     json['rating'] != null ? new Rating.fromJson(json['rating']) : null;
@@ -170,11 +185,11 @@ class Subjects {
 
 class Rating {
   int _max;
-  double _average;
+  dynamic _average;
   String _stars;
   int _min;
 
-  Rating({int max, double average, String stars, int min}) {
+  Rating({int max, dynamic average, String stars, int min}) {
     this._max = max;
     this._average = average;
     this._stars = stars;
@@ -183,8 +198,8 @@ class Rating {
 
   int get max => _max;
   set max(int max) => _max = max;
-  double get average => _average;
-  set average(double average) => _average = average;
+  dynamic get average => _average;
+  set average(dynamic average) => _average = average;
   String get stars => _stars;
   set stars(String stars) => _stars = stars;
   int get min => _min;

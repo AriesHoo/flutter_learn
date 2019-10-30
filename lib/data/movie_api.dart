@@ -2,10 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 
+///豆瓣电影api
 class MovieAPi {
 
-
-  static Future getMovie(String url) async {
+  ///获取电影数据列表
+  static Future getMovie(String url, int star, int count) async {
     Dio dio = Dio();
     dio.options.baseUrl = "https://api.douban.com/";
     dio.options.connectTimeout = 5000;
@@ -14,12 +15,12 @@ class MovieAPi {
     dio.options.headers = {'user-agent': 'dio', 'from': "dio"};
     Response response = await dio.get<Map>(url, queryParameters: {
       "apikey": "0b2bdeda43b5688921839c8ecb20399b",
-      "start": 0,
-      "count": 10,
+      "start": star,
+      "count": count,
     });
     debugPrint(response.data.toString());
     MovieModel model = MovieModel.fromJson(response.data);
-    debugPrint("MovieModel"+model.toJson().toString());
+    debugPrint("MovieModel" + model.toJson().toString());
     return model.subjects;
   }
 }

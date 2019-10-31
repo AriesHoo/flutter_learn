@@ -10,6 +10,7 @@ import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
               locale: localeModel.locale,
               localizationsDelegates: const [
                 S.delegate,
-
+                ///下拉刷新库国际化配置
+                RefreshLocalizations.delegate,
                 ///不配置该项会在EditField点击弹出复制粘贴工具时抛异常 The getter 'cutButtonLabel' was called on null.
                 GlobalCupertinoLocalizations.delegate,
                 GlobalMaterialLocalizations.delegate,

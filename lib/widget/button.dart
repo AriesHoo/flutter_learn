@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_learn/view_model/theme_model.dart';
 
 class Button extends StatelessWidget {
   Button(this.text,
@@ -81,7 +82,7 @@ class Button extends StatelessWidget {
             onPressed: onPressed,
             textColor: textColor ?? Colors.white,
             disabledTextColor: disabledTextColor ?? Colors.white,
-            color: color ?? Theme.of(context).accentColor,
+            color: color ?? ThemeModel.darkMode?Theme.of(context).appBarTheme.color:Theme.of(context).accentColor,
             disabledColor: disabledColor ?? Theme.of(context).disabledColor,
             highlightColor: highlightColor,
             shape: borderRadius >= height / 2

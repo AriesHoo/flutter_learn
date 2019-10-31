@@ -157,6 +157,12 @@ class ThemeModel with ChangeNotifier {
         labelStyle: themeData.textTheme.caption,
         backgroundColor: themeData.chipTheme.backgroundColor.withOpacity(0.1),
       ),
+
+      ///TabBar样式设置
+      tabBarTheme: themeData.tabBarTheme.copyWith(
+        ///标签内边距
+        labelPadding: EdgeInsets.symmetric(horizontal: 10),
+      ),
     );
     return themeData;
   }

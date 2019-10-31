@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/data/movie_api.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 ///豆瓣电影页面-tab页
 class MoviePage extends StatefulWidget {
@@ -40,6 +42,7 @@ class _MoviePageState extends State<MoviePage>
           ///包裹一层去掉水波纹效果-如果保留可不设置该属性
           title: Container(
             height: double.infinity,
+
             ///添加该属性去掉Tab按下水波纹效果
             color: Theme.of(context).appBarTheme.color,
             child: TabBarWidget(
@@ -98,14 +101,12 @@ class TabBarWidget extends StatelessWidget {
       labelColor:
           ThemeModel.darkMode ? Colors.white : Theme.of(context).accentColor,
       labelStyle: TextStyle(
-        fontSize: 16,
         fontWeight: FontWeight.w600,
       ),
 
       ///未选择label颜色
       unselectedLabelColor: Theme.of(context).hintColor,
       unselectedLabelStyle: TextStyle(
-        fontSize: 16,
         fontWeight: FontWeight.normal,
       ),
     );
@@ -124,9 +125,21 @@ class MovieItemPage extends StatefulWidget {
 
 class _MovieItemPageState extends State<MovieItemPage>
     with AutomaticKeepAliveClientMixin {
-  int _start = 0;
+  ///起始页码
+  int _page = 0;
+
+  ///每页数量
   int _pageSize = 10;
+
+  ///返回列表数量
   List<Subjects> _listData;
+
+  ///下拉刷新controller
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  ///是否可加载更多
+  bool _canLoadMore = true;
 
   @override
   void initState() {
@@ -136,7 +149,10 @@ class _MovieItemPageState extends State<MovieItemPage>
 
   getMovie() async {
     List<Subjects> list =
-        await MovieAPi.getMovie(widget.url, _start * _pageSize, _pageSize);
+        await MovieAPi.getMovie(widget.url, _page * _pageSize, _pageSize);
+    if (_page == 0 && _listData != null) {
+      _listData.clear();
+    }
     if (list.length > 0) {
       if (_listData == null) {
         _listData = list;
@@ -144,33 +160,95 @@ class _MovieItemPageState extends State<MovieItemPage>
         _listData.addAll(list);
       }
       setState(() {
-        _start++;
+        _canLoadMore = list.length >= _pageSize;
+        _page++;
       });
     }
+  }
+
+  void _onRefresh() async {
+    _page = 0;
+    getMovie();
+  }
+
+  void _onLoading() async {
+    getMovie();
   }
 
   @override
   // ignore: must_call_super
   Widget build(BuildContext context) {
-    debugPrint("_start:" + (_start == 0).toString());
-    return _start == 0
+    debugPrint("_page:" +
+        (_page == 0).toString() +
+        ";canLoadMore:" +
+        _canLoadMore.toString());
+    _refreshController.loadComplete();
+    _refreshController.refreshCompleted();
+    if (_canLoadMore) {
+      _refreshController.resetNoData();
+    } else {
+      _refreshController.loadNoData();
+    }
+    return _page == 0
 
         ///loading状态
         ? Center(
-            child: CupertinoActivityIndicator(
-              animating: true,
-              radius: 12,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Container(
+                color: Theme.of(context).hintColor.withOpacity(0.5),
+                padding: EdgeInsets.all(20),
+                child: CupertinoActivityIndicator(
+                  radius: 12,
+                ),
+              ),
             ),
           )
 
         ///加载列表
-        : ListView.builder(
-            ///内容适配
-            shrinkWrap: true,
-            itemCount: _listData.length,
-            itemBuilder: (context, index) {
-              return MovieAdapter(_listData[index]);
-            },
+//        : ListView.builder(
+//            ///内容适配
+//            shrinkWrap: true,
+//            itemCount: _listData.length,
+//            itemBuilder: (context, index) {
+//              return MovieAdapter(_listData[index]);
+//            },
+//          );
+        : SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            header: MaterialClassicHeader(),
+            footer: CustomFooter(
+              builder: (BuildContext context, LoadStatus mode) {
+                Widget body;
+                if (mode == LoadStatus.idle) {
+                  body = Text("pull up load");
+                } else if (mode == LoadStatus.loading) {
+                  body = CupertinoActivityIndicator();
+                } else if (mode == LoadStatus.failed) {
+                  body = Text("Load Failed!Click retry!");
+                } else if (mode == LoadStatus.canLoading) {
+                  body = Text("release to load more");
+                } else {
+                  body = Text("No more Data");
+                }
+                return Container(
+                  height: 55.0,
+                  child: Center(child: body),
+                );
+              },
+            ),
+            controller: _refreshController,
+            onRefresh: _onRefresh,
+            onLoading: _onLoading,
+            child: ListView.builder(
+              ///内容适配
+              shrinkWrap: true,
+              itemCount: _listData.length,
+              itemBuilder: (context, index) {
+                return MovieAdapter(_listData[index]);
+              },
+            ),
           );
   }
 
@@ -214,12 +292,22 @@ class MovieAdapter extends StatelessWidget {
               ///左边图片
               ClipRRect(
                 borderRadius: BorderRadius.circular(2),
-                child: FadeInImage.assetNetwork(
+                child: CachedNetworkImage(
                   width: 72,
                   height: 100,
-                  placeholder: "assets/image/start/ic_launcher.png",
-                  image: item.images.large,
                   fit: BoxFit.fill,
+                  imageUrl: item.images.small,
+                  placeholder: (context, url) => Center(
+                    child: Container(
+                      color: Theme.of(context).hintColor.withOpacity(0.1),
+                      width: 72,
+                      height: 100,
+                      child: CupertinoActivityIndicator(
+                        radius: 12,
+                      ),
+                    ),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
                 ),
               ),
 

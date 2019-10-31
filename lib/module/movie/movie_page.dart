@@ -130,7 +130,7 @@ class _MovieItemPageState extends State<MovieItemPage>
   int _page = 0;
 
   ///每页数量
-  int _pageSize = 10;
+  int _pageSize = 20;
 
   ///返回列表数量
   List<Subjects> _listData;

@@ -24,7 +24,9 @@ class ThemeModel with ChangeNotifier {
   static MaterialColor _themeColor = Colors.blue;
 
   /// 用户选择的明暗模式
-  bool _userDarkMode = false;
+  static bool _userDarkMode = false;
+
+  static bool get darkMode => _userDarkMode;
 
   /// 当前字体索引
   static int _fontIndex = 0;
@@ -69,9 +71,11 @@ class ThemeModel with ChangeNotifier {
         "_themeColor:" +
         _themeColor.toString());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: _userDarkMode?Colors.transparent:colorWhiteTheme,
-      systemNavigationBarColor: _userDarkMode?Colors.grey[900]:colorWhiteTheme,
-      systemNavigationBarIconBrightness: _userDarkMode?Brightness.light:Brightness.dark,
+      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
+      systemNavigationBarColor:
+          _userDarkMode ? Colors.grey[900] : colorWhiteTheme,
+      systemNavigationBarIconBrightness:
+          _userDarkMode ? Brightness.light : Brightness.dark,
     ));
     notifyListeners();
   }

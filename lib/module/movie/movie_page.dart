@@ -4,8 +4,7 @@ import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 import 'package:flutter_learn/router_manger.dart';
-import 'package:flutter_learn/util/toast_util.dart';
-import 'package:oktoast/oktoast.dart';
+import 'package:flutter_learn/view_model/theme_model.dart';
 
 ///豆瓣电影页面-tab页
 class MoviePage extends StatefulWidget {
@@ -34,22 +33,19 @@ class _MoviePageState extends State<MoviePage>
 
   @override
   Widget build(BuildContext context) {
-//    return Container(
-//      child: RaisedButton(
-//        child: Text("豆瓣top250"),
-//        onPressed: () async {
-//          List<Subjects> list = await MovieAPi.getMovie("v2/movie/top250");
-//          ToastUtil.show("model:" + list.length.toString());
-//        },
-//      ),
-//    );
     return DefaultTabController(
       length: labels.length,
       child: Scaffold(
         appBar: AppBar(
-          title: TabBarWidget(
-            controller: controller,
-            labels: labels,
+          ///包裹一层去掉水波纹效果-如果保留可不设置该属性
+          title: Container(
+            height: double.infinity,
+            ///添加该属性去掉Tab按下水波纹效果
+            color: Theme.of(context).appBarTheme.color,
+            child: TabBarWidget(
+              controller: controller,
+              labels: labels,
+            ),
           ),
         ),
         body: TabBarView(
@@ -89,19 +85,29 @@ class TabBarWidget extends StatelessWidget {
       isScrollable: true,
 
       ///指示器高度
-      indicatorWeight: 4,
+      indicatorWeight: 2.5,
 
       ///指示器y颜色
-      indicatorColor: Theme.of(context).accentColor,
+      indicatorColor:
+          ThemeModel.darkMode ? Colors.white : Theme.of(context).accentColor,
 
       ///指示器样式-根据label宽度
       indicatorSize: TabBarIndicatorSize.label,
 
       ///选中label颜色
-      labelColor: Theme.of(context).accentColor,
+      labelColor:
+          ThemeModel.darkMode ? Colors.white : Theme.of(context).accentColor,
+      labelStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+      ),
 
       ///未选择label颜色
       unselectedLabelColor: Theme.of(context).hintColor,
+      unselectedLabelStyle: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.normal,
+      ),
     );
   }
 }
@@ -144,34 +150,31 @@ class _MovieItemPageState extends State<MovieItemPage>
   }
 
   @override
+  // ignore: must_call_super
   Widget build(BuildContext context) {
     debugPrint("_start:" + (_start == 0).toString());
     return _start == 0
+
+        ///loading状态
         ? Center(
             child: CupertinoActivityIndicator(
               animating: true,
-              radius: 16,
+              radius: 12,
             ),
           )
+
+        ///加载列表
         : ListView.builder(
+            ///内容适配
             shrinkWrap: true,
             itemCount: _listData.length,
             itemBuilder: (context, index) {
-              return Container(
-                child: MovieAdapter(_listData[index]),
-                decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                  width: 0.3,
-                  color: Theme.of(context).hintColor.withOpacity(0.2),
-                ))),
-              );
+              return MovieAdapter(_listData[index]);
             },
           );
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 
@@ -182,53 +185,80 @@ class MovieAdapter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ///外层Material包裹以便按下水波纹效果
     return Material(
       color: Theme.of(context).cardColor,
-      child: ListTile(
+      child: InkWell(
         onTap: () => Navigator.of(context).pushNamed(RouteName.webView,
             arguments: WebViewModel.getModel(item.title,
                 item.alt + "?apikey=0b2bdeda43b5688921839c8ecb20399b")),
-        contentPadding: EdgeInsets.all(12),
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            ///图片
-            ClipRRect(
-              borderRadius: BorderRadius.circular(2),
-              child: FadeInImage.assetNetwork(
-                width: 72,
-                height: 100,
-                placeholder: "assets/image/start/ic_launcher.png",
-                image: item.images.large,
-                fit: BoxFit.fill,
+
+        ///Container 包裹以便设置padding margin及边界线
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          margin: EdgeInsets.symmetric(horizontal: 12),
+
+          ///分割线
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                width: 0.5,
+                color: Theme.of(context).hintColor.withOpacity(0.2),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 12),
-            ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              ///左边图片
+              ClipRRect(
+                borderRadius: BorderRadius.circular(2),
+                child: FadeInImage.assetNetwork(
+                  width: 72,
+                  height: 100,
+                  placeholder: "assets/image/start/ic_launcher.png",
+                  image: item.images.large,
+                  fit: BoxFit.fill,
+                ),
+              ),
 
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                ///右边文字描述
-                Text(
-                  item.title,
-                  style: Theme.of(context).textTheme.subtitle.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+              ///右边文字
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ///右边文字描述
+                    Text(
+                      item.title,
+                      style: Theme.of(context).textTheme.subtitle.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                    Text(
+                      "题材:" + item.getGenres(),
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    Text(
+                      "年份:" + item.year,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    Text(
+                      "导演:" + item.getDirectors(),
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                    Text(
+                      "主演:" + item.getCasts(),
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
                 ),
-                Text(
-                  "题材:" + item.getGenres(),
-                  style: Theme.of(context).textTheme.caption,
-                ),
-                Text(
-                  "年份:" + item.year,
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
-            )
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

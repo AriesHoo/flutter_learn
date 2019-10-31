@@ -5,6 +5,7 @@ import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -141,6 +142,9 @@ class _MovieItemPageState extends State<MovieItemPage>
   ///是否可加载更多
   bool _canLoadMore = true;
 
+  ///是否加载成功
+  bool _loadSucceed = true;
+
   @override
   void initState() {
     super.initState();
@@ -148,20 +152,28 @@ class _MovieItemPageState extends State<MovieItemPage>
   }
 
   getMovie() async {
-    List<Subjects> list =
-        await MovieAPi.getMovie(widget.url, _page * _pageSize, _pageSize);
-    if (_page == 0 && _listData != null) {
-      _listData.clear();
-    }
-    if (list.length > 0) {
-      if (_listData == null) {
-        _listData = list;
-      } else {
-        _listData.addAll(list);
+    try {
+      List<Subjects> list =
+          await MovieAPi.getMovie(widget.url, _page * _pageSize, _pageSize);
+      if (_page == 0 && _listData != null) {
+        _listData.clear();
       }
+      if (list.length > 0) {
+        if (_listData == null) {
+          _listData = list;
+        } else {
+          _listData.addAll(list);
+        }
+        setState(() {
+          _loadSucceed = true;
+          _canLoadMore = list.length >= _pageSize;
+          _page++;
+        });
+      }
+    } catch (e, s) {
+      ToastUtil.show(e.toString());
       setState(() {
-        _canLoadMore = list.length >= _pageSize;
-        _page++;
+        _loadSucceed = false;
       });
     }
   }
@@ -217,7 +229,7 @@ class _MovieItemPageState extends State<MovieItemPage>
         : SmartRefresher(
             enablePullDown: true,
             enablePullUp: true,
-            header: MaterialClassicHeader(),
+            header: WaterDropHeader(),
             footer: CustomFooter(
               builder: (BuildContext context, LoadStatus mode) {
                 Widget body;
@@ -246,7 +258,10 @@ class _MovieItemPageState extends State<MovieItemPage>
               shrinkWrap: true,
               itemCount: _listData.length,
               itemBuilder: (context, index) {
-                return MovieAdapter(_listData[index]);
+                return MovieAdapter(
+                  _listData[index],
+                  _page * _pageSize + index,
+                );
               },
             ),
           );
@@ -258,8 +273,11 @@ class _MovieItemPageState extends State<MovieItemPage>
 
 ///电影适配器
 class MovieAdapter extends StatelessWidget {
-  const MovieAdapter(this.item, {Key key}) : super(key: key);
+  const MovieAdapter(this.item, this.position, {Key key}) : super(key: key);
   final Subjects item;
+  final int position;
+  final double imgWidth = 72;
+  final double imgHeight = 100;
 
   @override
   Widget build(BuildContext context) {
@@ -293,21 +311,28 @@ class MovieAdapter extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(2),
                 child: CachedNetworkImage(
-                  width: 72,
-                  height: 100,
+                  width: imgWidth,
+                  height: imgHeight,
                   fit: BoxFit.fill,
                   imageUrl: item.images.small,
                   placeholder: (context, url) => Center(
                     child: Container(
                       color: Theme.of(context).hintColor.withOpacity(0.1),
-                      width: 72,
-                      height: 100,
+                      width: imgWidth,
+                      height: imgHeight,
                       child: CupertinoActivityIndicator(
                         radius: 12,
                       ),
                     ),
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
+                  errorWidget: (context, url, error) => Center(
+                    child: Container(
+                      color: Theme.of(context).hintColor.withOpacity(0.1),
+                      width: imgWidth,
+                      height: imgHeight,
+                      child: Icon(Icons.error),
+                    ),
+                  ),
                 ),
               ),
 

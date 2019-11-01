@@ -454,20 +454,22 @@ class MovieAdapter extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      "题材:" + item.getGenres(),
+                      S.of(context).movieGenres + item.getGenres(),
                       style: Theme.of(context).textTheme.caption,
                     ),
                     Text(
-                      "年份:" + item.year,
+                      S.of(context).movieYear + item.year,
                       style: Theme.of(context).textTheme.caption,
                     ),
                     Text(
-                      "导演:" + item.getDirectors(S.of(context).movieNobody),
+                      S.of(context).movieDirectors +
+                          item.getDirectors(S.of(context).movieNobody),
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     ),
                     Text(
-                      "主演:" + item.getCasts(S.of(context).movieNobody),
+                      S.of(context).movieActors +
+                          item.getCasts(S.of(context).movieNobody),
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     ),

@@ -43,11 +43,15 @@ class S implements WidgetsLocalizations {
   String get loadNoMore => "No more data";
   String get login => "Login";
   String get loginPage => "Login Page";
+  String get movieActors => "Actors:";
   String get movieComingSoon => "Coming soon";
+  String get movieDirectors => "Directors:";
+  String get movieGenres => "Genres:";
   String get movieInTheaters => "In theaters";
   String get movieNobody => "No one";
   String get moviePage => "Movie Page";
   String get movieTop => "Top 250";
+  String get movieYear => "Year:";
   String get nextStep => "next step";
   String get orange => "Didi orange";
   String get purple => "Kuake purple";
@@ -81,6 +85,8 @@ class $zh_CN extends S {
   String get movieTop => "Top 250";
   @override
   String get forgetPassword => "忘记密码";
+  @override
+  String get movieYear => "年份：";
   @override
   String get back => "后退";
   @override
@@ -116,6 +122,8 @@ class $zh_CN extends S {
   @override
   String get forward => "前进";
   @override
+  String get movieActors => "演员：";
+  @override
   String get loadIdle => "上拉加载更多";
   @override
   String get loadFailed => "加载失败";
@@ -129,6 +137,8 @@ class $zh_CN extends S {
   String get movieNobody => "暂无";
   @override
   String get registerAnd => "和";
+  @override
+  String get movieDirectors => "导演：";
   @override
   String get orange => "滴滴橙";
   @override
@@ -159,6 +169,8 @@ class $zh_CN extends S {
   String get registerRightNow => "立即注册";
   @override
   String get register => "注册";
+  @override
+  String get movieGenres => "题材：";
   @override
   String get loadNoMore => "我也是有底线的";
 }

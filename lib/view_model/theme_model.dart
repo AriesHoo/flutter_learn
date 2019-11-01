@@ -166,7 +166,20 @@ class ThemeModel with ChangeNotifier {
       tabBarTheme: themeData.tabBarTheme.copyWith(
         ///标签内边距
         labelPadding: EdgeInsets.symmetric(horizontal: 8),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.w600,
+          fontSize: 15,
+          ///字体
+          fontFamily: fontValueList[_fontIndex],
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.normal,
+          fontSize: 15,
+          ///字体
+          fontFamily: fontValueList[_fontIndex],
+        ),
       ),
+
       floatingActionButtonTheme: themeData.floatingActionButtonTheme.copyWith(
         backgroundColor: themeAccentColor,
         splashColor: themeColor.withAlpha(50),

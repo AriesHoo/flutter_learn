@@ -107,16 +107,8 @@ class TabBarWidget extends StatelessWidget {
       ///选中label颜色
       labelColor:
           ThemeModel.darkMode ? Colors.white : Theme.of(context).accentColor,
-      labelStyle: TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 15,
-      ),
-
       ///未选择label颜色
       unselectedLabelColor: Theme.of(context).hintColor,
-      unselectedLabelStyle: TextStyle(
-        fontWeight: FontWeight.normal,
-      ),
     );
   }
 }
@@ -376,8 +368,8 @@ class MovieAdapter extends StatelessWidget {
   const MovieAdapter(this.item, this.position, {Key key}) : super(key: key);
   final Subjects item;
   final int position;
-  final double imgWidth = 64;
-  final double imgHeight = 90;
+  final double imgWidth = 72;
+  final double imgHeight = 100;
 
   @override
   Widget build(BuildContext context) {

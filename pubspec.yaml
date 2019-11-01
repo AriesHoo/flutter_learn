@@ -33,7 +33,7 @@ dependencies:
   device_info: ^0.4.1
   #  应用包信息
   package_info: ^0.4.0+9
-  # WebView iOS添加键值对 o.flutter.embedded_views_preview = YES
+  # WebView
   webview_flutter: ^0.3.15+1
   #  分享
   share: ^0.6.3+1

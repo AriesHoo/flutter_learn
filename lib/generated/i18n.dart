@@ -62,7 +62,7 @@ class S implements WidgetsLocalizations {
   String get registerRightNow => "register now";
   String get runningHand => "Tensentype running hand";
   String get share => "share";
-  String get starCandy => "Star candy";
+  String get starCandy => "Starry candy";
   String get weChatLogin => "login by we chat";
   String get webViewPage => "Web Page";
 }

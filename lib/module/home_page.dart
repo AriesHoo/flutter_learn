@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               borderRadius: BorderRadius.circular(32),
               child: FadeInImage.assetNetwork(
                 width: 32,
-                placeholder: "assets/image/start/ic_launcher_round.png",
+                placeholder: "assets/image/start/ic_launcher.png",
                 image:
                     "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
                 fit: BoxFit.cover,

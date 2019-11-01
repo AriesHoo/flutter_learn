@@ -3,6 +3,7 @@ import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/image_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
+import 'package:flutter_learn/widget/radius_edit_text.dart';
 import 'package:flutter_learn/widget/button.dart';
 import 'package:flutter_learn/widget/edit_text.dart';
 
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Image.asset(
               ImageUtil.wrapAssets(
-                  ImageUtil.IMAGE_TYPE_START, "ic_launcher_round.png"),
+                  ImageUtil.IMAGE_TYPE_START, "ic_launcher.png"),
               width: 80,
               height: 80,
             ),

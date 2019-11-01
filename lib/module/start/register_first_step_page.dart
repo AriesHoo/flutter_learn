@@ -47,7 +47,7 @@ class _RegisterFirstStepPageState extends State<RegisterFirstStepPage> {
             ),
             Image.asset(
               ImageUtil.wrapAssets(
-                  ImageUtil.IMAGE_TYPE_START, "ic_launcher_round.png"),
+                  ImageUtil.IMAGE_TYPE_START, "ic_launcher.png"),
               width: 80,
               height: 80,
             ),

@@ -94,6 +94,7 @@ class RadiusContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("radius:"+radius.toString()+";borderWidth:"+borderWidth.toString());
     return Container(
         width: width,
         height: height,

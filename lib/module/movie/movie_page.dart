@@ -310,7 +310,9 @@ class SmartRefresherWidget extends StatelessWidget {
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
-      header: WaterDropMaterialHeader(),
+      header: WaterDropMaterialHeader(
+        backgroundColor: ThemeModel.themeAccentColor,
+      ),
       footer: CustomFooter(
         builder: (BuildContext context, LoadStatus mode) {
           Widget body;

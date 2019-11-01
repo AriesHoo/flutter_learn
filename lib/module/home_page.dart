@@ -58,7 +58,7 @@ class _HomePageState extends State<HomePage> {
   RaisedButton _getButtonWidget(String text, String router, Object arguments) {
     return RaisedButton(
       elevation: 1,
-      color: Theme.of(context).accentColor,
+      color: ThemeModel.themeAccentColor,
       child: Text(
         text,
         style: TextStyle(color: Colors.white),

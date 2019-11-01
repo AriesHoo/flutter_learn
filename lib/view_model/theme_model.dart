@@ -22,6 +22,7 @@ class ThemeModel with ChangeNotifier {
 
   /// 当前主题颜色
   static MaterialColor _themeColor = Colors.blue;
+  static Color _accentColor = _themeColor;
 
   /// 用户选择的明暗模式
   static bool _userDarkMode = false;
@@ -42,6 +43,10 @@ class ThemeModel with ChangeNotifier {
 
   ///白色主题状态栏及导航栏颜色
   Color colorWhiteTheme = Color(0x66000000);
+
+  static Color colorBlackTheme = Colors.grey[900];
+
+  static Color get accentColor => _accentColor;
 
   /// 切换字体
   switchFont(int index) {
@@ -71,9 +76,9 @@ class ThemeModel with ChangeNotifier {
         "_themeColor:" +
         _themeColor.toString());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: _userDarkMode ? Colors.transparent: colorWhiteTheme,
+      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
       systemNavigationBarColor:
-          _userDarkMode ? Colors.grey[900] : colorWhiteTheme,
+          _userDarkMode ? colorBlackTheme : colorWhiteTheme,
     ));
     notifyListeners();
   }
@@ -94,7 +99,7 @@ class ThemeModel with ChangeNotifier {
   themeData({bool platformDarkMode: false}) {
     var isDark = platformDarkMode || _userDarkMode;
     var themeColor = _themeColor;
-    var accentColor = isDark ? themeColor[600] : _themeColor;
+    _accentColor = isDark ? themeColor[600] : _themeColor;
     Brightness brightness = isDark ? Brightness.dark : Brightness.light;
     var themeData = ThemeData(
       brightness: brightness,
@@ -123,7 +128,7 @@ class ThemeModel with ChangeNotifier {
       appBarTheme: themeData.appBarTheme.copyWith(
         ///设置主题决定状态栏icon颜色
 //        brightness: _userDarkMode ? Brightness.dark : Brightness.light,
-        color: _userDarkMode ? Colors.grey[900] : Colors.white,
+        color: _userDarkMode ? colorBlackTheme : Colors.white,
         elevation: 0,
         textTheme: TextTheme(
           title: TextStyle(
@@ -163,11 +168,15 @@ class ThemeModel with ChangeNotifier {
         labelPadding: EdgeInsets.symmetric(horizontal: 10),
       ),
       floatingActionButtonTheme: themeData.floatingActionButtonTheme.copyWith(
+        backgroundColor: themeAccentColor,
         splashColor: themeColor.withAlpha(50),
       ),
     );
     return themeData;
   }
+
+  static Color get themeAccentColor =>
+      _userDarkMode ? colorBlackTheme : accentColor;
 
   /// 根据索引获取字体名称,这里牵涉到国际化
   static String fontName(context, {int i}) {

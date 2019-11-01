@@ -306,8 +306,9 @@ class SmartRefresherWidget extends StatelessWidget {
     return SmartRefresher(
       enablePullDown: true,
       enablePullUp: true,
-      header: WaterDropMaterialHeader(
-        backgroundColor: ThemeModel.themeAccentColor,
+      header: MaterialClassicHeader(
+        backgroundColor: Theme.of(context).appBarTheme.color,
+        color: Theme.of(context).appBarTheme.textTheme.title.color,
       ),
       footer: SmartLoadFooterWidget(),
       controller: refreshController,

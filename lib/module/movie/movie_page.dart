@@ -109,6 +109,7 @@ class TabBarWidget extends StatelessWidget {
           ThemeModel.darkMode ? Colors.white : Theme.of(context).accentColor,
       labelStyle: TextStyle(
         fontWeight: FontWeight.w600,
+        fontSize: 15,
       ),
 
       ///未选择label颜色
@@ -242,15 +243,8 @@ class _MovieItemPageState extends State<MovieItemPage>
           )
 
         ///加载列表
-//        : ListView.builder(
-//            ///内容适配
-//            shrinkWrap: true,
-//            itemCount: _listData.length,
-//            itemBuilder: (context, index) {
-//              return MovieAdapter(_listData[index]);
-//            },
-//          );
         : Scaffold(
+            ///下拉刷新嵌套listView
             body: SmartRefresherWidget(
               page: _page,
               pageSize: _pageSize,
@@ -260,6 +254,8 @@ class _MovieItemPageState extends State<MovieItemPage>
               onRefresh: _onRefresh,
               onLoading: _onLoading,
             ),
+
+            ///用于回到顶部
             floatingActionButton: FloatingActionButton(
               child: Icon(Icons.arrow_upward),
               onPressed: () {
@@ -313,26 +309,7 @@ class SmartRefresherWidget extends StatelessWidget {
       header: WaterDropMaterialHeader(
         backgroundColor: ThemeModel.themeAccentColor,
       ),
-      footer: CustomFooter(
-        builder: (BuildContext context, LoadStatus mode) {
-          Widget body;
-          if (mode == LoadStatus.idle) {
-            body = Text(S.of(context).loadIdle);
-          } else if (mode == LoadStatus.loading) {
-            body = CupertinoActivityIndicator();
-          } else if (mode == LoadStatus.failed) {
-            body = Text(S.of(context).loadFailed);
-          } else if (mode == LoadStatus.canLoading) {
-            body = Text(S.of(context).loadIdle);
-          } else {
-            body = Text(S.of(context).loadNoMore);
-          }
-          return Container(
-            padding: EdgeInsets.only(top: 16),
-            child: Center(child: body),
-          );
-        },
-      ),
+      footer: SmartLoadFooterWidget(),
       controller: refreshController,
       onRefresh: onRefresh,
       onLoading: onLoading,
@@ -353,13 +330,53 @@ class SmartRefresherWidget extends StatelessWidget {
   }
 }
 
+///刷新脚
+class SmartLoadFooterWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return CustomFooter(
+      height: 50,
+      builder: (BuildContext context, LoadStatus mode) {
+        Widget body;
+        if (mode == LoadStatus.idle) {
+          body = Text(
+            S.of(context).loadIdle,
+            style: Theme.of(context).textTheme.caption,
+          );
+        } else if (mode == LoadStatus.loading) {
+          body = CupertinoActivityIndicator();
+        } else if (mode == LoadStatus.failed) {
+          body = Text(
+            S.of(context).loadFailed,
+            style: Theme.of(context).textTheme.caption,
+          );
+        } else if (mode == LoadStatus.canLoading) {
+          body = Text(
+            S.of(context).loadIdle,
+            style: Theme.of(context).textTheme.caption,
+          );
+        } else {
+          body = Text(
+            S.of(context).loadNoMore,
+            style: Theme.of(context).textTheme.caption,
+          );
+        }
+        return Container(
+          height: 50,
+          child: Center(child: body),
+        );
+      },
+    );
+  }
+}
+
 ///电影适配器
 class MovieAdapter extends StatelessWidget {
   const MovieAdapter(this.item, this.position, {Key key}) : super(key: key);
   final Subjects item;
   final int position;
-  final double imgWidth = 72;
-  final double imgHeight = 100;
+  final double imgWidth = 64;
+  final double imgHeight = 90;
 
   @override
   Widget build(BuildContext context) {
@@ -391,7 +408,7 @@ class MovieAdapter extends StatelessWidget {
             children: <Widget>[
               ///左边图片
               ClipRRect(
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(1),
                 child: CachedNetworkImage(
                   width: imgWidth,
                   height: imgHeight,
@@ -426,6 +443,7 @@ class MovieAdapter extends StatelessWidget {
                 flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     ///右边文字描述
                     Text(

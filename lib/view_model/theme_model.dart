@@ -165,7 +165,7 @@ class ThemeModel with ChangeNotifier {
       ///TabBar样式设置
       tabBarTheme: themeData.tabBarTheme.copyWith(
         ///标签内边距
-        labelPadding: EdgeInsets.symmetric(horizontal: 10),
+        labelPadding: EdgeInsets.symmetric(horizontal: 8),
       ),
       floatingActionButtonTheme: themeData.floatingActionButtonTheme.copyWith(
         backgroundColor: themeAccentColor,

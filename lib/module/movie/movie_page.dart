@@ -163,6 +163,7 @@ class _MovieItemPageState extends State<MovieItemPage>
   @override
   void dispose() {
     _isDispose = true;
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -325,7 +326,7 @@ class SmartRefresherWidget extends StatelessWidget {
             body = Text(S.of(context).loadNoMore);
           }
           return Container(
-            padding: EdgeInsets.only(top: 12),
+            padding: EdgeInsets.only(top: 16),
             child: Center(child: body),
           );
         },
@@ -336,6 +337,7 @@ class SmartRefresherWidget extends StatelessWidget {
       child: ListView.builder(
         ///内容适配
         shrinkWrap: true,
+        physics: ClampingScrollPhysics(),
         itemCount: data.length,
         controller: scrollController,
         itemBuilder: (context, index) {

@@ -229,7 +229,7 @@ class _MovieItemPageState extends State<MovieItemPage>
         : SmartRefresher(
             enablePullDown: true,
             enablePullUp: true,
-            header: WaterDropHeader(),
+            header: WaterDropMaterialHeader(),
             footer: CustomFooter(
               builder: (BuildContext context, LoadStatus mode) {
                 Widget body;

@@ -41,7 +41,7 @@ class ThemeModel with ChangeNotifier {
   static MaterialColor get themeColor => _themeColor;
 
   ///白色主题状态栏及导航栏颜色
-  Color colorWhiteTheme = Color.fromARGB(102, 0, 0, 0);
+  Color colorWhiteTheme = Color(0x66000000);
 
   /// 切换字体
   switchFont(int index) {
@@ -71,11 +71,9 @@ class ThemeModel with ChangeNotifier {
         "_themeColor:" +
         _themeColor.toString());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
+      statusBarColor: _userDarkMode ? Colors.transparent: colorWhiteTheme,
       systemNavigationBarColor:
           _userDarkMode ? Colors.grey[900] : colorWhiteTheme,
-      systemNavigationBarIconBrightness:
-          _userDarkMode ? Brightness.light : Brightness.dark,
     ));
     notifyListeners();
   }
@@ -123,7 +121,8 @@ class ThemeModel with ChangeNotifier {
         primaryColor: themeColor,
       ),
       appBarTheme: themeData.appBarTheme.copyWith(
-        brightness: _userDarkMode ? Brightness.dark : Brightness.light,
+        ///设置主题决定状态栏icon颜色
+//        brightness: _userDarkMode ? Brightness.dark : Brightness.light,
         color: _userDarkMode ? Colors.grey[900] : Colors.white,
         elevation: 0,
         textTheme: TextTheme(

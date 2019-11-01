@@ -162,6 +162,9 @@ class ThemeModel with ChangeNotifier {
         ///标签内边距
         labelPadding: EdgeInsets.symmetric(horizontal: 10),
       ),
+      floatingActionButtonTheme: themeData.floatingActionButtonTheme.copyWith(
+        splashColor: themeColor.withAlpha(50),
+      ),
     );
     return themeData;
   }

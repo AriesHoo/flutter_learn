@@ -33,5 +33,12 @@
   "registerAnd": "和",
   "registerPrivacyProtocol": "隐私协议",
   "registerHadAccount": "已有账号？",
-  "moviePage": "豆瓣电影"
+  "moviePage": "豆瓣电影",
+  "movieTop": "Top 250",
+  "movieInTheaters": "正在热映",
+  "movieComingSoon": "即将上映",
+  "movieNobody": "暂无",
+  "loadIdle": "上拉加载更多",
+  "loadFailed": "加载失败",
+  "loadNoMore": "我也是有底线的"
 }

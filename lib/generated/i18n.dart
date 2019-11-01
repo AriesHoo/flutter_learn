@@ -38,9 +38,16 @@ class S implements WidgetsLocalizations {
   String get hintEnterCode => "verification code";
   String get hintEnterPassword => "your password";
   String get hintEnterPhone => "your phone number";
+  String get loadFailed => "Load failed";
+  String get loadIdle => "Pull up";
+  String get loadNoMore => "No more data";
   String get login => "Login";
   String get loginPage => "Login Page";
+  String get movieComingSoon => "Coming soon";
+  String get movieInTheaters => "In theaters";
+  String get movieNobody => "No one";
   String get moviePage => "Movie Page";
+  String get movieTop => "Top 250";
   String get nextStep => "next step";
   String get orange => "Didi orange";
   String get purple => "Kuake purple";
@@ -71,6 +78,8 @@ class $zh_CN extends S {
   TextDirection get textDirection => TextDirection.ltr;
 
   @override
+  String get movieTop => "Top 250";
+  @override
   String get forgetPassword => "忘记密码";
   @override
   String get back => "后退";
@@ -99,15 +108,25 @@ class $zh_CN extends S {
   @override
   String get hintEnterPhone => "请输入手机号";
   @override
+  String get movieComingSoon => "即将上映";
+  @override
   String get green => "微信绿";
   @override
   String get appName => "学Flutter";
   @override
   String get forward => "前进";
   @override
+  String get loadIdle => "上拉加载更多";
+  @override
+  String get loadFailed => "加载失败";
+  @override
   String get choiceTheme => "选择主题";
   @override
   String get refresh => "刷新";
+  @override
+  String get movieInTheaters => "正在热映";
+  @override
+  String get movieNobody => "暂无";
   @override
   String get registerAnd => "和";
   @override
@@ -140,6 +159,8 @@ class $zh_CN extends S {
   String get registerRightNow => "立即注册";
   @override
   String get register => "注册";
+  @override
+  String get loadNoMore => "我也是有底线的";
 }
 
 class GeneratedLocalizationsDelegate extends LocalizationsDelegate<S> {

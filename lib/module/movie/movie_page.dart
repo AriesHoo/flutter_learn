@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/data/movie_api.dart';
+import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 import 'package:flutter_learn/router_manger.dart';
@@ -36,6 +37,11 @@ class _MoviePageState extends State<MoviePage>
 
   @override
   Widget build(BuildContext context) {
+    labels = [
+      S.of(context).movieTop,
+      S.of(context).movieInTheaters,
+      S.of(context).movieComingSoon
+    ];
     return DefaultTabController(
       length: labels.length,
       child: Scaffold(
@@ -144,11 +150,20 @@ class _MovieItemPageState extends State<MovieItemPage>
 
   ///是否加载成功
   bool _loadSucceed = true;
+  ScrollController _scrollController;
+  bool _isDispose = false;
 
   @override
   void initState() {
     super.initState();
+    _scrollController = ScrollController();
     getMovie();
+  }
+
+  @override
+  void dispose() {
+    _isDispose = true;
+    super.dispose();
   }
 
   getMovie() async {
@@ -164,17 +179,25 @@ class _MovieItemPageState extends State<MovieItemPage>
         } else {
           _listData.addAll(list);
         }
-        setState(() {
-          _loadSucceed = true;
-          _canLoadMore = list.length >= _pageSize;
-          _page++;
-        });
+        if (_isDispose) {
+          debugPrint("请求成功;页面已销毁");
+        } else {
+          setState(() {
+            _loadSucceed = true;
+            _canLoadMore = list.length >= _pageSize;
+            _page++;
+          });
+        }
       }
     } catch (e, s) {
-      ToastUtil.show(e.toString());
-      setState(() {
-        _loadSucceed = false;
-      });
+      if (_isDispose) {
+        debugPrint("请求错误:" + s.toString() + ";页面已销毁");
+      } else {
+        ToastUtil.show(e.toString());
+        setState(() {
+          _loadSucceed = false;
+        });
+      }
     }
   }
 
@@ -226,41 +249,23 @@ class _MovieItemPageState extends State<MovieItemPage>
 //              return MovieAdapter(_listData[index]);
 //            },
 //          );
-        : SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropMaterialHeader(),
-            footer: CustomFooter(
-              builder: (BuildContext context, LoadStatus mode) {
-                Widget body;
-                if (mode == LoadStatus.idle) {
-                  body = Text("pull up load");
-                } else if (mode == LoadStatus.loading) {
-                  body = CupertinoActivityIndicator();
-                } else if (mode == LoadStatus.failed) {
-                  body = Text("Load Failed!Click retry!");
-                } else if (mode == LoadStatus.canLoading) {
-                  body = Text("release to load more");
-                } else {
-                  body = Text("No more Data");
-                }
-                return Container(
-                  height: 55.0,
-                  child: Center(child: body),
-                );
-              },
+        : Scaffold(
+            body: SmartRefresherWidget(
+              page: _page,
+              pageSize: _pageSize,
+              scrollController: _scrollController,
+              data: _listData,
+              refreshController: _refreshController,
+              onRefresh: _onRefresh,
+              onLoading: _onLoading,
             ),
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            onLoading: _onLoading,
-            child: ListView.builder(
-              ///内容适配
-              shrinkWrap: true,
-              itemCount: _listData.length,
-              itemBuilder: (context, index) {
-                return MovieAdapter(
-                  _listData[index],
-                  _page * _pageSize + index,
+            floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.arrow_upward),
+              onPressed: () {
+                _scrollController.animateTo(
+                  0,
+                  duration: new Duration(milliseconds: 300), // 300ms
+                  curve: Curves.bounceIn, // 动画方式
                 );
               },
             ),
@@ -269,6 +274,79 @@ class _MovieItemPageState extends State<MovieItemPage>
 
   @override
   bool get wantKeepAlive => true;
+}
+
+///嵌套下拉刷新
+class SmartRefresherWidget extends StatelessWidget {
+  ///起始页码
+  final int page;
+
+  ///每页数量
+  final int pageSize;
+  final ScrollController scrollController;
+
+  ///返回列表数量
+  final List<Subjects> data;
+
+  ///下拉刷新controller
+  final RefreshController refreshController;
+  final VoidCallback onRefresh;
+  final VoidCallback onLoading;
+
+  const SmartRefresherWidget(
+      {Key key,
+      this.page,
+      this.pageSize,
+      this.scrollController,
+      this.data,
+      this.refreshController,
+      this.onRefresh,
+      this.onLoading})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      header: WaterDropMaterialHeader(),
+      footer: CustomFooter(
+        builder: (BuildContext context, LoadStatus mode) {
+          Widget body;
+          if (mode == LoadStatus.idle) {
+            body = Text(S.of(context).loadIdle);
+          } else if (mode == LoadStatus.loading) {
+            body = CupertinoActivityIndicator();
+          } else if (mode == LoadStatus.failed) {
+            body = Text(S.of(context).loadFailed);
+          } else if (mode == LoadStatus.canLoading) {
+            body = Text(S.of(context).loadIdle);
+          } else {
+            body = Text(S.of(context).loadNoMore);
+          }
+          return Container(
+            padding: EdgeInsets.only(top: 12),
+            child: Center(child: body),
+          );
+        },
+      ),
+      controller: refreshController,
+      onRefresh: onRefresh,
+      onLoading: onLoading,
+      child: ListView.builder(
+        ///内容适配
+        shrinkWrap: true,
+        itemCount: data.length,
+        controller: scrollController,
+        itemBuilder: (context, index) {
+          return MovieAdapter(
+            data[index],
+            page * pageSize + index,
+          );
+        },
+      ),
+    );
+  }
 }
 
 ///电影适配器
@@ -335,10 +413,13 @@ class MovieAdapter extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(
+                width: 12,
+              ),
 
-              ///右边文字
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 12),
+              ///右边文字-设置flex=1宽度占用剩余部分全部以便其中文字自动换行
+              Expanded(
+                flex: 1,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -358,13 +439,13 @@ class MovieAdapter extends StatelessWidget {
                       style: Theme.of(context).textTheme.caption,
                     ),
                     Text(
-                      "导演:" + item.getDirectors(),
-                      maxLines: 1,
+                      "导演:" + item.getDirectors(S.of(context).movieNobody),
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     ),
                     Text(
-                      "主演:" + item.getCasts(),
-                      maxLines: 1,
+                      "主演:" + item.getCasts(S.of(context).movieNobody),
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption,
                     ),
                   ],

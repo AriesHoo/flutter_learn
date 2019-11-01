@@ -35,5 +35,12 @@
   "registerAnd": "and",
   "registerPrivacyProtocol": "privacy protocol",
   "registerHadAccount": "had account?",
-  "moviePage": "Movie Page"
+  "moviePage": "Movie Page",
+  "movieTop": "Top 250",
+  "movieInTheaters": "In theaters",
+  "movieComingSoon": "Coming soon",
+  "movieNobody": "No one",
+  "loadIdle": "Pull up",
+  "loadFailed": "Load failed",
+  "loadNoMore": "No more data"
 }

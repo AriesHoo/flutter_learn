@@ -1,3 +1,5 @@
+import 'package:flutter_learn/generated/i18n.dart';
+
 class MovieModel {
   int count;
   int start;
@@ -67,7 +69,7 @@ class Subjects {
   }
 
   ///获取导演
-  String getDirectors() {
+  String getDirectors(String def) {
     String director = "";
     if (directors != null && directors.length > 0) {
       for (Casts item in directors) {
@@ -78,11 +80,11 @@ class Subjects {
         }
       }
     }
-    return director;
+    return director.isEmpty ? def : director;
   }
 
   ///获取主演
-  String getCasts() {
+  String getCasts(String def) {
     String cast = "";
     if (casts != null && casts.length > 0) {
       for (Casts item in casts) {
@@ -93,7 +95,7 @@ class Subjects {
         }
       }
     }
-    return cast;
+    return cast.isEmpty ? def : cast;
   }
 
   Subjects(

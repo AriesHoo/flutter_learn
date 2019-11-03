@@ -107,6 +107,7 @@ class TabBarWidget extends StatelessWidget {
       ///选中label颜色
       labelColor:
           ThemeModel.darkMode ? Colors.white : Theme.of(context).accentColor,
+
       ///未选择label颜色
       unselectedLabelColor: Theme.of(context).hintColor,
     );
@@ -407,14 +408,14 @@ class MovieAdapter extends StatelessWidget {
                   height: imgHeight,
                   fit: BoxFit.fill,
                   imageUrl: item.images.small,
+
+                  ///占位Widget
                   placeholder: (context, url) => Center(
                     child: Container(
                       color: Theme.of(context).hintColor.withOpacity(0.1),
                       width: imgWidth,
                       height: imgHeight,
-                      child: CupertinoActivityIndicator(
-                        radius: 12,
-                      ),
+                      child: CupertinoActivityIndicator(),
                     ),
                   ),
                   errorWidget: (context, url, error) => Center(

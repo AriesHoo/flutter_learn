@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_learn/generated/i18n.dart';
+import 'package:flutter_learn/util/system_util.dart';
 
 ///主题管理
 class ThemeModel with ChangeNotifier {
@@ -76,10 +77,11 @@ class ThemeModel with ChangeNotifier {
         "_themeColor:" +
         _themeColor.toString());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
-      systemNavigationBarColor:
-          _userDarkMode ? colorBlackTheme : colorWhiteTheme,
+//      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
+//      systemNavigationBarColor:
+//          _userDarkMode ? colorBlackTheme : colorWhiteTheme,
     ));
+    SystemUtil.setDarkModel(_userDarkMode);
     notifyListeners();
   }
 

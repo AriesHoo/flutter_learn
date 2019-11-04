@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/log_util.dart';
+import 'package:flutter_learn/util/platform_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
@@ -17,12 +18,15 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  Color _iconCorlor;
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  Color iconColor;
 
   @override
   void initState() {
     super.initState();
+
+    ///添加监听用于监控前后台转换
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
@@ -41,6 +45,9 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     super.dispose();
     print("dispose");
+
+    ///移除监听
+    WidgetsBinding.instance.removeObserver(this);
   }
 
   @override
@@ -53,6 +60,22 @@ class _HomePageState extends State<HomePage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print("didChangeDependencies");
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    LogUtil.e(
+        "didChangeAppLifecycleState:" +
+            state.toString() +
+            ";isAndroid:" +
+            Platform.isAndroid.toString(),
+        tag: "didChangeAppLifecycleState");
+    if (state == AppLifecycleState.paused) {
+      ///应用后台
+    } else if (state == AppLifecycleState.resumed) {
+      ///应用前台
+    }
   }
 
   RaisedButton _getButtonWidget(String text, String router, Object arguments) {
@@ -72,7 +95,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _iconCorlor = Theme.of(context).iconTheme.color;
+    iconColor = Theme.of(context).iconTheme.color;
     return Scaffold(
       appBar: AppBar(
         title: Text(S.of(context).appName),
@@ -118,7 +141,7 @@ class _HomePageState extends State<HomePage> {
                     Theme.of(context).brightness == Brightness.light
                         ? Icons.brightness_5
                         : Icons.brightness_2,
-                    color: _iconCorlor,
+                    color: iconColor,
                   ),
                   trailing: CupertinoSwitch(
                     activeColor: Theme.of(context).accentColor,

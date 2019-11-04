@@ -43,7 +43,8 @@ class ThemeModel with ChangeNotifier {
   static MaterialColor get themeColor => _themeColor;
 
   ///白色主题状态栏及导航栏颜色
-  Color colorWhiteTheme = Color(0x66000000);
+//  Color colorWhiteTheme = Color(0x66000000);
+  Color colorWhiteTheme = Colors.transparent;
 
   static Color colorBlackTheme = Colors.grey[900];
 
@@ -77,9 +78,13 @@ class ThemeModel with ChangeNotifier {
         "_themeColor:" +
         _themeColor.toString());
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
-//      systemNavigationBarColor:
-//          _userDarkMode ? colorBlackTheme : colorWhiteTheme,
+      statusBarColor: _userDarkMode ? Colors.transparent : colorWhiteTheme,
+      statusBarIconBrightness:
+          _userDarkMode ? Brightness.light : Brightness.dark,
+      systemNavigationBarColor:
+          _userDarkMode ? colorBlackTheme : colorWhiteTheme,
+      systemNavigationBarIconBrightness:
+          _userDarkMode ? Brightness.light : Brightness.dark,
     ));
     SystemUtil.setDarkModel(_userDarkMode);
     notifyListeners();
@@ -129,7 +134,7 @@ class ThemeModel with ChangeNotifier {
       ),
       appBarTheme: themeData.appBarTheme.copyWith(
         ///设置主题决定状态栏icon颜色
-//        brightness: _userDarkMode ? Brightness.dark : Brightness.light,
+        brightness: _userDarkMode ? Brightness.dark : Brightness.light,
         color: _userDarkMode ? colorBlackTheme : Colors.white,
         elevation: 0,
         textTheme: TextTheme(
@@ -171,12 +176,14 @@ class ThemeModel with ChangeNotifier {
         labelStyle: TextStyle(
           fontWeight: FontWeight.w600,
           fontSize: 15,
+
           ///字体
           fontFamily: fontValueList[_fontIndex],
         ),
         unselectedLabelStyle: TextStyle(
           fontWeight: FontWeight.normal,
           fontSize: 15,
+
           ///字体
           fontFamily: fontValueList[_fontIndex],
         ),

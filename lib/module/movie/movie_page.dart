@@ -159,14 +159,16 @@ class _MovieItemPageState extends State<MovieItemPage>
     ///设置滚动监听
     _scrollController.addListener(() {
       double offset = _scrollController.offset;
-      LogUtil.e("offset:" + offset.toString());
-      if (offset < 600 && _isShowFloatBtn) {
+      bool show = offset > 600;
+      if (show != _isShowFloatBtn) {
+        LogUtil.e("offset:" +
+            offset.toString() +
+            ";show:" +
+            show.toString() +
+            ";_isShowFloatBtn:" +
+            _isShowFloatBtn.toString());
         setState(() {
-          _isShowFloatBtn = false;
-        });
-      } else if (offset > 600 && !_isShowFloatBtn) {
-        setState(() {
-          _isShowFloatBtn = true;
+          _isShowFloatBtn = show;
         });
       }
     });

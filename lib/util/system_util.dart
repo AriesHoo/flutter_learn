@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 
+///系统操作相关
 class SystemUtil {
   static const performSystem = const MethodChannel("dark_model");
 

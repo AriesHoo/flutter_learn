@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_learn/manager/provider_manager.dart';
 import 'package:flutter_learn/module/home_page.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/sp_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
@@ -15,7 +16,9 @@ import 'generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+Future main() async {
+  ///初始化SP
+  await SPUtil.getInstance();
   runApp(MyApp());
 }
 
@@ -34,6 +37,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               ///全局主题配置
               theme: themeModel.themeData(),
+//              darkTheme: themeModel.themeData(platformDarkMode: true),
 
               ///去掉右上顶部debug标签
               debugShowCheckedModeBanner: false,

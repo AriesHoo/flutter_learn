@@ -5,7 +5,15 @@ import 'package:oktoast/oktoast.dart';
 class ToastUtil {
   static BuildContext get context => null;
 
-  static show(String text) {
+  static show(
+    String text, {
+    ToastPosition position,
+    Duration duration,
+  }) {
+    position ??= ToastPosition.center;
+    duration ??= Duration(
+      milliseconds: 2000,
+    );
     showToast(
       text,
       textStyle: TextStyle(
@@ -17,6 +25,8 @@ class ToastUtil {
       dismissOtherToast: true,
       radius: 6,
       textPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+      position: position,
+      duration: duration,
     );
   }
 }

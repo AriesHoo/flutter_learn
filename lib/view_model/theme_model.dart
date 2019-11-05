@@ -5,10 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_learn/generated/i18n.dart';
+import 'package:flutter_learn/util/log_util.dart';
+import 'package:flutter_learn/util/sp_util.dart';
 import 'package:flutter_learn/util/system_util.dart';
 
 ///主题管理
 class ThemeModel with ChangeNotifier {
+  static const SP_KEY_THEME_COLOR_INDEX = 'SP_KEY_THEME_COLOR_INDEX';
+  static const SP_KEY_THEME_DARK_MODE = 'SP_KEY_THEME_DARK_MODE';
+  static const SP_KEY_FONT_INDEX = 'SP_KEY_FONT_INDEX';
+
   ///颜色主题列表
   static const List<MaterialColor> themeValueList = <MaterialColor>[
     Colors.blue,
@@ -50,10 +56,28 @@ class ThemeModel with ChangeNotifier {
 
   static Color get accentColor => _accentColor;
 
+  ThemeModel() {
+    /// 用户选择的明暗模式
+    _userDarkMode = SPUtil.getBool(SP_KEY_THEME_DARK_MODE, defValue: false);
+
+    /// 获取主题色
+    _themeIndex = SPUtil.getInt(SP_KEY_THEME_COLOR_INDEX);
+    _themeColor = themeValueList[_themeIndex];
+    _accentColor = _themeColor;
+
+    /// 获取本地字体
+    _fontIndex = SPUtil.getInt(SP_KEY_FONT_INDEX);
+    ///如果缓存为黑色字体则进行
+    if(_userDarkMode){
+      switchTheme(userDarkMode: _userDarkMode);
+    }
+  }
+
   /// 切换字体
   switchFont(int index) {
     _fontIndex = index;
     switchTheme();
+    SPUtil.putInt(SP_KEY_FONT_INDEX, _fontIndex);
   }
 
   static String fontFamily() {
@@ -68,10 +92,13 @@ class ThemeModel with ChangeNotifier {
   ///
   /// 没有传[brightness]就不改变brightness,color同理
   void switchTheme({bool userDarkMode, int themeIndex, MaterialColor color}) {
+    if (themeIndex != null && themeIndex != _themeIndex) {
+      SPUtil.putInt(SP_KEY_THEME_COLOR_INDEX, themeIndex);
+    }
     _userDarkMode = userDarkMode ?? _userDarkMode;
     _themeIndex = themeIndex ?? _themeIndex;
     _themeColor = color ?? themeValueList[_themeIndex];
-    debugPrint("_userDarkMode" +
+    LogUtil.i("_userDarkMode" +
         _userDarkMode.toString() +
         "_themeIndex:" +
         _themeIndex.toString() +
@@ -87,18 +114,9 @@ class ThemeModel with ChangeNotifier {
           _userDarkMode ? Brightness.light : Brightness.dark,
     ));
     SystemUtil.setDarkModel(_userDarkMode);
+    ///存入缓存
+    SPUtil.putBool(SP_KEY_THEME_DARK_MODE, _userDarkMode);
     notifyListeners();
-  }
-
-  /// 随机一个主题色彩
-  ///
-  /// 可以指定明暗模式,不指定则保持不变
-  void switchRandomTheme({Brightness brightness}) {
-    int colorIndex = Random().nextInt(Colors.primaries.length - 1);
-    switchTheme(
-      userDarkMode: Random().nextBool(),
-      themeIndex: colorIndex,
-    );
   }
 
   /// 根据主题 明暗 和 颜色 生成对应的主题
@@ -194,6 +212,7 @@ class ThemeModel with ChangeNotifier {
         splashColor: themeColor.withAlpha(50),
       ),
     );
+
     return themeData;
   }
 

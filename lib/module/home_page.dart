@@ -8,6 +8,7 @@ import 'package:flutter_learn/util/platform_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/locale_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
 
 ///主页面
@@ -19,8 +20,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  Color iconColor;
-
+  DateTime _lastPressedAt; //上次点击时间
   @override
   void initState() {
     super.initState();
@@ -78,20 +78,31 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-  RaisedButton _getButtonWidget(String text, String router, Object arguments) {
-    return RaisedButton(
-      elevation: 1,
-      color: ThemeModel.themeAccentColor,
-      child: Text(
-        text,
-        style: TextStyle(color: Colors.white),
-      ),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-      onPressed: () {
-        Navigator.of(context).pushNamed(router, arguments: arguments);
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+      onWillPop: () async {
+        if (_lastPressedAt == null ||
+            DateTime.now().difference(_lastPressedAt) >
+                Duration(milliseconds: 1500)) {
+          //两次点击间隔超过1秒则重新计时
+          _lastPressedAt = DateTime.now();
+          ToastUtil.show(S.of(context).quitApp,
+              position: ToastPosition.bottom,
+              duration: Duration(milliseconds: 1500));
+          return false;
+        }
+        return true;
       },
+      child: ContainerWidget(),
     );
   }
+}
+
+///主干
+// ignore: must_be_immutable
+class ContainerWidget extends StatelessWidget {
+  Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -154,9 +165,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
               ///选择颜色主题
               ChoiceThemeWidget(),
-              _getButtonWidget(S.of(context).moviePage, RouteName.movie, null),
-              _getButtonWidget(S.of(context).loginPage, RouteName.login, null),
               _getButtonWidget(
+                  context, S.of(context).moviePage, RouteName.movie, null),
+              _getButtonWidget(
+                  context, S.of(context).loginPage, RouteName.login, null),
+              _getButtonWidget(
+                  context,
                   S.of(context).webViewPage,
                   RouteName.webView,
                   WebViewModel.getModel(
@@ -165,6 +179,22 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+
+  RaisedButton _getButtonWidget(
+      BuildContext context, String text, String router, Object arguments) {
+    return RaisedButton(
+      elevation: 1,
+      color: ThemeModel.themeAccentColor,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      onPressed: () {
+        Navigator.of(context).pushNamed(router, arguments: arguments);
+      },
     );
   }
 

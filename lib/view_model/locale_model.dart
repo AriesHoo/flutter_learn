@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/generated/i18n.dart';
+import 'package:flutter_learn/util/sp_util.dart';
 
 ///国际化语言切换
 class LocaleModel extends ChangeNotifier {
-//  static const localeNameList = ['auto', '中文', 'English'];
   static const localeValueList = ['', 'zh-CN', 'en'];
 
-  static const kLocaleIndex = 'kLocaleIndex';
+  static const SP_KEY_LOCALE_INDEX = 'SP_KEY_LOCALE_INDEX';
 
   int _localeIndex;
 
@@ -22,7 +22,8 @@ class LocaleModel extends ChangeNotifier {
   }
 
   LocaleModel() {
-    switchLocale(0);
+    _localeIndex = SPUtil.getInt(SP_KEY_LOCALE_INDEX);
+    switchLocale(_localeIndex);
   }
 
   switchLocale(int index) {

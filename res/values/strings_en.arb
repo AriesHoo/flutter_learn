@@ -46,5 +46,6 @@
   "movieNobody": "No one",
   "loadIdle": "Pull up",
   "loadFailed": "Load failed",
-  "loadNoMore": "No more data"
+  "loadNoMore": "No more data",
+  "quitApp": "click again to exit the app"
 }

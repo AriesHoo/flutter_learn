@@ -1,5 +1,5 @@
-import 'package:flutter_learn/generated/i18n.dart';
 
+///豆瓣电影返回实体结构
 class MovieModel {
   int count;
   int start;

@@ -20,9 +20,9 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage>
     with SingleTickerProviderStateMixin {
   var urls = [
-    "v2/movie/top250",
-    "v2/movie/in_theaters",
-    "v2/movie/coming_soon"
+    MovieApi.API_TOP,
+    MovieApi.API_IN_THEATERS,
+    MovieApi.API_COMING_SOON
   ];
   var labels = ["top250", "正在热映", '即将上映'];
   List<Widget> listWidget;
@@ -185,7 +185,7 @@ class _MovieItemPageState extends State<MovieItemPage>
   getMovie() async {
     try {
       List<Subjects> list =
-          await MovieAPi.getMovie(widget.url, _page * _pageSize, _pageSize);
+          await MovieApi.getMovie(widget.url, _page * _pageSize, _pageSize);
       if (_page == 0 && _listData != null) {
         _listData.clear();
       }
@@ -196,7 +196,7 @@ class _MovieItemPageState extends State<MovieItemPage>
           _listData.addAll(list);
         }
         if (_isDispose) {
-          debugPrint("请求成功;页面已销毁");
+          LogUtil.i("请求成功;页面已销毁");
         } else {
           setState(() {
             _loadSucceed = true;
@@ -207,9 +207,9 @@ class _MovieItemPageState extends State<MovieItemPage>
       }
     } catch (e, s) {
       if (_isDispose) {
-        debugPrint("请求错误:" + s.toString() + ";页面已销毁");
+        LogUtil.e("请求错误:" + s.toString() + ";页面已销毁");
       } else {
-        ToastUtil.show(e.toString());
+        ToastUtil.show(s.toString());
         setState(() {
           _loadSucceed = false;
         });

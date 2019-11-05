@@ -6,6 +6,7 @@ import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
 import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/util/log_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -147,10 +148,28 @@ class _MovieItemPageState extends State<MovieItemPage>
   ScrollController _scrollController;
   bool _isDispose = false;
 
+  ///是否展示FloatingActionButton
+  bool _isShowFloatBtn = false;
+
   @override
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+
+    ///设置滚动监听
+    _scrollController.addListener(() {
+      double offset = _scrollController.offset;
+      LogUtil.e("offset:" + offset.toString());
+      if (offset < 600 && _isShowFloatBtn) {
+        setState(() {
+          _isShowFloatBtn = false;
+        });
+      } else if (offset > 600 && !_isShowFloatBtn) {
+        setState(() {
+          _isShowFloatBtn = true;
+        });
+      }
+    });
     getMovie();
   }
 
@@ -249,16 +268,18 @@ class _MovieItemPageState extends State<MovieItemPage>
             ),
 
             ///用于回到顶部
-            floatingActionButton: FloatingActionButton(
-              child: Icon(Icons.arrow_upward),
-              onPressed: () {
-                _scrollController.animateTo(
-                  0,
-                  duration: new Duration(milliseconds: 300), // 300ms
-                  curve: Curves.bounceIn, // 动画方式
-                );
-              },
-            ),
+            floatingActionButton: !_isShowFloatBtn
+                ? null
+                : FloatingActionButton(
+                    child: Icon(Icons.arrow_upward),
+                    onPressed: () {
+                      _scrollController.animateTo(
+                        0,
+                        duration: new Duration(milliseconds: 300), // 300ms
+                        curve: Curves.bounceIn, // 动画方式
+                      );
+                    },
+                  ),
           );
   }
 

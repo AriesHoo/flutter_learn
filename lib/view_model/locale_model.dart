@@ -28,6 +28,7 @@ class LocaleModel extends ChangeNotifier {
 
   switchLocale(int index) {
     _localeIndex = index;
+    SPUtil.putInt(SP_KEY_LOCALE_INDEX, _localeIndex);
     notifyListeners();
   }
 

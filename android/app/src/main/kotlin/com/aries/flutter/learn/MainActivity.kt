@@ -79,7 +79,7 @@ class MainActivity : FlutterActivity() {
                 window.decorView.systemUiVisibility = systemUi
             }
             window.statusBarColor = colorTheme
-//            window.navigationBarColor = colorNavigationTheme
+            window.navigationBarColor = colorNavigationTheme
         }
     }
 }

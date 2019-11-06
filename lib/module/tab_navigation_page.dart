@@ -168,7 +168,6 @@ class _HomeWidgetState extends State<HomeWidget>
         iconSize: 28,
         items: List.generate(_listPage.length, (index) {
           return BottomNavigationBarItem(
-            backgroundColor: Colors.white,
             icon: Icon(_listIcon[index]),
 
             ///选中icon

@@ -14,13 +14,13 @@ class ToastUtil {
     duration ??= Duration(
       milliseconds: 2000,
     );
+
     showToast(
       text,
       textStyle: TextStyle(
         fontSize: 16,
         fontFamily: ThemeModel.fontFamily(),
       ),
-//      backgroundColor: ThemeModel.themeColor.withOpacity(0.8),
       backgroundColor: Color(0xA0000000),
       dismissOtherToast: true,
       radius: 6,

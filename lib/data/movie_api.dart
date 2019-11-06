@@ -16,6 +16,7 @@ class MovieApi {
       _dio.options.connectTimeout = 5000;
       _dio.options.receiveTimeout = 5000;
       _dio.options.responseType = ResponseType.json;
+      _dio.options.contentType =Headers.jsonContentType;
       _dio.options.headers = {'user-agent': 'dio', 'from': "dio"};
 
       ///添加日志拦截器

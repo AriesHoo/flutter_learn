@@ -19,32 +19,32 @@ class MoviePage extends StatefulWidget {
 
 class _MoviePageState extends State<MoviePage>
     with SingleTickerProviderStateMixin {
-  var urls = [
+  var _listUrls = [
     MovieApi.API_TOP,
     MovieApi.API_IN_THEATERS,
     MovieApi.API_COMING_SOON
   ];
-  var labels = ["top250", "正在热映", '即将上映'];
-  List<Widget> listWidget;
-  TabController controller;
+  var _listTab = ["", "", ''];
+  TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    controller =
-        TabController(initialIndex: 0, length: labels.length, vsync: this);
-    debugPrint("_MoviePageState_initState");
+
+    _tabController =
+        TabController(initialIndex: 0, length: _listTab.length, vsync: this);
+    LogUtil.e("_MoviePageState_initState");
   }
 
   @override
   Widget build(BuildContext context) {
-    labels = [
+    _listTab = [
       S.of(context).movieTop,
       S.of(context).movieInTheaters,
       S.of(context).movieComingSoon
     ];
     return DefaultTabController(
-      length: labels.length,
+      length: _listTab.length,
       child: Scaffold(
         appBar: AppBar(
           ///包裹一层去掉水波纹效果-如果保留可不设置该属性
@@ -54,17 +54,17 @@ class _MoviePageState extends State<MoviePage>
             ///添加该属性去掉Tab按下水波纹效果
             color: Theme.of(context).appBarTheme.color,
             child: TabBarWidget(
-              controller: controller,
-              labels: labels,
+              controller: _tabController,
+              labels: _listTab,
             ),
           ),
         ),
         body: TabBarView(
-          controller: controller,
+          controller: _tabController,
           children: List.generate(
-              labels.length,
+              _listTab.length,
               (i) => MovieItemPage(
-                    url: urls[i],
+                    url: _listUrls[i],
                   )),
         ),
       ),

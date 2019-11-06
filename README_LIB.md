@@ -182,7 +182,9 @@ github地址： https://github.com/flutter-dev/asset_generator
 | 库名                 | 版本号  | 链接                                                   | 描述                                                         |
 | -------------------- | ------- | ------------------------------------------------------ | ------------------------------------------------------------ |
 | font_awesome_flutter | 7.0.0   | https://pub.dartlang.org/packages/font_awesome_flutter | 图标字体的一个库                                             |
-| fluttertoast         | 2.0.3   | https://pub.dartlang.org/packages/fluttertoast         | 用于Android和ios的toast库。                                  |
+| bot_toast            | 2.1.0   | https://pub.dev/packages/bot_toast                     | 用于Android和ios的toast库。Flutter实现  可实现多种效果       |
+| oktoast              | 2.2.0   | https://pub.dev/packages/oktoast                       | 用于Android和ios的toast库。Flutter实现 常规toast效果         |
+| fluttertoast         | 2.0.3   | https://pub.dartlang.org/packages/fluttertoast         | 用于Android和ios的toast库。调用原生Android端ROM适配          |
 | image_picker         | 0.4.5   | https://pub.dartlang.org/packages/image_picker         | 用于从Android和iOS图像库中选择图像，并使用相机拍摄新照片。   |
 | camera               | 0.2.9+1 | https://pub.dartlang.org/packages/camera               | 谷歌官方的相机库。用于在Android和iOS上获取有关和控制相机的信息。支持预览相机馈送和捕捉图像，可以用来视频录制，新增对拍照的方向的处理。 |
 
@@ -410,7 +412,7 @@ github地址： https://github.com/flutter-dev/asset_generator
 | 库名                 | 版本号 | 链接                                          | 描述                 |
 | -------------------- | ------ | --------------------------------------------- | -------------------- |
 | jpush-flutter-plugin | 0.0.11 | https://github.com/jpush/jpush-flutter-plugin | 极光推送官方的插件库 |
-|mobpush|0.0.5|https://pub.dartlang.org/packages/mobpush|Mob官方的推送插件。使用此插件能够帮助您在使用 Flutter 开发应用时，快速地实现推送功能。Demo例子：https://github.com/MobClub/MobPush-for-Flutter|
+|mobpush               |0.0.5   |https://pub.dartlang.org/packages/mobpush      |Mob官方的推送插件。使用此插件能够帮助您在使用 Flutter 开发应用时，快速地实现推送功能。Demo例子：https://github.com/MobClub/MobPush-for-Flutter|
 |-|-|-|目前友盟的U-push推送还没有推出Flutter版本的插件库。|
 
 ----

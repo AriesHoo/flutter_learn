@@ -1,5 +1,9 @@
 {
   "appName": "Flutter Learn",
+  "tab_index": "Index",
+  "tab_movie": "Movie",
+  "tab_login": "Login",
+  "tab_web": "Web",
   "choiceTheme": "Choice theme",
   "blue": "Twitter blue",
   "green": "WeChat green",

@@ -1,5 +1,9 @@
 {
   "appName": "学Flutter",
+  "tab_index": "主页",
+  "tab_movie": "电影",
+  "tab_login": "登录",
+  "tab_web": "网页",
   "choiceTheme": "选择主题",
   "blue": "推特蓝",
   "green": "微信绿",

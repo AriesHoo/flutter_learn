@@ -83,6 +83,7 @@ class Button extends StatelessWidget {
             textColor: textColor ?? Colors.white,
             disabledTextColor: disabledTextColor ?? Colors.white,
             color: color ?? ThemeModel.darkMode?Theme.of(context).appBarTheme.color:Theme.of(context).accentColor,
+            splashColor: Theme.of(context).splashColor,
             disabledColor: disabledColor ?? Theme.of(context).disabledColor,
             highlightColor: highlightColor,
             shape: borderRadius >= height / 2

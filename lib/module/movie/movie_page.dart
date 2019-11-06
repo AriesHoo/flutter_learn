@@ -271,7 +271,12 @@ class _MovieItemPageState extends State<MovieItemPage>
             floatingActionButton: !_isShowFloatBtn
                 ? null
                 : FloatingActionButton(
-                    child: Icon(Icons.arrow_upward),
+                    backgroundColor: Theme.of(context).appBarTheme.color,
+                    child: Icon(
+                      Icons.arrow_upward,
+                      color:
+                          Theme.of(context).appBarTheme.textTheme.title.color,
+                    ),
                     onPressed: () {
                       _scrollController.animateTo(
                         0,

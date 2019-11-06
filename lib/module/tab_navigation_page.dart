@@ -159,9 +159,9 @@ class _HomeWidgetState extends State<HomeWidget>
 
         ///背景色保持和appBar一致方便颜色主题统一
         backgroundColor: Theme.of(context).appBarTheme.color,
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        iconSize: 32,
+        selectedFontSize: 12,
+        unselectedFontSize: 12,
+        iconSize: 28,
         items: List.generate(_listPage.length, (index) {
           return BottomNavigationBarItem(
             backgroundColor: Colors.white,

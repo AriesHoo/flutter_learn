@@ -24,7 +24,7 @@ class _MoviePageState extends State<MoviePage>
     MovieApi.API_IN_THEATERS,
     MovieApi.API_COMING_SOON
   ];
-  var _listTab = ["", "", ''];
+  var _listTab = ["", "", ""];
   TabController _tabController;
 
   @override
@@ -49,8 +49,6 @@ class _MoviePageState extends State<MoviePage>
         appBar: AppBar(
           ///包裹一层去掉水波纹效果-如果保留可不设置该属性
           title: Container(
-            height: double.infinity,
-
             ///添加该属性去掉Tab按下水波纹效果
             color: Theme.of(context).appBarTheme.color,
             child: TabBarWidget(

@@ -17,8 +17,8 @@ import android.util.Log
 class MainActivity : FlutterActivity() {
     var themeSet = false
     var darkModel = false
-    var colorTheme = Color.parseColor("#66000000")
-    var colorNavigationTheme = Color.parseColor("#66000000")
+    var colorTheme = Color.BLACK
+    var colorNavigationTheme = Color.BLACK
 
     companion object {
         const val FLUTTER_LOG_CHANNEL = "perform_log"
@@ -38,10 +38,9 @@ class MainActivity : FlutterActivity() {
 
     private fun setDarkModel(call: MethodCall) {
         darkModel = call.argument("darkMode")!!
-        colorTheme = if (darkModel) {
+        colorTheme = Color.BLACK;
+        if (darkModel) {
             Color.TRANSPARENT
-        } else {
-            Color.RED
         }
         colorNavigationTheme = colorTheme
         onWindowFocusChanged(true)
@@ -61,8 +60,8 @@ class MainActivity : FlutterActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            Log.e("onWindowFocusChanged11", "darkModel:" + darkModel)
+        if (hasFocus && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.e("onWindowFocusChanged11", "darkModel:" + darkModel+";colorNavigationTheme:"+colorNavigationTheme)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 colorTheme = Color.TRANSPARENT
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -80,7 +79,7 @@ class MainActivity : FlutterActivity() {
                 window.decorView.systemUiVisibility = systemUi
             }
             window.statusBarColor = colorTheme
-            window.navigationBarColor = colorNavigationTheme
+//            window.navigationBarColor = colorNavigationTheme
         }
     }
 }

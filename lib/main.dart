@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/manager/provider_manager.dart';
@@ -24,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     debugPrint("mainPage");
+
     ///Toast配置
     return OKToast(
       ///Provider
@@ -58,7 +58,7 @@ class AppWidget extends StatelessWidget {
     return MaterialApp(
       ///全局主题配置
       theme: themeModel.themeData(),
-//              darkTheme: themeModel.themeData(platformDarkMode: true),
+      darkTheme: themeModel.themeData(platformDarkMode: true),
 
       ///去掉右上顶部debug标签
       debugShowCheckedModeBanner: false,

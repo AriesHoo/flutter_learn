@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
+import 'package:flutter_learn/util/log_util.dart';
 
 ///豆瓣电影api
 class MovieApi {
@@ -24,6 +25,7 @@ class MovieApi {
         requestBody: true,
         responseBody: true,
       ));
+      _dio.interceptors.add(ApiInterceptor());
     }
     Response response = await _dio.get<Map>(url, queryParameters: {
       "apikey": "0b2bdeda43b5688921839c8ecb20399b",
@@ -33,4 +35,18 @@ class MovieApi {
     MovieModel model = MovieModel.fromJson(response.data);
     return model.subjects;
   }
+}
+
+class ApiInterceptor extends Interceptor{
+
+  @override
+  Future onRequest(RequestOptions options) async{
+    LogUtil.e("baseUrl0:$options.baseUrl"+";path:$options.path");
+    ///此处可用于动态变更请求头
+    if(options.path.contains(MovieApi.API_COMING_SOON)){
+      options.baseUrl = "https://api.douban.com/";
+    }
+    return options;
+  }
+
 }

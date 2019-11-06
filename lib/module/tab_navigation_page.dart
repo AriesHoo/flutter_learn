@@ -11,6 +11,7 @@ import 'package:flutter_learn/util/platform_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:oktoast/oktoast.dart';
 
+
 ///BottomNavigationBar+PageView
 class TabNavigationPage extends StatefulWidget {
   TabNavigationPage({Key key}) : super(key: key);
@@ -22,6 +23,7 @@ class TabNavigationPage extends StatefulWidget {
 class _TabNavigationPageState extends State<TabNavigationPage>
     with WidgetsBindingObserver {
   DateTime _lastPressedAt; //上次点击时间
+
   @override
   void initState() {
     super.initState();
@@ -139,6 +141,7 @@ class _HomeWidgetState extends State<HomeWidget>
         itemBuilder: (ctx, index) => _listPage[index],
         itemCount: _listPage.length,
         controller: _pageController,
+
         ///控制是否可滚动
         physics: NeverScrollableScrollPhysics(),
         onPageChanged: (index) {
@@ -150,6 +153,7 @@ class _HomeWidgetState extends State<HomeWidget>
       bottomNavigationBar: BottomNavigationBar(
         ///当前选中tab
         currentIndex: _selectedIndex,
+
         ///点击事件
         onTap: (index) {
           _pageController.jumpToPage(index);

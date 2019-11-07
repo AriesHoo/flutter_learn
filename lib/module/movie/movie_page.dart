@@ -239,7 +239,6 @@ class _MovieItemPageState extends State<MovieItemPage>
     } else {
       _refreshController.loadNoData();
     }
-    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return _page == 0
 
         ///loading状态

@@ -17,26 +17,6 @@ class IndexPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(S.of(context).appName),
         centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: ClipRRect(
-              borderRadius: BorderRadius.circular(32),
-              child: FadeInImage.assetNetwork(
-                width: 32,
-                placeholder: "assets/image/start/ic_launcher.png",
-                image:
-                    "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
-                fit: BoxFit.cover,
-              ),
-            ),
-            onPressed: () {
-//              Navigator.of(context).pushNamed(RouteName.webView,
-//                  arguments: WebViewModel.getModel("Aries Hoo's jian shu",
-//                      "https://www.jianshu.com/u/a229eee96115"));
-              Navigator.of(context).pushNamed(RouteName.movie);
-            },
-          ),
-        ],
       ),
       body: IndexContainerWidget(),
     );

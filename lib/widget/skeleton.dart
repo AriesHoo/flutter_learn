@@ -57,13 +57,25 @@ class SkeletonDecoration extends BoxDecoration {
 class SkeletonList extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final bool horizontal;
+
+  ///模拟数量
   final int length;
+
+  ///Item适配器
   final IndexedWidgetBuilder builder;
+
+  ///基础颜色
+  final Color baseColor;
+
+  ///高亮颜色
+  final Color highlightColor;
 
   SkeletonList({
     @required this.builder,
     this.length: 10,
     this.horizontal: false,
+    this.baseColor,
+    this.highlightColor,
     this.padding = const EdgeInsets.all(0),
   });
 
@@ -71,12 +83,15 @@ class SkeletonList extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     bool isDark = theme.brightness == Brightness.dark;
+    MaterialColor color =
+        theme.accentColor is MaterialColor ? theme.accentColor : Colors.grey;
     return SingleChildScrollView(
       physics: NeverScrollableScrollPhysics(),
       child: Shimmer.fromColors(
         period: Duration(milliseconds: 1000),
-        baseColor: isDark ? Colors.grey[700] : Colors.grey[400],
-        highlightColor: isDark ? Colors.grey[500] : Colors.grey[200],
+        baseColor:
+            baseColor ?? (isDark ? color[700] : color[200].withAlpha(70)),
+        highlightColor: highlightColor ?? (isDark ? color[500] : color[100]),
         child: Padding(
             padding: padding,
             child: horizontal

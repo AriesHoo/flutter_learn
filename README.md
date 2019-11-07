@@ -2,7 +2,19 @@
 
 Flutter 练手项目-参考[Flutter 实战](https://book.flutterchina.club/)
 
-![](/blob/master/screenshot/00.gif)
+
+![](/screenshot/00.gif)
+
+![](/screenshot/00.jpg)
+
+![](/screenshot/01.jpg)
+
+![](/screenshot/02.jpg)
+
+![](/screenshot/03.jpg)
+
+![](/screenshot/04.jpg)
+
 ![](https://www.pgyer.com/app/qrcode/e9Ba)
 
 [[Download]](https://www.pgyer.com/e9Ba)

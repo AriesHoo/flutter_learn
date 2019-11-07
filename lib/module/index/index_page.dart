@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/generated/i18n.dart';
@@ -12,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../../router_manger.dart';
 
 ///主页面
-class IndexPage extends StatelessWidget{
+class IndexPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +25,15 @@ class IndexPage extends StatelessWidget{
                 width: 32,
                 placeholder: "assets/image/start/ic_launcher.png",
                 image:
-                "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
+                    "https://avatars0.githubusercontent.com/u/19605922?s=460&v=4",
                 fit: BoxFit.cover,
               ),
             ),
             onPressed: () {
-              Navigator.of(context).pushNamed(RouteName.webView,
-                  arguments: WebViewModel.getModel("Aries Hoo's jian shu",
-                      "https://www.jianshu.com/u/a229eee96115"));
+//              Navigator.of(context).pushNamed(RouteName.webView,
+//                  arguments: WebViewModel.getModel("Aries Hoo's jian shu",
+//                      "https://www.jianshu.com/u/a229eee96115"));
+              Navigator.of(context).pushNamed(RouteName.movie);
             },
           ),
         ],
@@ -44,9 +43,11 @@ class IndexPage extends StatelessWidget{
   }
 }
 
-
-class IndexContainerWidget extends StatelessWidget{
+///body
+// ignore: must_be_immutable
+class IndexContainerWidget extends StatelessWidget {
   Color iconColor;
+
   void switchDarkMode(BuildContext context) {
     if (MediaQuery.of(context).platformBrightness == Brightness.dark) {
       ToastUtil.show("检测到系统为暗黑模式,已为你自动切换");
@@ -55,6 +56,7 @@ class IndexContainerWidget extends StatelessWidget{
           userDarkMode: Theme.of(context).brightness == Brightness.light);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     iconColor = Theme.of(context).iconTheme.color;
@@ -98,6 +100,7 @@ class IndexContainerWidget extends StatelessWidget{
     );
   }
 }
+
 ///字体选择
 class ChoiceFontWidget extends StatelessWidget {
   @override

@@ -9,6 +9,7 @@ import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/log_util.dart';
 import 'package:flutter_learn/util/toast_util.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
+import 'package:flutter_learn/widget/skeleton.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 ///豆瓣电影页面-tab页
@@ -238,20 +239,12 @@ class _MovieItemPageState extends State<MovieItemPage>
     } else {
       _refreshController.loadNoData();
     }
+    bool isDark = Theme.of(context).brightness == Brightness.dark;
     return _page == 0
 
         ///loading状态
-        ? Center(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Container(
-                color: Theme.of(context).hintColor.withOpacity(0.5),
-                padding: EdgeInsets.all(20),
-                child: CupertinoActivityIndicator(
-                  radius: 12,
-                ),
-              ),
-            ),
+        ? SkeletonList(
+            builder: (context, index) => MovieSkeleton(),
           )
 
         ///加载列表
@@ -498,6 +491,83 @@ class MovieAdapter extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+///电影骨架屏效果
+class MovieSkeleton extends StatelessWidget {
+  final double imgWidth = 72;
+  final double imgHeight = 100;
+
+  MovieSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 12),
+      margin: EdgeInsets.symmetric(horizontal: 12),
+
+      ///分割线
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(
+            width: 0.5,
+            color: Theme.of(context).hintColor.withOpacity(0.2),
+          ),
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ///左边图片
+          SkeletonBox(
+            borderRadius: BorderRadius.circular(1),
+            width: imgWidth,
+            height: imgHeight,
+          ),
+          SizedBox(
+            width: 12,
+          ),
+
+          ///右边文字-设置flex=1宽度占用剩余部分全部以便其中文字自动换行
+          Expanded(
+            flex: 1,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ///右边文字描述
+                SkeletonBox(
+                  margin: EdgeInsets.only(bottom: 7, top: 4),
+                  width: 140,
+                  height: 14,
+                ),
+                SkeletonBox(
+                  margin: EdgeInsets.only(bottom: 7),
+                  width: 100,
+                  height: 12,
+                ),
+                SkeletonBox(
+                  margin: EdgeInsets.only(bottom: 7),
+                  width: 66,
+                  height: 12,
+                ),
+                SkeletonBox(
+                  margin: EdgeInsets.only(bottom: 7),
+                  width: 160,
+                  height: 12,
+                ),
+                SkeletonBox(
+                  margin: EdgeInsets.only(bottom: 7),
+                  width: 240,
+                  height: 12,
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

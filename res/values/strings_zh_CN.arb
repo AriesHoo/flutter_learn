@@ -16,6 +16,7 @@
   "choiceLanguage": "选择语言",
   "autoBySystem": "跟随系统",
   "darkMode": "黑夜模式",
+  "loadingWebTitle": "加载中...",
   "back": "后退",
   "forward": "前进",
   "refresh": "刷新",
@@ -49,5 +50,10 @@
   "loadIdle": "上拉加载更多",
   "loadFailed": "加载失败",
   "loadNoMore": "我也是有底线的",
-  "quitApp": "再点击一次退出程序"
+  "quitApp": "再点击一次退出程序",
+  "viewStateError": "加载失败",
+  "viewStateNetworkError": "网络好像不给力哟！",
+  "viewStateEmpty": "空空如也",
+  "viewStateRefresh": "刷新一下",
+  "viewStateBRetry": "重试"
 }

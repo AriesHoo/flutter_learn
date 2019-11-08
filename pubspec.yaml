@@ -71,6 +71,9 @@ flutter:
   uses-material-design: true
   #  字体
   fonts:
+    - family: iconfont
+      fonts:
+        - asset: assets/fonts/iconfont.ttf
     - family: StarCandy #http://font.chinaz.com/180608028380.htm#down
       fonts:
         - asset: assets/fonts/StarCandy.ttf

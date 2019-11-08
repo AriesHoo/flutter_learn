@@ -143,8 +143,7 @@ class ChoiceLanguageWidget extends StatelessWidget {
               style: TextStyle(),
             ),
             Text(
-              LocaleModel.localeName(
-                  Provider.of<LocaleModel>(context).localeIndex, context),
+              Provider.of<LocaleModel>(context).localeCurrentName(context),
               style: Theme.of(context).textTheme.caption,
             )
           ],
@@ -165,7 +164,7 @@ class ChoiceLanguageWidget extends StatelessWidget {
                     model.switchLocale(index);
                   },
                   groupValue: model.localeIndex,
-                  title: Text(LocaleModel.localeName(index, context)),
+                  title: Text(model.localeName(index, context)),
                 );
               })
         ],

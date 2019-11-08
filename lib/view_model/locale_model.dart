@@ -32,7 +32,7 @@ class LocaleModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  static String localeName(index, context) {
+  String localeName(index, context) {
     switch (index) {
       case 0:
         return S.of(context).autoBySystem;
@@ -43,5 +43,9 @@ class LocaleModel extends ChangeNotifier {
       default:
         return '';
     }
+  }
+
+  String localeCurrentName(context) {
+    return localeName(localeIndex, context);
   }
 }

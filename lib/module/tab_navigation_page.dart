@@ -4,6 +4,7 @@ import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/index/index_page.dart';
 import 'package:flutter_learn/module/movie/movie_page.dart';
+import 'package:flutter_learn/module/movie/movie_tab_page.dart';
 import 'package:flutter_learn/module/start/login_page.dart';
 import 'package:flutter_learn/module/web_view_page.dart';
 import 'package:flutter_learn/util/log_util.dart';
@@ -115,16 +116,15 @@ class _HomeWidgetState extends State<HomeWidget>
   List<Widget> _listPage = <Widget>[
     IndexPage(),
     MoviePage(),
+    MovieTabPage(),
     LoginPage(),
-    WebViewPage(WebViewModel.getModel(
-        "Aries Hoo's Github", "https://github.com/AriesHoo"))
   ];
   List<String> _listTitle = ["", "", "", ""];
   List<IconData> _listIcon = [
     Icons.home,
     Icons.movie,
+    Icons.movie,
     Icons.assignment_ind,
-    Icons.web
   ];
 
   @override
@@ -133,8 +133,8 @@ class _HomeWidgetState extends State<HomeWidget>
     _listTitle = [
       S.of(context).tab_index,
       S.of(context).tab_movie,
+      S.of(context).tab_movie,
       S.of(context).tab_login,
-      S.of(context).tab_web
     ];
     return Scaffold(
       body: PageView.builder(

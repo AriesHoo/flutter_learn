@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
+import 'package:flutter_learn/util/log_util.dart';
 import 'package:flutter_learn/util/share_util.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -25,15 +26,24 @@ class _WebViewPageState extends State<WebViewPage> {
   WebViewController _webViewController;
   ValueNotifier _canGoBack = ValueNotifier(false);
   ValueNotifier _canGoForward = ValueNotifier(false);
+  ValueNotifier _getTitle = ValueNotifier("...");
   bool _loading = true;
   bool _nextLoading = false;
   String _currentUrl;
+  String _title;
+  String _currentTitle;
 
   @override
   Widget build(BuildContext context) {
+    _title = _title == null || _title.isEmpty
+        ? S.of(context).loadingWebTitle
+        : _title;
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.model.title),
+        title: ValueListenableBuilder(
+          valueListenable: _getTitle,
+          builder: (context, title, child) => Text(_title),
+        ),
         actions: <Widget>[
           Padding(
             padding: EdgeInsets.only(right: 12),
@@ -72,9 +82,11 @@ class _WebViewPageState extends State<WebViewPage> {
                   if (!request.url.startsWith('http')) {
                     return NavigationDecision.prevent;
                   } else {
-                    setState(() {
-                      _nextLoading = true;
-                    });
+                    if (_currentTitle != null && _currentTitle.isNotEmpty) {
+                      setState(() {
+                        _nextLoading = true;
+                      });
+                    }
                     return NavigationDecision.navigate;
                   }
                 },
@@ -173,6 +185,12 @@ class _WebViewPageState extends State<WebViewPage> {
     _webViewController.canGoForward().then((value) {
       debugPrint('_canGoForward--->$value');
       return _canGoForward.value = value;
+    });
+    _webViewController.getTitle().then((title) {
+      LogUtil.e("getTitle:" + title);
+      _title = title;
+      _currentTitle = title;
+      return _getTitle.value = title;
     });
   }
 }

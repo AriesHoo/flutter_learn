@@ -1,7 +1,7 @@
-import 'view_state_model.dart';
+import 'basis_view_model.dart';
 
 /// 一次性获取列表数据
-abstract class ViewStateListModel<T> extends ViewStateModel {
+abstract class BasisListViewModel<T> extends BasisViewModel {
   /// 页面数据
   List<T> list = [];
 

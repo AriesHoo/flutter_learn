@@ -8,7 +8,7 @@ import 'package:oktoast/oktoast.dart';
 import 'view_state.dart';
 
 ///基础ViewModel
-class ViewStateModel with ChangeNotifier {
+class BasisViewModel with ChangeNotifier {
   /// 防止页面销毁后,异步任务才完成,导致报错
   bool _disposed = false;
   /// 当前的页面状态,默认为busy,可在viewModel的构造方法中指定;
@@ -16,7 +16,7 @@ class ViewStateModel with ChangeNotifier {
 
   /// 根据状态构造
   /// 子类可以在构造函数指定需要的页面状态
-  ViewStateModel({ViewState viewState})
+  BasisViewModel({ViewState viewState})
       : _viewState = viewState ?? ViewState.success;
 
   ViewState get viewState => _viewState;
@@ -24,6 +24,7 @@ class ViewStateModel with ChangeNotifier {
   set viewState(ViewState viewState) {
     _viewStateError = null;
     _viewState = viewState;
+    ///状态改变通知页面刷新
     notifyListeners();
   }
 

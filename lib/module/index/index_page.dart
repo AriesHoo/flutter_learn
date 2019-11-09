@@ -42,6 +42,7 @@ class IndexContainerWidget extends StatelessWidget {
     iconColor = Theme.of(context).iconTheme.color;
     return SingleChildScrollView(
       primary: true,
+      physics: ClampingScrollPhysics(),
       child: ListTileTheme(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -200,6 +201,7 @@ class ChoiceThemeWidget extends StatelessWidget {
         children: <Widget>[
           ListView.builder(
               shrinkWrap: true,
+              physics: ClampingScrollPhysics(),
               itemCount: ThemeModel.themeValueList.length,
               itemBuilder: (context, index) {
                 var model = Provider.of<ThemeModel>(context);

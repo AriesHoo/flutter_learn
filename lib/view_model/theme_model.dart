@@ -135,7 +135,7 @@ class ThemeModel with ChangeNotifier {
       primaryColor: accentColor,
 
       ///类苹果跟随滑动返回-修改后返回箭头及主标题iOS风格
-      platform: TargetPlatform.iOS,
+//      platform: TargetPlatform.iOS,
       errorColor: Colors.red,
       toggleableActiveColor: accentColor,
 

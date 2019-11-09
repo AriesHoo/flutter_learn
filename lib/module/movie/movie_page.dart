@@ -3,16 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/generated/i18n.dart';
-import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
-import 'package:flutter_learn/router_manger.dart';
+import 'package:flutter_learn/module/movie/movie_tab_page.dart';
 import 'package:flutter_learn/util/log_util.dart';
-import 'package:flutter_learn/util/toast_util.dart';
+import 'package:flutter_learn/view_model/basis_provider_widget.dart';
+import 'package:flutter_learn/view_model/basis_view_model.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
+import 'package:flutter_learn/view_model/view_state.dart';
+import 'package:flutter_learn/view_model/view_state_widget.dart';
 import 'package:flutter_learn/widget/skeleton.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-///豆瓣电影页面-tab页
+///豆瓣电影-常规操作
 class MoviePage extends StatefulWidget {
   @override
   _MoviePageState createState() => _MoviePageState();
@@ -133,7 +135,7 @@ class _MovieItemPageState extends State<MovieItemPage>
   int _pageSize = 20;
 
   ///返回列表数量
-  List<Subjects> _listData;
+  List<Subjects> _listData = [];
 
   ///下拉刷新controller
   RefreshController _refreshController =
@@ -141,14 +143,13 @@ class _MovieItemPageState extends State<MovieItemPage>
 
   ///是否可加载更多
   bool _canLoadMore = true;
-
-  ///是否加载成功
-  bool _loadSucceed = true;
   ScrollController _scrollController;
   bool _isDispose = false;
 
   ///是否展示FloatingActionButton
   bool _isShowFloatBtn = false;
+
+  BasisViewModel _model = BasisViewModel(viewState: ViewState.loading);
 
   @override
   void initState() {
@@ -157,21 +158,14 @@ class _MovieItemPageState extends State<MovieItemPage>
 
     ///设置滚动监听
     _scrollController.addListener(() {
-      double offset = _scrollController.offset;
-      bool show = offset > 600;
+      bool show = _scrollController.offset > 600;
       if (show != _isShowFloatBtn) {
-        LogUtil.e("offset:" +
-            offset.toString() +
-            ";show:" +
-            show.toString() +
-            ";_isShowFloatBtn:" +
-            _isShowFloatBtn.toString());
         setState(() {
           _isShowFloatBtn = show;
         });
       }
     });
-    getMovie();
+    refresh(init: true);
   }
 
   @override
@@ -181,103 +175,110 @@ class _MovieItemPageState extends State<MovieItemPage>
     super.dispose();
   }
 
-  getMovie() async {
+  Future getMovie(int page) async {
+    return await MovieApi.getMovie(widget.url, page * _pageSize, _pageSize);
+  }
+
+  Future<List<Subjects>> refresh({bool init = false}) async {
     try {
-      List<Subjects> list =
-          await MovieApi.getMovie(widget.url, _page * _pageSize, _pageSize);
-      if (_page == 0 && _listData != null) {
+      _page = 0;
+      var data = await getMovie(0);
+      if (data.isEmpty) {
+        _refreshController.refreshCompleted(resetFooterState: true);
         _listData.clear();
-      }
-      if (list.length > 0) {
-        if (_listData == null) {
-          _listData = list;
-        } else {
-          _listData.addAll(list);
-        }
-        if (_isDispose) {
-          LogUtil.i("请求成功;页面已销毁");
-        } else {
-          setState(() {
-            _loadSucceed = true;
-            _canLoadMore = list.length >= _pageSize;
-            _page++;
-          });
-        }
-      }
-    } catch (e, s) {
-      if (_isDispose) {
-        LogUtil.e("请求错误:" + s.toString() + ";页面已销毁");
+        _model.setEmpty();
       } else {
-        ToastUtil.show(s.toString());
-        setState(() {
-          _loadSucceed = false;
-        });
+        _listData.clear();
+        _listData.addAll(data);
+        _refreshController.refreshCompleted();
+        /// 小于分页的数量,禁止上拉加载更多
+        if (data.length < _pageSize) {
+          _refreshController.loadNoData();
+        } else {
+          ///防止上次上拉加载更多失败,需要重置状态
+          _refreshController.loadComplete();
+        }
+        _model.setSuccess();
       }
+      setState(() {});
+      return data;
+    } catch (e, s) {
+      /// 页面已经加载了数据,如果刷新报错,不应该直接跳转错误页面
+      /// 而是显示之前的页面数据.给出错误提示
+      if (init) _listData.clear();
+      _refreshController.refreshFailed();
+      setState(() {});
+      return null;
     }
   }
 
-  void _onRefresh() async {
-    _page = 0;
-    getMovie();
-  }
-
-  void _onLoading() async {
-    getMovie();
+  /// 上拉加载更多
+  Future<List<Subjects>> loadMore() async {
+    try {
+      var data = await getMovie(++_page);
+      if (data.isEmpty) {
+        _page--;
+        _refreshController.loadNoData();
+      } else {
+        _listData.addAll(data);
+        if (data.length < _pageSize) {
+          _refreshController.loadNoData();
+        } else {
+          _refreshController.loadComplete();
+        }
+      }
+      setState(() {});
+      return data;
+    } catch (e, s) {
+      _page--;
+      _refreshController.loadFailed();
+      setState(() {});
+      return null;
+    }
   }
 
   @override
-  // ignore: must_call_super
   Widget build(BuildContext context) {
-    debugPrint("_page:" +
-        (_page == 0).toString() +
-        ";canLoadMore:" +
-        _canLoadMore.toString());
-    _refreshController.loadComplete();
-    _refreshController.refreshCompleted();
-    if (_canLoadMore) {
-      _refreshController.resetNoData();
-    } else {
-      _refreshController.loadNoData();
+    super.build(context);
+    if (_model.loading) {
+      return SkeletonList(
+        builder: (context, index) => MovieSkeleton(),
+      );
+    } else if (_model.empty) {
+      return ViewStateEmptyWidget();
+    } else if (_model.error && _listData.isEmpty) {
+      return ViewStateErrorWidget(onPressed: refresh);
     }
-    return _page == 0
+    return Scaffold(
+      ///下拉刷新嵌套listView
+      body: SmartRefresherWidget(
+        page: _page,
+        pageSize: _pageSize,
+        scrollController: _scrollController,
+        data: _listData,
+        refreshController: _refreshController,
+        onRefresh: refresh,
+        onLoading: loadMore,
+      ),
 
-        ///loading状态
-        ? SkeletonList(
-            builder: (context, index) => MovieSkeleton(),
-          )
-
-        ///加载列表
-        : Scaffold(
-            ///下拉刷新嵌套listView
-            body: SmartRefresherWidget(
-              page: _page,
-              pageSize: _pageSize,
-              scrollController: _scrollController,
-              data: _listData,
-              refreshController: _refreshController,
-              onRefresh: _onRefresh,
-              onLoading: _onLoading,
+      ///用于回到顶部
+      floatingActionButton: !_isShowFloatBtn
+          ? null
+          : FloatingActionButton(
+              backgroundColor: Theme.of(context).appBarTheme.color,
+              child: Icon(
+                Icons.arrow_upward,
+                color: Theme.of(context).appBarTheme.textTheme.title.color,
+              ),
+              onPressed: () {
+                _scrollController.animateTo(
+                  0,
+                  duration: new Duration(milliseconds: 300), // 300ms
+                  curve: Curves.bounceIn, // 动画方式
+                );
+              },
             ),
-
-            ///用于回到顶部
-            floatingActionButton: !_isShowFloatBtn
-                ? null
-                : FloatingActionButton(
-                    backgroundColor: Theme.of(context).appBarTheme.color,
-                    child: Icon(
-                      Icons.arrow_upward,
-                      color:
-                          Theme.of(context).appBarTheme.textTheme.title.color,
-                    ),
-                    onPressed: () {
-                      _scrollController.animateTo(
-                        0,
-                        duration: new Duration(milliseconds: 300), // 300ms
-                        curve: Curves.bounceIn, // 动画方式
-                      );
-                    },
-                  ),
-          );
+    );
   }
 
   @override
@@ -324,6 +325,7 @@ class SmartRefresherWidget extends StatelessWidget {
       footer: SmartLoadFooterWidget(),
       controller: refreshController,
       onRefresh: onRefresh,
+      physics: ClampingScrollPhysics(),
       onLoading: onLoading,
       child: ListView.builder(
         ///内容适配
@@ -334,239 +336,8 @@ class SmartRefresherWidget extends StatelessWidget {
         itemBuilder: (context, index) {
           return MovieAdapter(
             data[index],
-            page * pageSize + index,
           );
         },
-      ),
-    );
-  }
-}
-
-///刷新脚
-class SmartLoadFooterWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CustomFooter(
-      height: 50,
-      builder: (BuildContext context, LoadStatus mode) {
-        Widget body;
-        if (mode == LoadStatus.idle) {
-          body = Text(
-            S.of(context).loadIdle,
-            style: Theme.of(context).textTheme.caption,
-          );
-        } else if (mode == LoadStatus.loading) {
-          body = CupertinoActivityIndicator();
-        } else if (mode == LoadStatus.failed) {
-          body = Text(
-            S.of(context).loadFailed,
-            style: Theme.of(context).textTheme.caption,
-          );
-        } else if (mode == LoadStatus.canLoading) {
-          body = Text(
-            S.of(context).loadIdle,
-            style: Theme.of(context).textTheme.caption,
-          );
-        } else {
-          body = Text(
-            S.of(context).loadNoMore,
-            style: Theme.of(context).textTheme.caption,
-          );
-        }
-        return Container(
-          height: 50,
-          child: Center(child: body),
-        );
-      },
-    );
-  }
-}
-
-///电影适配器
-class MovieAdapter extends StatelessWidget {
-  const MovieAdapter(this.item, this.position, {Key key}) : super(key: key);
-  final Subjects item;
-  final int position;
-  final double imgWidth = 72;
-  final double imgHeight = 100;
-
-  @override
-  Widget build(BuildContext context) {
-    ///外层Material包裹以便按下水波纹效果
-    return Material(
-      color: Theme.of(context).cardColor,
-      child: InkWell(
-        onTap: () => Navigator.of(context).pushNamed(RouteName.webView,
-            arguments: WebViewModel.getModel(item.title,
-                item.alt + "?apikey=0b2bdeda43b5688921839c8ecb20399b")),
-
-        ///Container 包裹以便设置padding margin及边界线
-        child: Container(
-          padding: EdgeInsets.symmetric(vertical: 12),
-          margin: EdgeInsets.symmetric(horizontal: 12),
-
-          ///分割线
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                width: 0.5,
-                color: Theme.of(context).hintColor.withOpacity(0.2),
-              ),
-            ),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              ///左边图片
-              ClipRRect(
-                borderRadius: BorderRadius.circular(1),
-                child: CachedNetworkImage(
-                  width: imgWidth,
-                  height: imgHeight,
-                  fit: BoxFit.fill,
-                  imageUrl: item.images.small,
-
-                  ///占位Widget
-                  placeholder: (context, url) => Center(
-                    child: Container(
-                      color: Theme.of(context).hintColor.withOpacity(0.1),
-                      width: imgWidth,
-                      height: imgHeight,
-                      child: CupertinoActivityIndicator(),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Center(
-                    child: Container(
-                      color: Theme.of(context).hintColor.withOpacity(0.1),
-                      width: imgWidth,
-                      height: imgHeight,
-                      child: Icon(Icons.error),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 12,
-              ),
-
-              ///右边文字-设置flex=1宽度占用剩余部分全部以便其中文字自动换行
-              Expanded(
-                flex: 1,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    ///右边文字描述
-                    Text(
-                      item.title,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    Text(
-                      S.of(context).movieGenres + item.getGenres(),
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    Text(
-                      S.of(context).movieYear + item.year,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    Text(
-                      S.of(context).movieDirectors +
-                          item.getDirectors(S.of(context).movieNobody),
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                    Text(
-                      S.of(context).movieActors +
-                          item.getCasts(S.of(context).movieNobody),
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-///电影骨架屏效果
-class MovieSkeleton extends StatelessWidget {
-  final double imgWidth = 72;
-  final double imgHeight = 100;
-
-  MovieSkeleton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 12),
-      margin: EdgeInsets.symmetric(horizontal: 12),
-
-      ///分割线
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(
-            width: 0.5,
-            color: Theme.of(context).hintColor.withOpacity(0.2),
-          ),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ///左边图片
-          SkeletonBox(
-            borderRadius: BorderRadius.circular(1),
-            width: imgWidth,
-            height: imgHeight,
-          ),
-          SizedBox(
-            width: 12,
-          ),
-
-          ///右边文字-设置flex=1宽度占用剩余部分全部以便其中文字自动换行
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                ///右边文字描述
-                SkeletonBox(
-                  margin: EdgeInsets.only(bottom: 7, top: 4),
-                  width: 140,
-                  height: 14,
-                ),
-                SkeletonBox(
-                  margin: EdgeInsets.only(bottom: 7),
-                  width: 100,
-                  height: 12,
-                ),
-                SkeletonBox(
-                  margin: EdgeInsets.only(bottom: 7),
-                  width: 66,
-                  height: 12,
-                ),
-                SkeletonBox(
-                  margin: EdgeInsets.only(bottom: 7),
-                  width: 160,
-                  height: 12,
-                ),
-                SkeletonBox(
-                  margin: EdgeInsets.only(bottom: 7),
-                  width: 240,
-                  height: 12,
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

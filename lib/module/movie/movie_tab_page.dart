@@ -5,16 +5,17 @@ import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/log_util.dart';
-import 'package:flutter_learn/util/toast_util.dart';
+import 'package:flutter_learn/view_model/basis_scroll_controller_model.dart';
 import 'package:flutter_learn/view_model/movie_model.dart';
-import 'package:flutter_learn/view_model/provider_widget.dart';
+import 'package:flutter_learn/view_model/basis_provider_widget.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:flutter_learn/widget/skeleton.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../router_manger.dart';
+import '../../util/log_util.dart';
+import '../../widget/skeleton.dart';
 import 'model/movie_model.dart';
 
-///ViewModel方式
+///ViewModel方式获取数据
 class MovieTabPage extends StatefulWidget {
   @override
   _MovieTabPageState createState() => _MovieTabPageState();
@@ -46,7 +47,7 @@ class _MovieTabPageState extends State<MovieTabPage>
       S.of(context).movieInTheaters,
       S.of(context).movieComingSoon
     ];
-    return ProviderListWidget<MovieTabModel>(
+    return BasisListProviderWidget<MovieTabModel>(
       model: MovieTabModel(_listTab, _listUrls),
       builder: (context, model, child) {
         return DefaultTabController(
@@ -133,134 +134,38 @@ class MovieItemPage extends StatefulWidget {
 
 class _MovieItemPageState extends State<MovieItemPage>
     with AutomaticKeepAliveClientMixin {
-  ScrollController _scrollController;
-
-  ///是否展示FloatingActionButton
-  bool _isShowFloatBtn = false;
-
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+  }
+
+  @override
+  void didUpdateWidget(MovieItemPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    LogUtil.e("movieTabPage:didUpdateWidget");
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return ProviderRefreshListWidget<MovieListModel>(
+    return BasisRefreshListProviderWidget<MovieListModel, ScrollTopModel>(
+      ///初始化获取电影列表model
       model: MovieListModel(widget.url),
-      builder: (context, model, child) {
-        return ListView.builder(
-          ///内容适配
-          shrinkWrap: true,
-          physics: ClampingScrollPhysics(),
-          itemCount: model.list.length,
-          controller: _scrollController,
-          itemBuilder: (context, index) {
-            return MovieAdapter(model.list[index]);
-          },
+
+      ///加载中占位-骨架屏-默认菊花loading
+      loadingBuilder: (context, model, model2, child) {
+        return SkeletonList(
+          builder: (context, index) => MovieSkeleton(),
         );
       },
+
+      ///列表适配器
+      itemBuilder: (context, model, index) => MovieAdapter(model.list[index]),
     );
   }
 
   @override
   bool get wantKeepAlive => true;
-}
-
-///嵌套下拉刷新
-class SmartRefresherWidget extends StatelessWidget {
-  ///起始页码
-  final int page;
-
-  ///每页数量
-  final int pageSize;
-  final ScrollController scrollController;
-
-  ///返回列表数量
-  final List<Subjects> data;
-
-  ///下拉刷新controller
-  final RefreshController refreshController;
-  final VoidCallback onRefresh;
-  final VoidCallback onLoading;
-
-  const SmartRefresherWidget(
-      {Key key,
-      this.page,
-      this.pageSize,
-      this.scrollController,
-      this.data,
-      this.refreshController,
-      this.onRefresh,
-      this.onLoading})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SmartRefresher(
-      enablePullDown: true,
-      enablePullUp: true,
-      header: MaterialClassicHeader(
-        backgroundColor: Theme.of(context).appBarTheme.color,
-        color: Theme.of(context).appBarTheme.textTheme.title.color,
-      ),
-      footer: SmartLoadFooterWidget(),
-      controller: refreshController,
-      onRefresh: onRefresh,
-      onLoading: onLoading,
-      child: ListView.builder(
-        ///内容适配
-        shrinkWrap: true,
-        physics: ClampingScrollPhysics(),
-        itemCount: data.length,
-        controller: scrollController,
-        itemBuilder: (context, index) {
-          return MovieAdapter(data[index]);
-        },
-      ),
-    );
-  }
-}
-
-///刷新脚
-class SmartLoadFooterWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return CustomFooter(
-      height: 50,
-      builder: (BuildContext context, LoadStatus mode) {
-        Widget body;
-        if (mode == LoadStatus.idle) {
-          body = Text(
-            S.of(context).loadIdle,
-            style: Theme.of(context).textTheme.caption,
-          );
-        } else if (mode == LoadStatus.loading) {
-          body = CupertinoActivityIndicator();
-        } else if (mode == LoadStatus.failed) {
-          body = Text(
-            S.of(context).loadFailed,
-            style: Theme.of(context).textTheme.caption,
-          );
-        } else if (mode == LoadStatus.canLoading) {
-          body = Text(
-            S.of(context).loadIdle,
-            style: Theme.of(context).textTheme.caption,
-          );
-        } else {
-          body = Text(
-            S.of(context).loadNoMore,
-            style: Theme.of(context).textTheme.caption,
-          );
-        }
-        return Container(
-          height: 50,
-          child: Center(child: body),
-        );
-      },
-    );
-  }
 }
 
 ///电影适配器

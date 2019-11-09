@@ -13,7 +13,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 Future main() async {
   ///初始化SP
-  await SPUtil.getInstance();
+//  await SPUtil.getInstance();
   runApp(MyApp());
 }
 

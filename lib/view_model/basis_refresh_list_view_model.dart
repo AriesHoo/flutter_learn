@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-import 'view_state_list_model.dart';
+import 'basis_list_view_model.dart';
 
 /// 下拉刷新及上拉加载更多封装
-abstract class ViewStateRefreshListModel<T> extends ViewStateListModel<T> {
+abstract class BasisRefreshListViewModel<T> extends BasisListViewModel<T> {
   /// 分页第一页页码
   int pageNumFirst = 0;
 
@@ -13,9 +13,9 @@ abstract class ViewStateRefreshListModel<T> extends ViewStateListModel<T> {
   int pageSize = 20;
 
   /// 当前页码
-  int _currentPageNum = 0;
+  int _currentPage = 0;
 
-  int get currentPage => _currentPageNum;
+  int get currentPage => _currentPage;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
@@ -28,7 +28,7 @@ abstract class ViewStateRefreshListModel<T> extends ViewStateListModel<T> {
   /// false: Error时,不需要跳转页面,直接给出提示
   Future<List<T>> refresh({bool init = false}) async {
     try {
-      _currentPageNum = pageNumFirst;
+      _currentPage = pageNumFirst;
       var data = await loadData(pageNum: pageNumFirst);
       if (data.isEmpty) {
         refreshController.refreshCompleted(resetFooterState: true);
@@ -62,9 +62,9 @@ abstract class ViewStateRefreshListModel<T> extends ViewStateListModel<T> {
   /// 上拉加载更多
   Future<List<T>> loadMore() async {
     try {
-      var data = await loadData(pageNum: ++_currentPageNum);
+      var data = await loadData(pageNum: ++_currentPage);
       if (data.isEmpty) {
-        _currentPageNum--;
+        _currentPage--;
         refreshController.loadNoData();
       } else {
         onCompleted(data);
@@ -78,7 +78,7 @@ abstract class ViewStateRefreshListModel<T> extends ViewStateListModel<T> {
       }
       return data;
     } catch (e, s) {
-      _currentPageNum--;
+      _currentPage--;
       refreshController.loadFailed();
       debugPrint('error--->\n' + e.toString());
       debugPrint('statck--->\n' + s.toString());
@@ -86,7 +86,7 @@ abstract class ViewStateRefreshListModel<T> extends ViewStateListModel<T> {
     }
   }
 
-  // 加载数据
+  /// 加载数据
   Future<List<T>> loadData({int pageNum});
 
   @override

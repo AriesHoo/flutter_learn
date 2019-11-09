@@ -10,16 +10,15 @@ Flutter 练手项目-参考[Flutter 实战](https://book.flutterchina.club/)
 
 ![](/screenshot/00.gif)
 
-<img src="/screenshot/00.jpg" width = "50%" height = "50%" div align=center />
+<img src="/screenshot/00.jpg" width = "40%" height = "40%" div align=center />
 
-![](/screenshot/00.jpg)
+<img src="/screenshot/01.jpg" width = "40%" height = "40%" div align=center />
 
-![](/screenshot/01.jpg)
+<img src="/screenshot/02.jpg" width = "40%" height = "40%" div align=center />
 
-![](/screenshot/02.jpg)
+<img src="/screenshot/00.jpg" width = "40%" height = "40%" div align=center />
 
-![](/screenshot/03.jpg)
+<img src="/screenshot/03.jpg" width = "40%" height = "40%" div align=center />
 
-![](/screenshot/04.jpg)
 
 

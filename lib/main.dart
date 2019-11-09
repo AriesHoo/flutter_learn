@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_learn/manager/provider_manager.dart';
 import 'package:flutter_learn/module/tab_navigation_page.dart';
 import 'package:flutter_learn/router_manger.dart';
 import 'package:flutter_learn/util/sp_util.dart';
@@ -11,6 +10,7 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'generated/i18n.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+
 Future main() async {
   ///初始化SP
 //  await SPUtil.getInstance();
@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
     return OKToast(
       ///Provider
       child: MultiProvider(
-        providers: providers,
+        providers: [
+          ChangeNotifierProvider<ThemeModel>.value(value: ThemeModel()),
+          ChangeNotifierProvider<LocaleModel>.value(value: LocaleModel()),
+        ],
         child: Consumer2<ThemeModel, LocaleModel>(
           builder: (context, themeModel, localeModel, child) {
             return AppWidget(

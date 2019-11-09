@@ -5,9 +5,9 @@ import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/model/web_view_model.dart';
 import 'package:flutter_learn/util/log_util.dart';
-import 'package:flutter_learn/view_model/basis_scroll_controller_model.dart';
+import 'package:flutter_learn/view_model/basis/basis_provider_widget.dart';
+import 'package:flutter_learn/view_model/basis/basis_scroll_controller_model.dart';
 import 'package:flutter_learn/view_model/movie_model.dart';
-import 'package:flutter_learn/view_model/basis_provider_widget.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
 import 'package:flutter_learn/widget/skeleton.dart';
 import '../../router_manger.dart';
@@ -16,12 +16,12 @@ import '../../widget/skeleton.dart';
 import 'model/movie_model.dart';
 
 ///ViewModel方式获取数据
-class MovieTabPage extends StatefulWidget {
+class MovieViewModelPage extends StatefulWidget {
   @override
-  _MovieTabPageState createState() => _MovieTabPageState();
+  _MovieViewModelPageState createState() => _MovieViewModelPageState();
 }
 
-class _MovieTabPageState extends State<MovieTabPage>
+class _MovieViewModelPageState extends State<MovieViewModelPage>
     with SingleTickerProviderStateMixin {
   var _listUrls = [
     MovieApi.API_TOP,
@@ -150,7 +150,7 @@ class _MovieItemPageState extends State<MovieItemPage>
     super.build(context);
     return BasisRefreshListProviderWidget<MovieListModel, ScrollTopModel>(
       ///初始化获取电影列表model
-      model: MovieListModel(widget.url),
+      model1: MovieListModel(widget.url),
 
       ///加载中占位-骨架屏-默认菊花loading
       loadingBuilder: (context, model, model2, child) {

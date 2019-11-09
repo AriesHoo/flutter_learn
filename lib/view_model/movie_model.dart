@@ -1,7 +1,8 @@
 import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
-import 'package:flutter_learn/view_model/basis_list_view_model.dart';
-import 'package:flutter_learn/view_model/basis_refresh_list_view_model.dart';
+import 'package:flutter_learn/view_model/basis/basis_refresh_list_view_model.dart';
+
+import 'basis/basis_list_view_model.dart';
 
 ///模拟获取电影tab
 class MovieTabModel extends BasisListViewModel<String> {
@@ -12,7 +13,7 @@ class MovieTabModel extends BasisListViewModel<String> {
 
   @override
   Future<List<String>> loadData() {
-    return  Future.delayed(Duration(milliseconds: 2000), () {
+    return  Future.delayed(Duration(milliseconds: 200), () {
       return listUrl;
     });
   }

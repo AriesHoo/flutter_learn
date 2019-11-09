@@ -1,16 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/data/movie_api.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/module/movie/model/movie_model.dart';
-import 'package:flutter_learn/module/movie/movie_tab_page.dart';
+import 'package:flutter_learn/module/movie/movie_view_model_page.dart';
 import 'package:flutter_learn/util/log_util.dart';
-import 'package:flutter_learn/view_model/basis_provider_widget.dart';
-import 'package:flutter_learn/view_model/basis_view_model.dart';
+import 'package:flutter_learn/view_model/basis/basis_provider_widget.dart';
+import 'package:flutter_learn/view_model/basis/basis_view_model.dart';
+import 'package:flutter_learn/view_model/basis/view_state_widget.dart';
 import 'package:flutter_learn/view_model/theme_model.dart';
-import 'package:flutter_learn/view_model/view_state.dart';
-import 'package:flutter_learn/view_model/view_state_widget.dart';
+import 'package:flutter_learn/view_model/basis/view_state.dart';
 import 'package:flutter_learn/widget/skeleton.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -141,8 +140,6 @@ class _MovieItemPageState extends State<MovieItemPage>
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  ///是否可加载更多
-  bool _canLoadMore = true;
   ScrollController _scrollController;
   bool _isDispose = false;
 
@@ -191,6 +188,7 @@ class _MovieItemPageState extends State<MovieItemPage>
         _listData.clear();
         _listData.addAll(data);
         _refreshController.refreshCompleted();
+
         /// 小于分页的数量,禁止上拉加载更多
         if (data.length < _pageSize) {
           _refreshController.loadNoData();
@@ -200,14 +198,14 @@ class _MovieItemPageState extends State<MovieItemPage>
         }
         _model.setSuccess();
       }
-      setState(() {});
+      refreshView();
       return data;
     } catch (e, s) {
       /// 页面已经加载了数据,如果刷新报错,不应该直接跳转错误页面
       /// 而是显示之前的页面数据.给出错误提示
       if (init) _listData.clear();
       _refreshController.refreshFailed();
-      setState(() {});
+      refreshView();
       return null;
     }
   }
@@ -227,13 +225,19 @@ class _MovieItemPageState extends State<MovieItemPage>
           _refreshController.loadComplete();
         }
       }
-      setState(() {});
+      refreshView();
       return data;
     } catch (e, s) {
       _page--;
       _refreshController.loadFailed();
-      setState(() {});
+      refreshView();
       return null;
+    }
+  }
+
+  refreshView() {
+    if (!_isDispose) {
+      setState(() {});
     }
   }
 
@@ -245,9 +249,9 @@ class _MovieItemPageState extends State<MovieItemPage>
         builder: (context, index) => MovieSkeleton(),
       );
     } else if (_model.empty) {
-      return ViewStateEmptyWidget();
+      return EmptyStateWidget();
     } else if (_model.error && _listData.isEmpty) {
-      return ViewStateErrorWidget(onPressed: refresh);
+      return ErrorStateWidget(onPressed: refresh);
     }
     return Scaffold(
       ///下拉刷新嵌套listView

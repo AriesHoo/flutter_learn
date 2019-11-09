@@ -2,17 +2,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/generated/i18n.dart';
 import 'package:flutter_learn/util/image_util.dart';
+
 import 'view_state.dart';
 
 /// 加载中
-class ViewStateBusyWidget extends StatelessWidget {
+class LoadingStateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(6),
         child: Container(
-          color: Theme.of(context).hintColor.withOpacity(0.5),
+//          color: Theme.of(context).hintColor.withOpacity(0.5),
+        color: Color(0x60000000),
           padding: EdgeInsets.all(20),
           child: CupertinoActivityIndicator(
             radius: 12,
@@ -85,7 +87,8 @@ class ViewStateWidget extends StatelessWidget {
   }
 }
 
-class ViewStateErrorWidget extends StatelessWidget {
+///错误视图
+class ErrorStateWidget extends StatelessWidget {
   final ViewStateError error;
   final String title;
   final String message;
@@ -94,7 +97,7 @@ class ViewStateErrorWidget extends StatelessWidget {
   final String buttonTextData;
   final VoidCallback onPressed;
 
-  const ViewStateErrorWidget({
+  const ErrorStateWidget({
     Key key,
     @required this.error,
     this.image,
@@ -115,7 +118,7 @@ class ViewStateErrorWidget extends StatelessWidget {
       case ErrorType.network:
         defaultImage = Transform.translate(
           offset: Offset(-50,0),
-          child: const Icon(IconFonts.pageNetworkError,
+          child: const Icon(Icons.network_check,
               size: 100, color: Colors.grey),
         );
         defaultTitle = S.of(context).viewStateNetworkError;
@@ -123,7 +126,7 @@ class ViewStateErrorWidget extends StatelessWidget {
         break;
       case ErrorType.normal:
         defaultImage =
-            const Icon(IconFonts.pageError, size: 100, color: Colors.grey);
+            const Icon(Icons.network_check, size: 100, color: Colors.grey);
         defaultTitle = S.of(context).viewStateError;
         break;
     }
@@ -140,13 +143,13 @@ class ViewStateErrorWidget extends StatelessWidget {
 }
 
 /// 页面无数据
-class ViewStateEmptyWidget extends StatelessWidget {
+class EmptyStateWidget extends StatelessWidget {
   final String message;
   final Widget image;
   final Widget buttonText;
   final VoidCallback onPressed;
 
-  const ViewStateEmptyWidget(
+  const EmptyStateWidget(
       {Key key,
       this.image,
       this.message,
@@ -159,7 +162,7 @@ class ViewStateEmptyWidget extends StatelessWidget {
     return ViewStateWidget(
       onPressed: this.onPressed,
       image: image ??
-          const Icon(IconFonts.pageEmpty, size: 100, color: Colors.grey),
+          const Icon(Icons.hourglass_empty, size: 100, color: Colors.grey),
       title: message ?? S.of(context).viewStateEmpty,
       buttonText: buttonText,
       buttonTextData: S.of(context).viewStateRefresh,

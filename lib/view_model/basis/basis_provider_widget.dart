@@ -1,11 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_learn/generated/i18n.dart';
-import 'package:flutter_learn/util/log_util.dart';
-import 'package:flutter_learn/view_model/basis_refresh_list_view_model.dart';
-import 'package:flutter_learn/view_model/basis_scroll_controller_model.dart';
+import 'package:flutter_learn/view_model/basis/basis_refresh_list_view_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'basis_list_view_model.dart';
+import 'basis_scroll_controller_model.dart';
 import 'view_state_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -82,15 +81,15 @@ class BasisListProviderWidget<T extends BasisListViewModel>
               if (model.loading) {
                 return loadingBuilder != null
                     ? loadingBuilder(context, model, child)
-                    : ViewStateBusyWidget();
+                    : LoadingStateWidget();
               } else if (model.empty) {
                 return emptyBuilder != null
                     ? emptyBuilder(context, model, child)
-                    : ViewStateEmptyWidget();
+                    : EmptyStateWidget();
               } else if (model.error && model.list.isEmpty) {
                 return errorBuilder != null
                     ? errorBuilder(context, model, child)
-                    : ViewStateErrorWidget(
+                    : ErrorStateWidget(
                         error: model.viewStateError, onPressed: model.initData);
               }
               return builder(context, model, child);
@@ -104,7 +103,7 @@ class BasisRefreshListProviderWidget<A extends BasisRefreshListViewModel,
     Key key,
     @required
         Widget Function(BuildContext context, A model, int index) itemBuilder,
-    @required A model,
+    @required A model1,
     @required B model2,
     Function(A, B) onModelReady,
     Function(BuildContext context, A model1, B model2, Widget child)
@@ -116,7 +115,7 @@ class BasisRefreshListProviderWidget<A extends BasisRefreshListViewModel,
     Widget child,
   }) : super(
             key: key,
-            model1: model,
+            model1: model1,
             model2: model2 ?? ScrollTopModel(ScrollController(), height: 400),
             child: child,
             onModelReady: (model1, model2) {
@@ -133,15 +132,15 @@ class BasisRefreshListProviderWidget<A extends BasisRefreshListViewModel,
               if (model.loading) {
                 return loadingBuilder != null
                     ? loadingBuilder(context, model, model2, child)
-                    : ViewStateBusyWidget();
+                    : LoadingStateWidget();
               } else if (model.empty) {
                 return emptyBuilder != null
                     ? emptyBuilder(context, model, model2, child)
-                    : ViewStateEmptyWidget();
+                    : EmptyStateWidget();
               } else if (model.error && model.list.isEmpty) {
                 return errorBuilder != null
                     ? errorBuilder(context, model, model2, child)
-                    : ViewStateErrorWidget(
+                    : ErrorStateWidget(
                         error: model.viewStateError, onPressed: model.initData);
               }
 
@@ -235,6 +234,16 @@ class _BasisProviderWidgetState2<A extends ChangeNotifier,
     super.initState();
   }
 
+  @override
+  void dispose() {
+    if(model1!=null){
+      model1.dispose();
+    }
+    if(model2!=null){
+      model2.dispose();
+    }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

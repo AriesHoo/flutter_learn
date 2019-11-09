@@ -9,9 +9,7 @@ import 'view_state.dart';
 
 ///基础ViewModel
 class BasisViewModel with ChangeNotifier {
-  /// 防止页面销毁后,异步任务才完成,导致报错
-  bool _disposed = false;
-  /// 当前的页面状态,默认为busy,可在viewModel的构造方法中指定;
+  /// 当前的页面状态,默认为loading,可在viewModel的构造方法中指定;
   ViewState _viewState;
 
   /// 根据状态构造
@@ -99,18 +97,6 @@ class BasisViewModel with ChangeNotifier {
     return 'BaseModel{_viewState: $viewState, _viewStateError: $_viewStateError}';
   }
 
-  @override
-  void notifyListeners() {
-    if (!_disposed) {
-      super.notifyListeners();
-    }
-  }
-
-  @override
-  void dispose() {
-    _disposed = true;
-    super.dispose();
-  }
 }
 
 /// [e]为错误类型 :可能为 Error , Exception ,String
